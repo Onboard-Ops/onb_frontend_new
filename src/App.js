@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import Router from './router/';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+	styles: {
+		global: {
+			'html, body, #root': {
+				fontFamily: 'Avenir, Helvetica, Arial, sans-serif',
+				height: '100%',
+			},
+		},
+	},
+	colors: {
+		blue: {
+			500: 'rgb(59,130,246)',
+		},
+	},
+});
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	function ErrorFallback({ error, resetErrorBoundary }) {
+		return (
+			<div role='alert'>
+				<p>Something went wrong:</p>
+				<pre>{error.message}</pre>
+				<button onClick={resetErrorBoundary}>Try again</button>
+			</div>
+		);
+	}
+	return (
+		<>
+			<ChakraProvider theme={theme}>
+				<Router />
+			</ChakraProvider>{' '}
+		</>
+	);
 }
 
 export default App;
