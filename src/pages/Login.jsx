@@ -82,7 +82,7 @@ export default function Login() {
 					</FormControl>
 					<Button
 						// isLoading={signUpResult.fetching || loginResult.fetching}
-						colorScheme='blue'
+						colorScheme='teal'
 						size='lg'
 						w='100%'
 						d='block'

@@ -144,7 +144,7 @@ export default function Signup() {
 							d='block'
 							type='submit'
 							loadingText='Submitting'
-							bg={'blue.400'}
+							bg='teal'
 							color={'white'}
 							_hover={{
 								bg: 'blue.500',

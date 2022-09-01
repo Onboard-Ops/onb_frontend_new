@@ -6,6 +6,8 @@ import Signup from '../pages/Signup';
 import Login from '../pages/Login';
 import Four0Four from '../pages/Four0four';
 import Dashboard from '../pages/Dashboard/';
+import People from '../pages/Dashboard/People/';
+import Resources from '../pages/Dashboard/Resources';
 import { useDispatch, useSelector } from 'react-redux';
 import { isUserLoggedIn } from '../redux/actions';
 
@@ -26,7 +28,8 @@ const Router = () => {
 				{user?.token ? (
 					[
 						<Route path='/home' element={<Dashboard />} />,
-						// <Route path='/add-user' element={<AddUser />} />,
+						<Route path='/people' element={<People />} />,
+						<Route path='/resources' element={<Resources />} />,
 						// <Route path='/products' element={<Products />} />,
 						// <Route path='/orders' element={<Orders />} />,
 						// <Route path='/category' element={<Category />} />,

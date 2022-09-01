@@ -20,17 +20,19 @@ import {
 	MenuItem,
 	MenuList,
 } from '@chakra-ui/react';
-import { FiHome, FiTrendingUp, FiCompass, FiStar, FiSettings, FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
+import { SettingsIcon } from '@chakra-ui/icons';
+
+import { FiEyeOff, FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
 import { signout } from '../../redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const LinkItems = [
-	{ name: 'Overview', icon: FiHome, path: '/home' },
-	{ name: 'TO DO', icon: FiTrendingUp, path: '/add-user' },
-	{ name: 'People', icon: FiTrendingUp, path: '/category' },
-	{ name: 'Resources', icon: FiTrendingUp, path: '/products' },
-	{ name: 'Customer Info', icon: FiTrendingUp, path: '/orders' },
+	{ name: 'Overview', icon: '', path: '/home' },
+	{ name: 'TO DO', icon: '', path: '/people' },
+	{ name: 'People', icon: '', path: '/people' },
+	{ name: 'Resources', icon: '', path: '/resources' },
+	{ name: 'Customer Info', icon: <FiEyeOff ml={10} />, path: '/people' },
 ];
 
 export default function Dashboard({ children }) {
@@ -66,7 +68,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 	return (
 		<Box
 			transition='3s ease'
-			bg={useColorModeValue('teal', 'gray.900')}
+			bg={useColorModeValue('#536593', 'gray.900')}
 			borderRight='1px'
 			borderRightColor={useColorModeValue('gray.200', 'gray.700')}
 			w={{ base: 'full', md: 60 }}
@@ -76,15 +78,26 @@ const SidebarContent = ({ onClose, ...rest }) => {
 		>
 			<Flex h='20' alignItems='center' mx='8' justifyContent='space-between'>
 				<Text fontSize='2xl' fontFamily='monospace' fontWeight='bold' color='white'>
-					Acme Corp.
+					Twilio
 				</Text>
+				{/* <MenuDivider /> */}
 				<CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
 			</Flex>
-			{LinkItems.map((link) => (
-				<NavItem key={link.name} icon={link.icon} to={link.path} color='white'>
-					{link.name}
-				</NavItem>
-			))}
+
+			{LinkItems.map((link) =>
+				link.name != 'TO DO' ? (
+					<NavItem key={link.name} to={link.path} color='white'>
+						{link.name}
+						{link.icon}
+					</NavItem>
+				) : (
+					<NavItem key={link.name} to={link.path} color='white'>
+						{link.name}
+						<Avatar name='5' bg='red.500' size='xs' ml={24} />
+					</NavItem>
+				)
+			)}
+			{/* <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' /> */}
 		</Box>
 	);
 };

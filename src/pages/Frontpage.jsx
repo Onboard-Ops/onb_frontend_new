@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import { FcGoogle } from 'react-icons/fc';
 import {
 	Tabs,
+	Text,
 	Button,
 	Modal,
 	ModalOverlay,
@@ -13,6 +15,7 @@ import {
 	FormControl,
 	FormLabel,
 	Input,
+	Divider,
 	useDisclosure,
 } from '@chakra-ui/react';
 import { DatePicker } from 'chakra-ui-date-input';
@@ -20,6 +23,7 @@ import { Link } from 'react-router-dom';
 
 const Frontpage = () => {
 	const [isNext, setIsNext] = useState(false);
+	const [isLogOpen, setIsLogOpen] = useState(false);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const initialRef = React.useRef();
 	const finalRef = React.useRef();
@@ -41,15 +45,15 @@ const Frontpage = () => {
 					<ModalContent>
 						<ModalHeader fontSize={28}>Start Your First Project</ModalHeader>
 						<ModalCloseButton />
-						<ModalBody pb={6}>
-							<FormControl>
+						<ModalBody pb={5}>
+							<FormControl display='flex'>
 								<FormLabel>Customer Name</FormLabel>
-								<Input ref={initialRef} placeholder='First name' />
+								<Input ref={initialRef} placeholder='Name' />
 							</FormControl>
 
-							<FormControl mt={4}>
+							<FormControl mt={4} display='flex'>
 								<FormLabel>Project kickoff</FormLabel>
-								<input type='date' id='start' name='trip-start' />
+								<Input type='date' id='start' name='trip-start' />
 							</FormControl>
 						</ModalBody>
 						<ModalFooter>
@@ -67,7 +71,7 @@ const Frontpage = () => {
 							<Button>Customer onboarding for B2B software</Button>
 						</ModalBody>
 						<ModalBody pb={6} mt={16}>
-							<Button colorScheme='teal' variant='outline'>
+							<Button colorScheme='teal' variant='outline' onClick={() => setIsLogOpen(!isLogOpen)}>
 								Create project using template
 							</Button>
 						</ModalBody>
@@ -75,6 +79,37 @@ const Frontpage = () => {
 					</ModalContent>
 				)}
 			</Modal>
+
+			{isLogOpen ? (
+				<Modal isOpen={isOpen} onClose={onClose}>
+					<ModalContent>
+						<ModalHeader fontSize={28}>Howdy! It's time to sign in</ModalHeader>
+						<ModalCloseButton />
+						<ModalBody pb={5}>
+							<FormControl>
+								<Input ref={initialRef} placeholder='Email' />
+							</FormControl>
+							<FormControl mt={5}>
+								<Input ref={initialRef} placeholder='Password' />
+							</FormControl>
+						</ModalBody>
+						<ModalFooter>
+							<Button colorScheme='blue' w='100%'>
+								Sign in
+							</Button>
+						</ModalFooter>
+						<Divider />
+						<ModalFooter>
+							<Button colorScheme='blue' w='100%' variant='outline'>
+								<FcGoogle size={28} />
+								<Text ml={6}>Sign in with Google</Text>
+							</Button>
+						</ModalFooter>
+					</ModalContent>
+				</Modal>
+			) : (
+				''
+			)}
 		</div>
 	);
 };
