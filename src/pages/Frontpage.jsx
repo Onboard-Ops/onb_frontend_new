@@ -1,17 +1,22 @@
-import React, { useRef, useState } from 'react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import React, { useRef, useState, useEffect } from 'react';
+import { ArrowBackIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { FcGoogle } from 'react-icons/fc';
+import { useDispatch, useSelector } from 'react-redux';
+import Loader from '../components/Loader';
 import {
 	Tabs,
 	Text,
 	Button,
 	Modal,
+	useToast,
 	ModalOverlay,
 	ModalContent,
 	ModalHeader,
 	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
+	InputRightElement,
+	InputGroup,
 	FormControl,
 	FormLabel,
 	Input,
@@ -19,14 +24,59 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import { DatePicker } from 'chakra-ui-date-input';
-import { Link } from 'react-router-dom';
+import { SignupAction } from '../redux/actions';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Frontpage = () => {
 	const [isNext, setIsNext] = useState(false);
 	const [isLogOpen, setIsLogOpen] = useState(false);
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const initialRef = React.useRef();
-	const finalRef = React.useRef();
+	const [showPassword, setShowPassword] = useState(false);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const toast = useToast();
+	const auth = useSelector((state) => state.auth);
+	const initialRef = useRef();
+	const finalRef = useRef();
+	const [signup, setSignUp] = useState({
+		fullName: '',
+		email: '',
+		password: '',
+		role: '',
+		error: '',
+	});
+	const onChangeHandler = (e) => {
+		setSignUp((prevState) => ({
+			...prevState,
+			[e.target.name]: e.target.value,
+		}));
+	};
+
+	const onHandleSubmit = (event) => {
+		event.preventDefault();
+		let user = {
+			fullName: signup.fullName,
+			email: signup.email,
+			password: signup.password,
+			// role: signup.role,
+		};
+
+		dispatch(SignupAction(user));
+	};
+	useEffect(() => {
+		if (auth?.isSignedUp) {
+			toast({
+				title: `🎉 ${auth.message}`,
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
+			navigate('/home', { replace: true });
+		}
+	}, [auth, navigate]);
+	if (auth?.isSigningIn) {
+		return <Loader />;
+	}
 
 	return (
 		<div>
@@ -81,36 +131,65 @@ const Frontpage = () => {
 			</Modal>
 
 			{isLogOpen ? (
-				<Modal isOpen={isOpen} onClose={onClose}>
-					<ModalContent>
-						<ArrowBackIcon onClick={() => setIsLogOpen(!isLogOpen)} w={6} h={6} mt={4} ml={4} />
-						<ModalHeader fontSize={28}>Howdy! It's time to Sign Up</ModalHeader>
-						<ModalCloseButton />
-						<ModalBody pb={5}>
-							<FormControl>
-								<Input ref={initialRef} placeholder='Full Name' />
-							</FormControl>
-							<FormControl mt={5}>
-								<Input ref={initialRef} placeholder='Email' />
-							</FormControl>
-							<FormControl mt={5}>
-								<Input ref={initialRef} placeholder='Password' />
-							</FormControl>
-						</ModalBody>
-						<ModalFooter>
-							<Button colorScheme='blue' w='100%'>
-								Sign up
-							</Button>
-						</ModalFooter>
-						<Divider />
-						<ModalFooter>
-							<Button colorScheme='blue' w='100%' variant='outline'>
-								<FcGoogle size={28} />
-								<Text ml={6}>Sign in with Google</Text>
-							</Button>
-						</ModalFooter>
-					</ModalContent>
-				</Modal>
+				<form onSubmit={onHandleSubmit}>
+					<Modal isOpen={isOpen} onClose={onClose}>
+						<ModalContent>
+							<ArrowBackIcon onClick={() => setIsLogOpen(!isLogOpen)} w={6} h={6} mt={4} ml={4} />
+							<ModalHeader fontSize={28}>Howdy! It's time to Sign Up</ModalHeader>
+							<ModalCloseButton />
+							<ModalBody pb={5}>
+								<FormControl>
+									<Input
+										ref={initialRef}
+										placeholder='Full Name'
+										value={signup.fullName}
+										name='fullName'
+										onChange={onChangeHandler}
+									/>
+								</FormControl>
+								<FormControl mt={5}>
+									<Input
+										ref={initialRef}
+										placeholder='Email'
+										type='email'
+										value={signup.email}
+										name='email'
+										onChange={onChangeHandler}
+									/>
+								</FormControl>
+								{/* <FormControl mt={5}>
+								<Input ref={initialRef} placeholder='Password' type={showPassword ? 'text' : 'password'} />
+							</FormControl> */}
+								<InputGroup mt={5}>
+									<Input
+										placeholder='Password'
+										type={showPassword ? 'text' : 'password'}
+										value={signup.password}
+										name='password'
+										onChange={onChangeHandler}
+									/>
+									<InputRightElement h={'full'}>
+										<Button variant={'ghost'} onClick={() => setShowPassword((showPassword) => !showPassword)}>
+											{showPassword ? <ViewIcon /> : <ViewOffIcon />}
+										</Button>
+									</InputRightElement>
+								</InputGroup>
+							</ModalBody>
+							<ModalFooter>
+								<Button colorScheme='blue' w='100%' type='submit' loadingText='Signing up' onClick={onHandleSubmit}>
+									Sign up
+								</Button>
+							</ModalFooter>
+							<Divider />
+							<ModalFooter>
+								<Button colorScheme='blue' w='100%' variant='outline'>
+									<FcGoogle size={28} />
+									<Text ml={6}>Sign in with Google</Text>
+								</Button>
+							</ModalFooter>
+						</ModalContent>
+					</Modal>
+				</form>
 			) : (
 				''
 			)}

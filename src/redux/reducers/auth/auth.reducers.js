@@ -14,8 +14,7 @@ const {
 const InitialState = {
 	token: null,
 	user: {
-		firstName: '',
-		lastName: '',
+		fullName: '',
 		username: '',
 		email: '',
 		picture: '',
@@ -63,7 +62,8 @@ export const AuthReducer = (state = InitialState, action) => {
 		case SIGN_UP_SUCCESS:
 			state = {
 				...state,
-				user: payload.user,
+				user: payload._createUser,
+				token: payload.token,
 				isSignedUp: true,
 				isSigningIn: false,
 				message: 'You have successfully signed up',

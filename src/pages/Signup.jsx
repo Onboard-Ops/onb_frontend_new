@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
 	Flex,
 	Box,
@@ -18,7 +18,6 @@ import {
 import AuthLayout from '../Layout/AuthLayout';
 import Loader from '../components/Loader';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 //Redux Imports
@@ -173,7 +172,6 @@ export default function Signup() {
 					</VStack>
 				</form>
 			</AuthLayout>
-			{/* +++++++++++++++++++++++++++++++++++++++++ */}
 		</div>
 	);
 }

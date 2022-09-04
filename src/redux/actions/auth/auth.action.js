@@ -39,17 +39,20 @@ export const LoginAction = (user) => {
 };
 
 export const SignupAction = (user) => {
+	console.log('User from Actions', user);
 	return async (dispatch) => {
 		dispatch({ type: SIGN_UP_REQUEST });
 		const response = await AxiosInstance.post(`/signup`, {
 			...user,
 		});
-		// console.log('RESPONSE FROM SIGN UP ACTION', response);
+		console.log('RESPONSE FROM SIGN UP ACTION', response);
 		if (response?.status === 200) {
-			const { message } = response?.data;
+			const { token, _createUser } = response?.data;
+			localStorage.setItem('token', token);
+			localStorage.setItem('user', JSON.stringify(_createUser));
 			dispatch({
 				type: SIGN_UP_SUCCESS,
-				payload: { message },
+				payload: { token, _createUser },
 			});
 		} else {
 			if (response.status === 400 || response.status === 404) {
@@ -86,7 +89,7 @@ export const signout = () => {
 		dispatch({
 			type: LOGOUT_REQUEST,
 		});
-		const response = await AxiosInstance.post('/admin/signout');
+		const response = await AxiosInstance.post('/signout');
 		if (response.status === 200) {
 			localStorage.clear();
 			dispatch({ type: LOGOUT_SUCCESS });

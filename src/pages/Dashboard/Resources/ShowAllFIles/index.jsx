@@ -33,7 +33,7 @@ const ShowAllFiles = () => {
 		};
 
 		getFilesList();
-	}, []);
+	}, [filesList]);
 
 	const downloadFile = async (id, path, mimetype) => {
 		try {
@@ -50,7 +50,7 @@ const ShowAllFiles = () => {
 			}
 		}
 	};
-	console.log('FileList', filesList);
+
 	return (
 		<TableContainer>
 			{errorMsg && <p className='errorMsg'>{errorMsg}</p>}
