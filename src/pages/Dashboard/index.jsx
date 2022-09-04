@@ -20,9 +20,8 @@ import {
 	MenuItem,
 	MenuList,
 } from '@chakra-ui/react';
-import { SettingsIcon } from '@chakra-ui/icons';
-
-import { FiEyeOff, FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
+import { FiEyeOff, FiMenu, FiLogOut } from 'react-icons/fi';
+import { BsPersonFill } from 'react-icons/bs';
 import { signout } from '../../redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +31,7 @@ const LinkItems = [
 	{ name: 'TO DO', icon: '', path: '/people' },
 	{ name: 'People', icon: '', path: '/people' },
 	{ name: 'Resources', icon: '', path: '/resources' },
-	{ name: 'Customer Info', icon: <FiEyeOff ml={10} />, path: '/people' },
+	{ name: 'Customer Info', icon: <FiEyeOff />, path: '/people' },
 ];
 
 export default function Dashboard({ children }) {
@@ -65,6 +64,13 @@ export default function Dashboard({ children }) {
 }
 
 const SidebarContent = ({ onClose, ...rest }) => {
+	const dispatch = useDispatch();
+	const user = useSelector((state) => state.auth);
+	const navigate = useNavigate();
+	const handleSignOut = () => {
+		dispatch(signout());
+		navigate('/', { replace: true });
+	};
 	return (
 		<Box
 			transition='3s ease'
@@ -81,13 +87,17 @@ const SidebarContent = ({ onClose, ...rest }) => {
 					Twilio
 				</Text>
 				{/* <MenuDivider /> */}
-				<CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
 			</Flex>
 
 			{LinkItems.map((link) =>
-				link.name != 'TO DO' ? (
+				link.name != 'TO DO' && link.name != 'Customer Info' ? (
 					<NavItem key={link.name} to={link.path} color='white'>
 						{link.name}
+						{link.icon}
+					</NavItem>
+				) : link.name === 'Customer Info' ? (
+					<NavItem key={link.name} to={link.path} color='white'>
+						<Text mr={12}>{link.name}</Text>
 						{link.icon}
 					</NavItem>
 				) : (
@@ -97,7 +107,15 @@ const SidebarContent = ({ onClose, ...rest }) => {
 					</NavItem>
 				)
 			)}
-			{/* <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' /> */}
+
+			<NavItemAction color='white' mt={40}>
+				<BsPersonFill />
+				<Text ml={2}>Profile</Text>
+			</NavItemAction>
+			<NavItemAction color='white' onClick={handleSignOut}>
+				<FiLogOut />
+				<Text ml={2}>Sign out</Text>
+			</NavItemAction>
 		</Box>
 	);
 };
@@ -114,7 +132,7 @@ const NavItem = ({ icon, to, children, ...rest }) => {
 				cursor='pointer'
 				_hover={{
 					bg: 'white',
-					color: 'teal',
+					color: 'blue',
 				}}
 				{...rest}
 			>
@@ -123,7 +141,39 @@ const NavItem = ({ icon, to, children, ...rest }) => {
 						mr='4'
 						fontSize='16'
 						_groupHover={{
-							color: 'teal',
+							color: 'blue',
+						}}
+						as={icon}
+					/>
+				)}
+				{children}
+			</Flex>
+		</Link>
+	);
+};
+
+const NavItemAction = ({ icon, to, children, ...rest }) => {
+	return (
+		<Link href={to} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+			<Flex
+				align='center'
+				p='4'
+				mx='4'
+				borderRadius='lg'
+				role='group'
+				cursor='pointer'
+				_hover={{
+					bg: 'white',
+					color: 'blue',
+				}}
+				{...rest}
+			>
+				{icon && (
+					<Icon
+						mr='4'
+						fontSize='16'
+						_groupHover={{
+							color: 'blue',
 						}}
 						as={icon}
 					/>
@@ -135,22 +185,12 @@ const NavItem = ({ icon, to, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
-	const dispatch = useDispatch();
-	const user = useSelector((state) => state.auth);
-	const navigate = useNavigate();
-	const handleSignOut = () => {
-		dispatch(signout());
-		navigate('/', { replace: true });
-	};
 	return (
 		<Flex
 			ml={{ base: 0, md: 60 }}
 			px={{ base: 4, md: 4 }}
-			height='20'
+			height='10'
 			alignItems='center'
-			bg={useColorModeValue('white', 'gray.900')}
-			borderBottomWidth='1px'
-			borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
 			justifyContent={{ base: 'space-between', md: 'flex-end' }}
 			{...rest}
 		>
@@ -163,40 +203,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
 			/>
 
 			<Text display={{ base: 'flex', md: 'none' }} fontSize='2xl' fontFamily='monospace' fontWeight='bold'>
-				Acme Corp.
+				Twilio
 			</Text>
-
-			<HStack spacing={{ base: '0', md: '6' }}>
-				<IconButton size='lg' variant='ghost' aria-label='open menu' icon={<FiBell />} />
-				<Flex alignItems={'center'}>
-					<Menu>
-						<MenuButton py={2} transition='all 0.3s' _focus={{ boxShadow: 'none' }}>
-							<HStack>
-								<Avatar size={'sm'} />
-								<VStack display={{ base: 'none', md: 'flex' }} alignItems='flex-start' spacing='1px' ml='2'>
-									<Text fontSize='sm'>{user?.user?.fullName}</Text>
-									<Text fontSize='xs' color='gray.600'>
-										{user?.user?.role}
-									</Text>
-								</VStack>
-								<Box display={{ base: 'none', md: 'flex' }}>
-									<FiChevronDown />
-								</Box>
-							</HStack>
-						</MenuButton>
-						<MenuList
-							bg={useColorModeValue('white', 'gray.900')}
-							borderColor={useColorModeValue('gray.200', 'gray.700')}
-						>
-							<MenuItem>Profile</MenuItem>
-							{/* <MenuItem>Settings</MenuItem>
-							<MenuItem>Billing</MenuItem>
-							<MenuDivider /> */}
-							<MenuItem onClick={handleSignOut}>Sign out</MenuItem>
-						</MenuList>
-					</Menu>
-				</Flex>
-			</HStack>
 		</Flex>
 	);
 };

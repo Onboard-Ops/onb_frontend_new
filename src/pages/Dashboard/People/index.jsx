@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+// import Select from 'react-select';
 import Dashboard from '../';
 import axios from 'axios';
 import { API_URL } from '../../../utils/url';
 import {
 	Text,
 	Select,
-	Menu,
-	MenuList,
-	MenuButton,
-	MenuItem,
 	Button,
 	Modal,
 	ModalContent,
@@ -23,7 +21,6 @@ import {
 	FormLabel,
 	Divider,
 } from '@chakra-ui/react';
-import { QuestionIcon, ChevronDownIcon } from '@chakra-ui/icons';
 const People = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [gotorole, seTGoToRole] = useState(false);
@@ -33,10 +30,11 @@ const People = () => {
 		const { data } = await axios.get(`${API_URL}/get-all-role`);
 		setRole(data?.data.allRoles);
 	};
-	console.log('Role data', role);
+
 	useEffect(() => {
 		fetchData();
 	}, []);
+
 	return (
 		<Dashboard>
 			<Button colorScheme='blue' onClick={onOpen}>
@@ -64,34 +62,20 @@ const People = () => {
 
 						<FormControl mt={4}>
 							<FormLabel>Role</FormLabel>
-							{/* <Select placeholder='Role'>
+							<Select placeholder='Role'>
 								{role?.map((item) => {
 									return (
-										<option value={item.name} key={item.id}>
-											{item.name}
+										<option value={item.value} key={item.id}>
+											{item.value}
 										</option>
 									);
 								})}
 								<Divider />
-								<option onClick={() => seTGoToRole(!gotorole)}>
-									Add role <QuestionIcon color='red.500' />
+								<option>
+									<Button onClick={() => seTGoToRole(!gotorole)}>Add role</Button>
 								</option>
-							</Select> */}
-
-							<Menu>
-								<MenuButton as={Button} rightIcon={<ChevronDownIcon />} w='100%'>
-									Roles
-								</MenuButton>
-								<MenuList>
-									{role?.map((item) => {
-										return <MenuItem key={item.id}>{item.name}</MenuItem>;
-									})}
-									<Divider />
-									<MenuItem onClick={() => seTGoToRole(!gotorole)}>
-										Add role <QuestionIcon ml={2} />
-									</MenuItem>
-								</MenuList>
-							</Menu>
+							</Select>
+							{/* <Select options={role} /> */}
 						</FormControl>
 					</ModalBody>
 

@@ -32,7 +32,7 @@ const Frontpage = () => {
 		<div>
 			<Tabs align='end'>
 				<Button colorScheme='teal' variant='solid' mt={4} mr={4}>
-					<Link to='/signup'>Sign up</Link>
+					<Link to='/login'>Log in</Link>
 				</Button>
 				<Button onClick={onOpen} colorScheme='teal' variant='outline' mt={4} mr={4}>
 					Create project
@@ -83,10 +83,14 @@ const Frontpage = () => {
 			{isLogOpen ? (
 				<Modal isOpen={isOpen} onClose={onClose}>
 					<ModalContent>
-						<ModalHeader fontSize={28}>Howdy! It's time to sign in</ModalHeader>
+						<ArrowBackIcon onClick={() => setIsLogOpen(!isLogOpen)} w={6} h={6} mt={4} ml={4} />
+						<ModalHeader fontSize={28}>Howdy! It's time to Sign Up</ModalHeader>
 						<ModalCloseButton />
 						<ModalBody pb={5}>
 							<FormControl>
+								<Input ref={initialRef} placeholder='Full Name' />
+							</FormControl>
+							<FormControl mt={5}>
 								<Input ref={initialRef} placeholder='Email' />
 							</FormControl>
 							<FormControl mt={5}>
@@ -95,7 +99,7 @@ const Frontpage = () => {
 						</ModalBody>
 						<ModalFooter>
 							<Button colorScheme='blue' w='100%'>
-								Sign in
+								Sign up
 							</Button>
 						</ModalFooter>
 						<Divider />
