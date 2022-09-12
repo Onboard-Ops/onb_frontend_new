@@ -65,12 +65,13 @@ export default function Dashboard({ children }) {
 
 const SidebarContent = ({ onClose, ...rest }) => {
 	const dispatch = useDispatch();
-	const user = useSelector((state) => state.auth);
+	const projectData = useSelector((state) => state.project);
 	const navigate = useNavigate();
 	const handleSignOut = () => {
 		dispatch(signout());
 		navigate('/', { replace: true });
 	};
+	console.log('Project data from dashboard ====>', projectData);
 	return (
 		<Box
 			transition='3s ease'
@@ -84,7 +85,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 		>
 			<Flex h='20' alignItems='center' mx='8' justifyContent='space-between'>
 				<Text fontSize='2xl' fontFamily='monospace' fontWeight='bold' color='white'>
-					Twilio
+					{projectData?.project?.title}
 				</Text>
 				{/* <MenuDivider /> */}
 			</Flex>

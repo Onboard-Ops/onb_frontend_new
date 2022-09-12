@@ -80,15 +80,11 @@ const Frontpage = () => {
 			title: project.title,
 			kickOff: project.kickOff,
 		};
-		// console.log('User from Add user', user);
-		// console.log('Project from Add user', projectData);
 
-		await dispatch(SignupAction(user));
-		await dispatch(AddProjectAction(projectData));
-		// console.log('FINAL PROJECT DATA', projectStateData);
-		// console.log('auth state', authStateData);
-		// console.log('Project state', projectStateData);
+		dispatch(SignupAction(user));
+		dispatch(AddProjectAction(projectData));
 	};
+
 	useEffect(() => {
 		if (authStateData?.isSignedUp && projectStateData.isProjectAdded) {
 			toast({
@@ -98,9 +94,9 @@ const Frontpage = () => {
 				isClosable: true,
 			});
 			console.log('Project state', projectStateData);
-			navigate(`/dashboard/${projectStateData?.project?._id}`, { replace: true });
+			navigate(`/dashboard/${projectStateData?.project?.magic_link}`, { replace: true });
 		}
-	}, [authStateData, navigate, projectStateData]);
+	}, [signup, authStateData, navigate, projectStateData, project]);
 
 	//LOADER
 	if (authStateData?.isSigningIn && projectStateData.isProjectAdding) {

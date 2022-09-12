@@ -1,5 +1,6 @@
 import AxiosInstance from '../../../utils/axios';
 import { AuthTypes } from '../../actionTypes/';
+import { AddProjectAction } from '../../actions';
 const {
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
@@ -23,6 +24,7 @@ export const LoginAction = (user) => {
 			const { token, user } = response?.data;
 			localStorage.setItem('token', token);
 			localStorage.setItem('user', JSON.stringify(user));
+
 			dispatch({
 				type: LOGIN_SUCCESS,
 				payload: { token, user },
@@ -60,6 +62,7 @@ export const SignupAction = (user) => {
 					type: SIGN_UP_FAILURE,
 					payload: { error: response.data.error },
 				});
+				return false;
 			}
 		}
 	};
