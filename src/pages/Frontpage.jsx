@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ArrowBackIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { FcGoogle } from 'react-icons/fc';
 import { useDispatch, useSelector } from 'react-redux';
+import { FcGoogle } from 'react-icons/fc';
+import { ArrowBackIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import Loader from '../components/Loader';
 import {
 	Tabs,
@@ -24,20 +24,25 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import { DatePicker } from 'chakra-ui-date-input';
-import { SignupAction } from '../redux/actions';
+import { SignupAction, AddProjectAction } from '../redux/actions/';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Frontpage = () => {
+	// temp
+	const [isNavigate, SetIsNavigate] = useState(false);
 	const [isNext, setIsNext] = useState(false);
 	const [isLogOpen, setIsLogOpen] = useState(false);
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [showPassword, setShowPassword] = useState(false);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const toast = useToast();
-	const auth = useSelector((state) => state.auth);
 	const initialRef = useRef();
 	const finalRef = useRef();
+
+	// ALL ABOUT SIGN UP AND
+	const [showPassword, setShowPassword] = useState(false);
+	const authStateData = useSelector((state) => state.auth);
+	const projectStateData = useSelector((state) => state.project);
 	const [signup, setSignUp] = useState({
 		fullName: '',
 		email: '',
@@ -45,14 +50,25 @@ const Frontpage = () => {
 		role: '',
 		error: '',
 	});
+	const [project, setProject] = useState({
+		title: '',
+		kickOff: '',
+		magic_link: '',
+		error: '',
+	});
 	const onChangeHandler = (e) => {
 		setSignUp((prevState) => ({
 			...prevState,
 			[e.target.name]: e.target.value,
 		}));
+
+		setProject((prevState) => ({
+			...prevState,
+			[e.target.name]: e.target.value,
+		}));
 	};
 
-	const onHandleSubmit = (event) => {
+	const onHandleSubmit = async (event) => {
 		event.preventDefault();
 		let user = {
 			fullName: signup.fullName,
@@ -60,21 +76,34 @@ const Frontpage = () => {
 			password: signup.password,
 			// role: signup.role,
 		};
+		let projectData = {
+			title: project.title,
+			kickOff: project.kickOff,
+		};
+		// console.log('User from Add user', user);
+		// console.log('Project from Add user', projectData);
 
-		dispatch(SignupAction(user));
+		await dispatch(SignupAction(user));
+		await dispatch(AddProjectAction(projectData));
+		// console.log('FINAL PROJECT DATA', projectStateData);
+		// console.log('auth state', authStateData);
+		// console.log('Project state', projectStateData);
 	};
 	useEffect(() => {
-		if (auth?.isSignedUp) {
+		if (authStateData?.isSignedUp && projectStateData.isProjectAdded) {
 			toast({
-				title: `🎉 ${auth.message}`,
+				title: `🎉 ${authStateData.message} and ${projectStateData.message}`,
 				status: 'success',
 				duration: 3000,
 				isClosable: true,
 			});
-			navigate('/home', { replace: true });
+			console.log('Project state', projectStateData);
+			navigate(`/dashboard/${projectStateData?.project?._id}`, { replace: true });
 		}
-	}, [auth, navigate]);
-	if (auth?.isSigningIn) {
+	}, [authStateData, navigate, projectStateData]);
+
+	//LOADER
+	if (authStateData?.isSigningIn && projectStateData.isProjectAdding) {
 		return <Loader />;
 	}
 
@@ -96,14 +125,21 @@ const Frontpage = () => {
 						<ModalHeader fontSize={28}>Start Your First Project</ModalHeader>
 						<ModalCloseButton />
 						<ModalBody pb={5}>
-							<FormControl display='flex'>
+							<FormControl>
 								<FormLabel>Customer Name</FormLabel>
-								<Input ref={initialRef} placeholder='Name' />
+								<Input
+									ref={initialRef}
+									placeholder='Title'
+									id='title'
+									onChange={onChangeHandler}
+									name='title'
+									value={project.title}
+								/>
 							</FormControl>
 
-							<FormControl mt={4} display='flex'>
+							<FormControl mt={4}>
 								<FormLabel>Project kickoff</FormLabel>
-								<Input type='date' id='start' name='trip-start' />
+								<Input type='date' id='kickOff' onChange={onChangeHandler} name='kickOff' value={project.kickOff} />
 							</FormControl>
 						</ModalBody>
 						<ModalFooter>
@@ -130,66 +166,65 @@ const Frontpage = () => {
 				)}
 			</Modal>
 
+			{/* SIGN UP MODAL */}
 			{isLogOpen ? (
-				<form onSubmit={onHandleSubmit}>
-					<Modal isOpen={isOpen} onClose={onClose}>
-						<ModalContent>
-							<ArrowBackIcon onClick={() => setIsLogOpen(!isLogOpen)} w={6} h={6} mt={4} ml={4} />
-							<ModalHeader fontSize={28}>Howdy! It's time to Sign Up</ModalHeader>
-							<ModalCloseButton />
-							<ModalBody pb={5}>
-								<FormControl>
-									<Input
-										ref={initialRef}
-										placeholder='Full Name'
-										value={signup.fullName}
-										name='fullName'
-										onChange={onChangeHandler}
-									/>
-								</FormControl>
-								<FormControl mt={5}>
-									<Input
-										ref={initialRef}
-										placeholder='Email'
-										type='email'
-										value={signup.email}
-										name='email'
-										onChange={onChangeHandler}
-									/>
-								</FormControl>
-								{/* <FormControl mt={5}>
+				<Modal isOpen={isOpen} onClose={onClose}>
+					<ModalContent>
+						<ArrowBackIcon onClick={() => setIsLogOpen(!isLogOpen)} w={6} h={6} mt={4} ml={4} />
+						<ModalHeader fontSize={28}>Howdy! It's time to Sign Up</ModalHeader>
+						<ModalCloseButton />
+						<ModalBody pb={5}>
+							<FormControl>
+								<Input
+									ref={initialRef}
+									placeholder='Full Name'
+									value={signup.fullName}
+									name='fullName'
+									onChange={onChangeHandler}
+								/>
+							</FormControl>
+							<FormControl mt={5}>
+								<Input
+									ref={initialRef}
+									placeholder='Email'
+									type='email'
+									value={signup.email}
+									name='email'
+									onChange={onChangeHandler}
+								/>
+							</FormControl>
+							{/* <FormControl mt={5}>
 								<Input ref={initialRef} placeholder='Password' type={showPassword ? 'text' : 'password'} />
 							</FormControl> */}
-								<InputGroup mt={5}>
-									<Input
-										placeholder='Password'
-										type={showPassword ? 'text' : 'password'}
-										value={signup.password}
-										name='password'
-										onChange={onChangeHandler}
-									/>
-									<InputRightElement h={'full'}>
-										<Button variant={'ghost'} onClick={() => setShowPassword((showPassword) => !showPassword)}>
-											{showPassword ? <ViewIcon /> : <ViewOffIcon />}
-										</Button>
-									</InputRightElement>
-								</InputGroup>
-							</ModalBody>
-							<ModalFooter>
-								<Button colorScheme='blue' w='100%' type='submit' loadingText='Signing up' onClick={onHandleSubmit}>
-									Sign up
-								</Button>
-							</ModalFooter>
-							<Divider />
-							<ModalFooter>
-								<Button colorScheme='blue' w='100%' variant='outline'>
-									<FcGoogle size={28} />
-									<Text ml={6}>Sign in with Google</Text>
-								</Button>
-							</ModalFooter>
-						</ModalContent>
-					</Modal>
-				</form>
+							<InputGroup mt={5}>
+								<Input
+									placeholder='Password'
+									type={showPassword ? 'text' : 'password'}
+									value={signup.password}
+									name='password'
+									onChange={onChangeHandler}
+								/>
+								<InputRightElement h={'full'}>
+									<Button variant={'ghost'} onClick={() => setShowPassword((showPassword) => !showPassword)}>
+										{showPassword ? <ViewIcon /> : <ViewOffIcon />}
+									</Button>
+								</InputRightElement>
+							</InputGroup>
+						</ModalBody>
+						<ModalFooter>
+							<Button colorScheme='blue' w='100%' type='submit' loadingText='Signing up' onClick={onHandleSubmit}>
+								Sign up
+							</Button>
+						</ModalFooter>
+						<Divider />
+						<ModalFooter>
+							<Button colorScheme='blue' w='100%' variant='outline'>
+								<FcGoogle size={28} />
+								<Text ml={6}>Sign in with Google</Text>
+							</Button>
+						</ModalFooter>
+					</ModalContent>
+				</Modal>
 			) : (
 				''
 			)}

@@ -29,7 +29,7 @@ import { useNavigate } from 'react-router-dom';
 const LinkItems = [
 	{ name: 'Overview', icon: '', path: '/home' },
 	{ name: 'TO DO', icon: '', path: '/people' },
-	{ name: 'People', icon: '', path: '/people' },
+	// { name: 'People', icon: '', path: '/people' },
 	{ name: 'Resources', icon: '', path: '/resources' },
 	{ name: 'Customer Info', icon: <FiEyeOff />, path: '/people' },
 ];

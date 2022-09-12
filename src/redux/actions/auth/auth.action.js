@@ -39,20 +39,20 @@ export const LoginAction = (user) => {
 };
 
 export const SignupAction = (user) => {
-	console.log('User from Actions', user);
 	return async (dispatch) => {
 		dispatch({ type: SIGN_UP_REQUEST });
 		const response = await AxiosInstance.post(`/signup`, {
 			...user,
 		});
-		console.log('RESPONSE FROM SIGN UP ACTION', response);
+
 		if (response?.status === 200) {
-			const { token, _createUser } = response?.data;
+			const token = response?.data.user.token;
+			const user = response?.data.user._user;
 			localStorage.setItem('token', token);
-			localStorage.setItem('user', JSON.stringify(_createUser));
+			localStorage.setItem('user', JSON.stringify(user));
 			dispatch({
 				type: SIGN_UP_SUCCESS,
-				payload: { token, _createUser },
+				payload: { token, user },
 			});
 		} else {
 			if (response.status === 400 || response.status === 404) {

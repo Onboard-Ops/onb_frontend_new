@@ -28,14 +28,9 @@ const Router = () => {
 				{user?.token ? (
 					[
 						<Route path='/home' element={<Dashboard />} />,
+						<Route path='/dashboard/:id' element={<Dashboard />} />,
 						<Route path='/people' element={<People />} />,
 						<Route path='/resources' element={<Resources />} />,
-						// <Route path='/products' element={<Products />} />,
-						// <Route path='/orders' element={<Orders />} />,
-						// <Route path='/category' element={<Category />} />,
-						// <Route path='/users' element={<Users />} />,
-						// <Route path='*' element={<Four0Four />} key='**' />,
-						// <Route path='*' element={<Warning />} key='*' />,
 					]
 				) : (
 					<Route path='*' element={<Four0Four />} key='**' />

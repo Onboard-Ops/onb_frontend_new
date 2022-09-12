@@ -17,7 +17,6 @@ const InitialState = {
 		fullName: '',
 		username: '',
 		email: '',
-		picture: '',
 		role: '',
 	},
 	isAauthenticated: false,
@@ -62,7 +61,7 @@ export const AuthReducer = (state = InitialState, action) => {
 		case SIGN_UP_SUCCESS:
 			state = {
 				...state,
-				user: payload._createUser,
+				user: payload._user,
 				token: payload.token,
 				isSignedUp: true,
 				isSigningIn: false,
