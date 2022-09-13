@@ -52,17 +52,19 @@ export const SignupAction = (user) => {
 			const user = response?.data.user._user;
 			localStorage.setItem('token', token);
 			localStorage.setItem('user', JSON.stringify(user));
+
 			dispatch({
 				type: SIGN_UP_SUCCESS,
 				payload: { token, user },
 			});
+			return response;
 		} else {
 			if (response.status === 400 || response.status === 404) {
 				dispatch({
 					type: SIGN_UP_FAILURE,
 					payload: { error: response.data.error },
 				});
-				return false;
+				return response;
 			}
 		}
 	};

@@ -81,8 +81,11 @@ const Frontpage = () => {
 			kickOff: project.kickOff,
 		};
 
-		dispatch(SignupAction(user));
-		dispatch(AddProjectAction(projectData));
+		dispatch(SignupAction(user)).then((res) => {
+			if (res.status === 200) {
+				dispatch(AddProjectAction(projectData));
+			}
+		});
 	};
 
 	useEffect(() => {

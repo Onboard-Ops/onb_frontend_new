@@ -36,7 +36,7 @@ const LinkItems = [
 
 export default function Dashboard({ children }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-
+	// console.log('children from dash', children);
 	return (
 		<Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
 			<SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
@@ -109,13 +109,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
 				)
 			)}
 
-			<NavItemAction color='white' mt={40}>
-				<BsPersonFill />
-				<Text ml={2}>Profile</Text>
-			</NavItemAction>
-			<NavItemAction color='white' onClick={handleSignOut}>
+			<NavItemAction color='white' onClick={handleSignOut} mt={40}>
 				<FiLogOut />
 				<Text ml={2}>Sign out</Text>
+			</NavItemAction>
+			<NavItemAction color='white' mt={60} to='/home'>
+				<Text ml={2}>View all projects</Text>
 			</NavItemAction>
 		</Box>
 	);
