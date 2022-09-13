@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetAllProjectsByCurrentUser, AddProjectAction } from '../redux/actions';
+import { GetAllProjectsByCurrentUser, AddProjectAction, signout } from '../redux/actions';
 import { ArrowBackIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import Loader from '../components/Loader';
 import {
 	Tabs,
 	Text,
@@ -22,6 +23,7 @@ import {
 	FormLabel,
 	Input,
 	Divider,
+	Stack,
 	useDisclosure,
 } from '@chakra-ui/react';
 const ProjectHome = () => {
@@ -55,22 +57,31 @@ const ProjectHome = () => {
 		dispatch(AddProjectAction(projectData));
 		onClose();
 	};
-	const onNavigate = (item) => {
-		navigate(`/dashboard/${item?.magic_link}`, { replace: true });
+	const handleSignOut = () => {
+		dispatch(signout());
+		navigate('/', { replace: true });
 	};
 	useEffect(() => {
 		dispatch(GetAllProjectsByCurrentUser());
 	}, [projectStateData?.allProjects]);
 
+	// if (projectStateData?.gettingAllProjects) {
+	// 	return <Loader />;
+	// }
 	return (
 		<>
 			<Tabs align='end' display='flex' justifyContent='space-between'>
-				<Text mt={4} ml={20} fontSize='2xl' as='b'>
+				<Text mt={4} ml={52} fontSize='2xl' as='b'>
 					My Projects
 				</Text>
-				<Button onClick={onOpen} colorScheme='linkedin' variant='outline' mt={4} mr={20} mb={4}>
-					Create project
-				</Button>
+				<Stack direction='row' align='center'>
+					<Button onClick={onOpen} colorScheme='linkedin' variant='outline' mt={4} mr={8} mb={4}>
+						Create project
+					</Button>
+					<Button colorScheme='linkedin' mr={16} variant='outline' onClick={handleSignOut}>
+						Logout
+					</Button>
+				</Stack>
 			</Tabs>
 			<Divider />
 			<Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
@@ -121,26 +132,30 @@ const ProjectHome = () => {
 				)}
 			</Modal>
 			{projectStateData?.totalProjects === 0 ? (
-				'No projects found'
+				<Text ml={16}>No projects found</Text>
 			) : (
 				<>
 					{projectStateData?.allProjects?.allProjectsByCurrentUser?.map((item) => {
 						return (
-							<Box
-								display='flex'
-								mt={4}
-								p={4}
-								color='vlue'
-								justifyContent='space-between'
-								_hover={{
-									background: '#b2bcd6',
-									color: 'white',
-								}}
-							>
-								<Link to={`/dashboard/${item?.magic_link}`}>
-									<Text ml={16}>{item.title}</Text> <Text mr={16}>{item.dueDate}</Text>
-								</Link>
-							</Box>
+							<Link to={`/dashboard/${item?.magic_link}/${item?._id}`}>
+								<Box
+									borderRadius='lg'
+									display='flex'
+									mt={4}
+									ml={52}
+									p={4}
+									w='70%'
+									color='vlue'
+									justifyContent='space-between'
+									_hover={{
+										background: '#b2bcd6',
+										color: 'white',
+									}}
+									key={item._id}
+								>
+									<Text>{item.title}</Text> <Text>{item.dueDate}</Text>
+								</Box>
+							</Link>
 						);
 					})}
 				</>

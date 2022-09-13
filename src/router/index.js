@@ -23,15 +23,15 @@ const Router = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/' element={<Frontpage />} />
-				<Route path='/signup' element={<Signup />} />
-				<Route path='/login' element={<Login />} />
+				<Route path='/' element={<Frontpage />} key='1' />
+				<Route path='/signup' element={<Signup />} key='2' />
+				<Route path='/login' element={<Login />} key='3' />
 				{user?.token ? (
 					[
-						<Route path='/home' element={<ProjectHome />} />,
-						<Route path='/dashboard/:id' element={<Dashboard />} />,
-						<Route path='/people' element={<People />} />,
-						<Route path='/resources' element={<Resources />} />,
+						<Route path='/home' element={<ProjectHome />} key='4' />,
+						<Route path='/dashboard/:id/:id' element={<Dashboard key='5' />} />,
+						<Route path='/people' element={<People key='6' />} />,
+						<Route path='/resources' element={<Resources />} key='7' />,
 					]
 				) : (
 					<Route path='*' element={<Four0Four />} key='**' />

@@ -96,8 +96,9 @@ const Frontpage = () => {
 				duration: 3000,
 				isClosable: true,
 			});
-			console.log('Project state', projectStateData);
-			navigate(`/dashboard/${projectStateData?.project?.magic_link}`, { replace: true });
+			navigate(`/dashboard/${projectStateData?.project?._id}`, {
+				replace: true,
+			});
 		}
 	}, [signup, authStateData, navigate, projectStateData, project]);
 

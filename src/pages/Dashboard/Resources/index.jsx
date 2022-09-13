@@ -53,7 +53,7 @@ const Resource = (props) => {
 			[event.target.name]: event.target.value,
 		});
 	};
-
+	console.log('children from dashboard', props.location.search);
 	const onDrop = (files) => {
 		const [uploadedFile] = files;
 		setFile(uploadedFile);
@@ -93,7 +93,6 @@ const Resource = (props) => {
 					});
 					onClose();
 					props.history.push('/resources');
-					// navigate('/resources');
 				} else {
 					setErrorMsg('Please select a file to add.');
 				}
@@ -105,31 +104,6 @@ const Resource = (props) => {
 		}
 	};
 
-	// const onChangeHandler = (e) => {
-	// 	e.target.name !== 'resourceFile'
-	// 		? SetResource({ ...resource, [e.target.name]: e.target.value })
-	// 		: SetResource({ ...resource, [e.target.name]: e.target.files[0] });
-	// };
-	// const onHandleClickFile = () => {
-	// 	SetResource({ file: 'DUMMY.TXT' });
-	// 	setIsNext(!isNext);
-	// };
-	// const onHandleClickLink = () => {
-	// 	SetResource({ file: resource.title });
-	// 	setIsNext2(!isNext2);
-	// };
-	// const onHandleSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	SetResource({ file: resource.link });
-	// 	let res = {
-	// 		title: resource.title,
-	// 		file: resource.file,
-	// 		link: resource.link,
-	// 	};
-	// 	SetTempState([...tempState, res]);
-	// 	onClose();
-	// };
-
 	console.log('TEMP state', tempState);
 	return (
 		<Dashboard>
@@ -138,7 +112,7 @@ const Resource = (props) => {
 					<Heading size='lg'>Resources</Heading>
 				</Box>
 				<Spacer />
-				<Button onClick={onOpen} colorScheme='blue'>
+				<Button onClick={onOpen} colorScheme='linkedin' variant='solid'>
 					Add resources
 				</Button>
 			</Flex>
@@ -155,13 +129,6 @@ const Resource = (props) => {
 							<TabPanels>
 								{!isNext ? (
 									<TabPanel>
-										{/* <input
-											type='file'
-											id='myfile'
-											name='resourceFile'
-											value={resource.file}
-											onChange={handleInputChange}
-										/> */}
 										{errorMsg && <p className='errorMsg'>{errorMsg}</p>}
 										<Box border>
 											{' '}

@@ -19,9 +19,10 @@ export const LoginAction = (user) => {
 		const response = await AxiosInstance.post(`/signin`, {
 			...user,
 		});
-
+		console.log('Token from action', response);
 		if (response?.status === 200) {
 			const { token, user } = response?.data;
+
 			localStorage.setItem('token', token);
 			localStorage.setItem('user', JSON.stringify(user));
 

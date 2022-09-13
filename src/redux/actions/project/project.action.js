@@ -15,7 +15,7 @@ export const AddProjectAction = (form) => {
 		const response = await AxiosInstance.post(`/create-project`, {
 			...form,
 		});
-		// console.log('response data from project', response);
+		console.log('response', response);
 		if (response?.status === 201) {
 			const project = response?.data?._project;
 			const message = response?.data?.status;

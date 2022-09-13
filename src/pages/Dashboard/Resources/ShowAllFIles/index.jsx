@@ -35,21 +35,21 @@ const ShowAllFiles = () => {
 		getFilesList();
 	}, [filesList]);
 
-	const downloadFile = async (id, path, mimetype) => {
-		try {
-			const result = await axios.get(`${API_URL}/download/${id}`, {
-				responseType: 'blob',
-			});
-			const split = path.split('/');
-			const filename = split[split.length - 1];
-			setErrorMsg('');
-			return download(result.data, filename, mimetype);
-		} catch (error) {
-			if (error.response && error.response.status === 400) {
-				setErrorMsg('Error while downloading file. Try again later');
-			}
-		}
-	};
+	// const downloadFile = async (id, path, mimetype) => {
+	// 	try {
+	// 		const result = await axios.get(`${API_URL}/download/${id}`, {
+	// 			responseType: 'blob',
+	// 		});
+	// 		const split = path.split('/');
+	// 		const filename = split[split?.length - 1];
+	// 		setErrorMsg('');
+	// 		return download(result.data, filename, mimetype);
+	// 	} catch (error) {
+	// 		if (error.response && error.response.status === 400) {
+	// 			setErrorMsg('Error while downloading file. Try again later');
+	// 		}
+	// 	}
+	// };
 
 	return (
 		<TableContainer>
@@ -70,13 +70,13 @@ const ShowAllFiles = () => {
 									<IconButton
 										// colorScheme='blue'
 										icon={<DownloadIcon />}
-										onClick={() => downloadFile(_id, file_path, file_mimetype)}
+										// onClick={() => downloadFile(_id, file_path, file_mimetype)}
 									/>
 
 									<IconButton
 										// colorScheme='blue'
 										icon={<DeleteIcon />}
-										onClick={() => downloadFile(_id, file_path, file_mimetype)}
+										// onClick={() => downloadFile(_id, file_path, file_mimetype)}
 									/>
 								</Td>
 							</Tr>

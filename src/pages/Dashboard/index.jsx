@@ -3,10 +3,7 @@ import {
 	IconButton,
 	Avatar,
 	Box,
-	CloseButton,
 	Flex,
-	HStack,
-	VStack,
 	Icon,
 	useColorModeValue,
 	Link,
@@ -14,29 +11,23 @@ import {
 	DrawerContent,
 	Text,
 	useDisclosure,
-	Menu,
-	MenuButton,
-	MenuDivider,
-	MenuItem,
-	MenuList,
 } from '@chakra-ui/react';
 import { FiEyeOff, FiMenu, FiLogOut } from 'react-icons/fi';
-import { BsPersonFill } from 'react-icons/bs';
 import { signout } from '../../redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const LinkItems = [
 	{ name: 'Overview', icon: '', path: '/home' },
-	{ name: 'TO DO', icon: '', path: '/people' },
-	// { name: 'People', icon: '', path: '/people' },
-	{ name: 'Resources', icon: '', path: '/resources' },
-	{ name: 'Customer Info', icon: <FiEyeOff />, path: '/people' },
+	{ name: 'TO DO', icon: '', path: '/to-do' },
+	{ name: 'People', icon: '', path: '/people' },
+	{ name: 'Resources', icon: '', path: `/resources` },
+	{ name: 'Customer Info', icon: <FiEyeOff />, path: '/customer_info' },
 ];
 
 export default function Dashboard({ children }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	// console.log('children from dash', children);
+
 	return (
 		<Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
 			<SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
@@ -71,7 +62,6 @@ const SidebarContent = ({ onClose, ...rest }) => {
 		dispatch(signout());
 		navigate('/', { replace: true });
 	};
-	console.log('Project data from dashboard ====>', projectData);
 	return (
 		<Box
 			transition='3s ease'
@@ -87,7 +77,6 @@ const SidebarContent = ({ onClose, ...rest }) => {
 				<Text fontSize='2xl' fontFamily='monospace' fontWeight='bold' color='white'>
 					{projectData?.project?.title}
 				</Text>
-				{/* <MenuDivider /> */}
 			</Flex>
 
 			{LinkItems.map((link) =>
@@ -113,7 +102,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 				<FiLogOut />
 				<Text ml={2}>Sign out</Text>
 			</NavItemAction>
-			<NavItemAction color='white' mt={60} to='/home'>
+			<NavItemAction color='white' mt={52} to='/home'>
 				<Text ml={2}>View all projects</Text>
 			</NavItemAction>
 		</Box>
@@ -132,7 +121,7 @@ const NavItem = ({ icon, to, children, ...rest }) => {
 				cursor='pointer'
 				_hover={{
 					bg: 'white',
-					color: 'blue',
+					color: '#536593',
 				}}
 				{...rest}
 			>
@@ -164,7 +153,7 @@ const NavItemAction = ({ icon, to, children, ...rest }) => {
 				cursor='pointer'
 				_hover={{
 					bg: 'white',
-					color: 'blue',
+					color: '#536593',
 				}}
 				{...rest}
 			>
@@ -185,6 +174,7 @@ const NavItemAction = ({ icon, to, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+	const projectData = useSelector((state) => state.project);
 	return (
 		<Flex
 			ml={{ base: 0, md: 60 }}
@@ -203,7 +193,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 			/>
 
 			<Text display={{ base: 'flex', md: 'none' }} fontSize='2xl' fontFamily='monospace' fontWeight='bold'>
-				Twilio
+				{projectData?.project?.title}
 			</Text>
 		</Flex>
 	);
