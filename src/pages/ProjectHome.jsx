@@ -69,7 +69,7 @@ const ProjectHome = () => {
   };
   useEffect(() => {
     dispatch(GetAllProjectsByCurrentUser());
-  }, [projectStateData?.allProjects]);
+  }, []);
 
   // if (projectStateData?.gettingAllProjects) {
   // 	return <Loader />;

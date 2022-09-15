@@ -16,10 +16,9 @@ import { FiEyeOff, FiMenu, FiLogOut } from "react-icons/fi";
 import { signout } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./style.css";
 
 const LinkItems = [
-  { name: "Overview", icon: "", path: "/home" },
+  { name: "Overview", icon: "", path: "/overview" },
   { name: "To Do", icon: "", path: "/to-do" },
   { name: "People", icon: "", path: "/people" },
   { name: "Resources", icon: "", path: `/resources` },
@@ -139,7 +138,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <FiLogOut />
         <Text ml={2}>Sign out</Text>
       </NavItemAction>
-      <NavItemAction color="white" mt={52} to="/home">
+      <NavItemAction color="white" mt={52} to="/projects">
         <Text ml={2}>View all projects</Text>
       </NavItemAction>
     </Box>
