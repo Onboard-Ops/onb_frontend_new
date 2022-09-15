@@ -15,11 +15,12 @@ import {
 import { FiEyeOff, FiMenu, FiLogOut } from "react-icons/fi";
 import { signout } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import "./style.css";
 
 const LinkItems = [
   { name: "Overview", icon: "", path: "/home" },
-  { name: "TO DO", icon: "", path: "/to-do" },
+  { name: "To Do", icon: "", path: "/to-do" },
   { name: "People", icon: "", path: "/people" },
   { name: "Resources", icon: "", path: `/resources` },
   { name: "Customer Info", icon: <FiEyeOff />, path: "/customer_info" },
@@ -59,6 +60,7 @@ export default function Dashboard({ children }) {
 
 const SidebarContent = ({ onClose, ...rest }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const projectData = useSelector((state) => state.project);
   const navigate = useNavigate();
   const handleSignOut = () => {
@@ -88,18 +90,45 @@ const SidebarContent = ({ onClose, ...rest }) => {
       </Flex>
 
       {LinkItems.map((link) =>
-        link.name != "TO DO" && link.name != "Customer Info" ? (
-          <NavItem key={link.name} to={link.path} color="white">
+        link.name != "To Do" && link.name != "Customer Info" ? (
+          <NavItem
+            key={link.name}
+            to={link.path}
+            color="white"
+            style={{
+              color: location.pathname == link.path && "#536593",
+              backgroundColor: location.pathname == link.path && "#fff",
+              fontWeight: location.pathname == link.path && "bold",
+            }}
+          >
             {link.name}
             {link.icon}
           </NavItem>
         ) : link.name === "Customer Info" ? (
-          <NavItem key={link.name} to={link.path} color="white">
+          <NavItem
+            style={{
+              color: location.pathname == link.path && "#536593",
+              backgroundColor: location.pathname == link.path && "#fff",
+              fontWeight: location.pathname == link.path && "bold",
+            }}
+            key={link.name}
+            to={link.path}
+            color="white"
+          >
             <Text mr={12}>{link.name}</Text>
             {link.icon}
           </NavItem>
         ) : (
-          <NavItem key={link.name} to={link.path} color="white">
+          <NavItem
+            style={{
+              color: location.pathname == link.path && "#536593",
+              backgroundColor: location.pathname == link.path && "#fff",
+              fontWeight: location.pathname == link.path && "bold",
+            }}
+            key={link.name}
+            to={link.path}
+            color="white"
+          >
             {link.name}
             <Avatar name="5" bg="red.500" size="xs" ml={24} />
           </NavItem>
