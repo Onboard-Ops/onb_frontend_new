@@ -5,12 +5,13 @@ import Frontpage from "../pages/Frontpage";
 import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import Four0Four from "../pages/Four0four";
-import Dashboard from "../pages/Dashboard/";
+import Dashboard from "../pages/Dashboard";
 import People from "../pages/Dashboard/People/";
 import Resources from "../pages/Dashboard/Resources";
 import ProjectHome from "../pages/ProjectHome";
 import { useDispatch, useSelector } from "react-redux";
 import { isUserLoggedIn } from "../redux/actions";
+import ToDo from "../pages/ToDo/ToDo";
 
 const Router = () => {
   const user = useSelector((state) => state.auth);
@@ -29,9 +30,10 @@ const Router = () => {
         {user?.token ? (
           [
             <Route path="/home" element={<ProjectHome />} key="4" />,
-            <Route path="/dashboard/:id/:id" element={<Dashboard key="5" />} />,
+            <Route path="/dashboard/:id" element={<Dashboard key="5" />} />,
             <Route path="/people" element={<People key="6" />} />,
             <Route path="/resources" element={<Resources />} key="7" />,
+            <Route path="/to-do" element={<ToDo key="8" />} />,
           ]
         ) : (
           <Route path="*" element={<Four0Four />} key="**" />

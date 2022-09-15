@@ -1,12 +1,12 @@
 import React from "react";
 import SideBar from "../../Layout/SideBar/SideBar";
 
-const Dashboard = () => {
+const ToDo = () => {
   return (
     <SideBar>
-      <h1>Dashboards</h1>
+      <h1>ToDo Page</h1>
     </SideBar>
   );
 };
 
-export default Dashboard;
+export default ToDo;
