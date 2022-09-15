@@ -8,6 +8,7 @@ import Four0Four from "../pages/Four0four";
 import Dashboard from "../pages/Dashboard";
 import People from "../pages/Dashboard/People/";
 import Resources from "../pages/Dashboard/Resources";
+import CustomerInfo from "../pages/CustomerInfo/CustomerInfo";
 import ProjectHome from "../pages/ProjectHome";
 import { useDispatch, useSelector } from "react-redux";
 import { isUserLoggedIn } from "../redux/actions";
@@ -34,6 +35,8 @@ const Router = () => {
             <Route path="/people" element={<People key="6" />} />,
             <Route path="/resources" element={<Resources />} key="7" />,
             <Route path="/to-do" element={<ToDo key="8" />} />,
+            <Route path="/resources" element={<Resources key="8" />} />,
+            <Route path="/customer_info" element={<CustomerInfo key="9" />} />,
           ]
         ) : (
           <Route path="*" element={<Four0Four />} key="**" />
