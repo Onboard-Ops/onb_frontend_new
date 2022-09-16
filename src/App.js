@@ -2,6 +2,8 @@ import Router from "./router/";
 import { ErrorBoundary } from "react-error-boundary";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
+import "./index.css";
+
 const theme = extendTheme({
   styles: {
     global: {

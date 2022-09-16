@@ -16,6 +16,8 @@ import ToDo from "../pages/ToDo/ToDo";
 import People from "../pages/People/People";
 import OverView from "../pages/OverView/OverView";
 
+import "../index.css";
+
 const Router = () => {
   const user = useSelector((state) => state.auth);
   const dispatch = useDispatch();
