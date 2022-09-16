@@ -8,6 +8,8 @@ const {
   GET_ALL_PROJECT_SUCCESS,
   PROJECT_API_CALL,
   PROJECT_API_CALL_OFF,
+  PROJECT_API_LOADER_ON,
+  PROJECT_API_LOADER_OFF,
 } = ProjectType;
 
 const InitialState = {
@@ -27,6 +29,7 @@ const InitialState = {
   loading: false,
   error: "",
   message: "",
+  projectLoading: false,
   projectApiCall: {
     apiCalled: false,
     title: "",
@@ -51,6 +54,18 @@ export const ProjectReducer = (state = InitialState, action) => {
           title: payload?.title,
           status: payload?.status ? "success" : "error",
         },
+      };
+      break;
+    case PROJECT_API_LOADER_ON:
+      state = {
+        ...state,
+        projectLoading: true,
+      };
+      break;
+    case PROJECT_API_LOADER_OFF:
+      state = {
+        ...state,
+        projectLoading: false,
       };
       break;
     case PROJECT_API_CALL_OFF:

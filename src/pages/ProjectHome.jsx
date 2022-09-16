@@ -32,12 +32,12 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import SideBar from "../Layout/SideBar/SideBar";
+import dayjs from "dayjs";
 
 const ProjectHome = () => {
   const toast = useToast();
   const [isNext, setIsNext] = useState(false);
   const [err, setErr] = useState(false);
-  const [projectLoading, setProjectLoading] = useState(false);
   const [allProjects, setAllProjects] = useState([true]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const projectStateData = useSelector((state) => state.project);
@@ -59,11 +59,6 @@ const ProjectHome = () => {
       [e.target.name]: e.target.value,
     }));
   };
-
-  useEffect(() => {
-    projectStateData?.apiLoader?.projectsFetchLoading &&
-      setProjectLoading(true);
-  }, [projectStateData?.apiLoader?.projectsFetchLoading]);
 
   const onHandleSubmit = async (event) => {
     event.preventDefault();
@@ -100,8 +95,9 @@ const ProjectHome = () => {
   // }
   return (
     <SideBar>
-      {projectLoading ? (
+      {projectStateData?.projectLoading ? (
         <Spinner
+          style={{ display: "flex", justifyContent: "center", margin: "auto" }}
           thickness="4px"
           speed="0.65s"
           emptyColor="gray.200"
@@ -241,7 +237,10 @@ const ProjectHome = () => {
                         }}
                         key={item._id}
                       >
-                        <Text>{item.title}</Text> <Text>{item.dueDate}</Text>
+                        <Text>{item.title}</Text>{" "}
+                        <Text>
+                          {dayjs(item.dueDate).format("DD-MM-YYYY hh:mm A")}
+                        </Text>
                       </Box>
                     </Link>
                   );

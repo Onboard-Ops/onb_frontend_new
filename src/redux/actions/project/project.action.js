@@ -2,7 +2,7 @@ import axios from "axios";
 import AxiosInstance from "../../../utils/axios";
 import { API_URL } from "../../../utils/url";
 import { ProjectType } from "../../actionTypes/";
-import { useToast } from "@chakra-ui/react";
+
 const {
   ADD_PROJECT_REQUEST,
   ADD_PROJECT_FAILURE,
@@ -12,6 +12,8 @@ const {
   GET_ALL_PROJECT_SUCCESS,
   PROJECT_API_CALL,
   PROJECT_API_CALL_OFF,
+  PROJECT_API_LOADER_ON,
+  PROJECT_API_LOADER_OFF,
 } = ProjectType;
 
 const token = window.localStorage.getItem("token");
@@ -24,10 +26,12 @@ const config = {
 
 export const GetAllProjectsByCurrentUser = () => {
   return async (dispatch) => {
+    dispatch({ type: PROJECT_API_LOADER_ON });
     dispatch({ type: GET_ALL_PROJECT_REQUEST });
     const response = await AxiosInstance.get(
       `/get-all-projects-of-current-user`
     );
+    response?.status && dispatch({ type: PROJECT_API_LOADER_OFF });
     if (response?.status === 201) {
       const projects = response?.data?.data;
       const length = response?.data?.length;
