@@ -23,6 +23,7 @@ const LinkItems = [
   { name: "People", icon: "", path: "/people" },
   { name: "Resources", icon: "", path: `/resources` },
   { name: "Customer Info", icon: <FiEyeOff />, path: "/customer_info" },
+  { name: "View Projects", path: "/projects" },
 ];
 
 export default function Dashboard({ children }) {

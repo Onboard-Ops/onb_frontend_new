@@ -49,7 +49,7 @@ export default function Login() {
     // 	duration: 3000,
     // 	isClosable: true,
     // });
-    navigate("/home", { replace: true });
+    navigate("/overview", { replace: true });
   }
 
   if (user?.isAuthenticating) {
