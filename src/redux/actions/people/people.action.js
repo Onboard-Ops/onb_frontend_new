@@ -36,3 +36,20 @@ export const FetchPeopleApi = () => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const CreateUserApi = (formData) => async (dispatch) => {
+  try {
+    console.log(formData, "DATA");
+    dispatch({
+      type: PEOPLE_API_CALL_OFF,
+    });
+    dispatch({
+      type: PEOPLE_API_LOADER_ON,
+    });
+    const res = await axios.post(`${API_URL}/signup`, formData, config);
+    res?.status && dispatch({ type: PEOPLE_API_LOADER_OFF });
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
