@@ -22,6 +22,65 @@ const config = {
   },
 };
 
+export const GetAllProjectsByCurrentUser = () => {
+  return async (dispatch) => {
+    dispatch({ type: GET_ALL_PROJECT_REQUEST });
+    const response = await AxiosInstance.get(
+      `/get-all-projects-of-current-user`
+    );
+    if (response?.status === 201) {
+      const projects = response?.data?.data;
+      const length = response?.data?.length;
+
+      dispatch({
+        type: GET_ALL_PROJECT_SUCCESS,
+        payload: { projects, length },
+      });
+    } else {
+      if (response.status === 400 || response.status === 404) {
+        dispatch({
+          type: GET_ALL_PROJECT_FAILURE,
+          payload: { error: response.data.error },
+        });
+      }
+    }
+  };
+};
+
+export const AddProjectAction = (form) => async (dispatch) => {
+  try {
+    dispatch({
+      type: PROJECT_API_CALL_OFF,
+    });
+    const res = await axios.post(
+      `${API_URL}/create-project`,
+      {
+        ...form,
+      },
+      config
+    );
+    const { data } = res;
+    data && dispatch(GetAllProjectsByCurrentUser());
+    data &&
+      dispatch({
+        type: PROJECT_API_CALL,
+        payload: {
+          title: "🎉 New project created",
+          status: data?.status,
+          apiCalled: true,
+        },
+      });
+  } catch (error) {
+    let {
+      response: { data },
+    } = error;
+    dispatch({
+      type: PROJECT_API_CALL,
+      payload: { title: data?.message, status: data?.status, apiCalled: true },
+    });
+  }
+};
+
 // export const AddProjectAction = (form) => {
 //   return async (dispatch) => {
 //     console.log("API CALLINF");
@@ -48,61 +107,3 @@ const config = {
 //     // }
 //   };
 // };
-
-export const AddProjectAction = (form) => async (dispatch) => {
-  try {
-    dispatch({
-      type: PROJECT_API_CALL_OFF,
-    });
-    const res = await axios.post(
-      `${API_URL}/create-project`,
-      {
-        ...form,
-      },
-      config
-    );
-    const { data } = res;
-    data &&
-      dispatch({
-        type: PROJECT_API_CALL,
-        payload: {
-          title: "🎉 New project created",
-          status: data?.status,
-          apiCalled: true,
-        },
-      });
-  } catch (error) {
-    let {
-      response: { data },
-    } = error;
-    dispatch({
-      type: PROJECT_API_CALL,
-      payload: { title: data?.message, status: data?.status, apiCalled: true },
-    });
-  }
-};
-
-export const GetAllProjectsByCurrentUser = () => {
-  return async (dispatch) => {
-    dispatch({ type: GET_ALL_PROJECT_REQUEST });
-    const response = await AxiosInstance.get(
-      `/get-all-projects-of-current-user`
-    );
-    if (response?.status === 201) {
-      const projects = response?.data?.data;
-      const length = response?.data?.length;
-
-      dispatch({
-        type: GET_ALL_PROJECT_SUCCESS,
-        payload: { projects, length },
-      });
-    } else {
-      if (response.status === 400 || response.status === 404) {
-        dispatch({
-          type: GET_ALL_PROJECT_FAILURE,
-          payload: { error: response.data.error },
-        });
-      }
-    }
-  };
-};

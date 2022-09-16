@@ -36,6 +36,7 @@ import SideBar from "../Layout/SideBar/SideBar";
 const ProjectHome = () => {
   const toast = useToast();
   const [isNext, setIsNext] = useState(false);
+  const [err, setErr] = useState(false);
   const [projectLoading, setProjectLoading] = useState(false);
   const [allProjects, setAllProjects] = useState([true]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -52,6 +53,7 @@ const ProjectHome = () => {
     error: "",
   });
   const onChangeHandler = (e) => {
+    setErr(false);
     setProject((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -73,13 +75,16 @@ const ProjectHome = () => {
     dispatch(GetAllProjectsByCurrentUser());
     onClose();
   };
+
   const handleSignOut = () => {
     dispatch(signout());
     navigate("/", { replace: true });
   };
+
   useEffect(() => {
     dispatch(GetAllProjectsByCurrentUser());
   }, []);
+
   useEffect(() => {
     if (projectState?.apiCalled) {
       toast({
@@ -146,15 +151,19 @@ const ProjectHome = () => {
                 <ModalCloseButton />
                 <ModalBody pb={5}>
                   <FormControl>
-                    <FormLabel>Customer Name</FormLabel>
+                    <FormLabel>Customer Name *</FormLabel>
                     <Input
                       ref={initialRef}
                       placeholder="Title"
                       id="title"
                       onChange={onChangeHandler}
+                      required
                       name="title"
                       value={project.title}
                     />
+                    {err && (
+                      <p style={{ color: "tomato" }}>This field is requied!</p>
+                    )}
                   </FormControl>
 
                   <FormControl mt={4}>
@@ -169,7 +178,15 @@ const ProjectHome = () => {
                   </FormControl>
                 </ModalBody>
                 <ModalFooter>
-                  <Button colorScheme="teal" onClick={() => setIsNext(!isNext)}>
+                  <Button
+                    colorScheme="teal"
+                    onClick={() => {
+                      if (project.title.length == 0) {
+                        return setErr(true);
+                      }
+                      setIsNext(!isNext);
+                    }}
+                  >
                     Next
                   </Button>
                 </ModalFooter>
