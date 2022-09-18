@@ -9,7 +9,8 @@ const theme = extendTheme({
   styles: {
     global: {
       "html, body, #root": {
-        fontFamily: "Avenir, Helvetica, Arial, sans-serif",
+        // fontFamily: "Avenir, Helvetica, Arial, sans-serif",
+        fontFamily: "Poppins,sans-serif",
         height: "100%",
         backgroundColor: "#fff",
       },
