@@ -35,7 +35,10 @@ const Router = () => {
         {user?.token ? (
           [
             <Route path="/projects" element={<ProjectHome />} key="4" />,
-            <Route path="/dashboard/:id/:id" element={<Dashboard key="5" />} />,
+            <Route
+              path="/dashboard/:name/:id"
+              element={<Dashboard key="5" />}
+            />,
             <Route path="/people" element={<People key="6" />} />,
             <Route path="/resources" element={<Resources />} key="7" />,
             <Route path="/to-do" element={<ToDo key="8" />} />,

@@ -1,6 +1,7 @@
 import Router from "./router/";
 import { ErrorBoundary } from "react-error-boundary";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import "antd/dist/antd.css";
 
 import "./index.css";
 

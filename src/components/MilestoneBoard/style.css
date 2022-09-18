@@ -1,0 +1,10 @@
+.milestone_title {
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.milestone_header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}

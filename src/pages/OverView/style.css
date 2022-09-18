@@ -1,0 +1,10 @@
+.board_container {
+  width: 100%;
+  overflow: scroll;
+}
+
+.board_container_child {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
