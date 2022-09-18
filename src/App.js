@@ -11,6 +11,7 @@ const theme = extendTheme({
       "html, body, #root": {
         fontFamily: "Avenir, Helvetica, Arial, sans-serif",
         height: "100%",
+        backgroundColor: "#fff",
       },
     },
   },
