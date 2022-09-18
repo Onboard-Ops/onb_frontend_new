@@ -23,7 +23,7 @@ const MilestoneBoard = () => {
     <div style={{ width: "20%", marginBottom: "20px" }}>
       <div className="milestone_header">
         <h1 className="milestone_title">On Progress</h1>
-        <Tag variant="solid" bgColor="#b1b1b1">
+        <Tag variant="solid" bgColor="#b1b1b1" fontSize="12px">
           Due 6/14
         </Tag>
       </div>
