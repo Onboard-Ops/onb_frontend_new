@@ -1,16 +1,16 @@
 import { ToDoTypes } from "../../actionTypes";
 const {
-  PEOPLE_API_CALL,
-  PEOPLE_API_CALL_OFF,
-  PEOPLE_API_LOADER_OFF,
-  PEOPLE_API_LOADER_ON,
-  PEOPLE_API_DATA,
+  TODO_API_CALL,
+  TODO_API_CALL_OFF,
+  TODO_API_LOADER_OFF,
+  TODO_API_LOADER_ON,
+  TODO_API_DATA,
 } = ToDoTypes;
 
 const InitialState = {
-  people: [],
-  peopleLoading: false,
-  peopleApiCall: {
+  todo: [],
+  todoLoading: false,
+  todoApiCall: {
     apiCalled: false,
     title: "",
     status: "",
@@ -20,41 +20,19 @@ const InitialState = {
 export const ToDoReducer = (state = InitialState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case PEOPLE_API_DATA:
+    case TODO_API_DATA:
       state = {
         ...state,
-        people: payload?.allMember,
+        todo: payload?.allMember,
       };
       break;
-    case PEOPLE_API_CALL:
+    case TODO_API_CALL:
       state = {
         ...state,
-        peopleApiCall: {
+        todoApiCall: {
           apiCalled: payload?.apiCalled,
           title: payload?.title,
           status: payload?.status ? "success" : "error",
-        },
-      };
-      break;
-    case PEOPLE_API_LOADER_ON:
-      state = {
-        ...state,
-        peopleLoading: true,
-      };
-      break;
-    case PEOPLE_API_LOADER_OFF:
-      state = {
-        ...state,
-        peopleLoading: false,
-      };
-      break;
-    case PEOPLE_API_CALL_OFF:
-      state = {
-        ...state,
-        peopleApiCall: {
-          apiCalled: false,
-          title: "",
-          status: "",
         },
       };
       break;

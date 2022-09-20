@@ -2,6 +2,9 @@ import { Card, Col, Dropdown, Menu, Row, Space, Table } from "antd";
 import React from "react";
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import SideBar from "../../Layout/SideBar/SideBar";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { FetchToDoApi } from "../../redux/actions/todo/todo.action";
 
 const columns = [
   {
@@ -47,6 +50,10 @@ const data = [
 ];
 
 const ToDo = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(FetchToDoApi());
+  });
   const menu = (
     <Menu
       items={[
