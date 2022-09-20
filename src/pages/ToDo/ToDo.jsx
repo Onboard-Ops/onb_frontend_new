@@ -1,59 +1,54 @@
-import { Card, Col, Dropdown, Menu, Row, Space, Table } from "antd";
+import { Card, Col, Dropdown, Menu, Row, Space, Table, Tag } from "antd";
 import React from "react";
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import SideBar from "../../Layout/SideBar/SideBar";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { FetchToDoApi } from "../../redux/actions/todo/todo.action";
-
-const columns = [
-  {
-    // title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    // title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    // title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-];
-
-const data = [
-  {
-    key: "1",
-    name: "Stucture the Data",
-    age: "Progress",
-    address: "Update",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: "Completed",
-    address: "Update",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: "To Do",
-    address: "Update",
-    tags: ["cool", "teacher"],
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { FetchToDoByUserApi } from "../../redux/actions/todo/todo.action";
+import dayjs from "dayjs";
 
 const ToDo = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(FetchToDoApi());
-  });
+    dispatch(FetchToDoByUserApi("63286517b5955eb54b7cd78d"));
+  }, []);
+
+  const allTodo = useSelector((state) => state.todo?.todo);
+
+  const columns = [
+    {
+      // title: "Name",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      // title: "Age",
+      dataIndex: "status",
+      key: "status",
+      render: (text) => <Tag color="blue">{text?.replace("_", " ")}</Tag>,
+    },
+    {
+      // title: "Address",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => <>Due {dayjs(text).format("DD/MM")}</>,
+    },
+  ];
+
+  const data =
+    allTodo &&
+    allTodo.length > 0 &&
+    allTodo.map((ele) => {
+      return {
+        key: ele._id,
+        _id: ele._id,
+        title: ele?.title,
+        status: ele?.status,
+        dueDate: ele?.dueDate,
+      };
+    });
+
   const menu = (
     <Menu
       items={[

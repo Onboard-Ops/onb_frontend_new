@@ -23,7 +23,7 @@ export const ToDoReducer = (state = InitialState, action) => {
     case TODO_API_DATA:
       state = {
         ...state,
-        todo: payload?.allMember,
+        todo: payload,
       };
       break;
     case TODO_API_CALL:

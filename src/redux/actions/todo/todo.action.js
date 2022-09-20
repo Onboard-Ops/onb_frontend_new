@@ -31,7 +31,30 @@ export const FetchToDoApi = () => async (dispatch) => {
     const {
       data: { allMember },
     } = res;
-    res?.status && dispatch({ type: TODO_API_DATA, payload: { allMember } });
+    // console.log(allMember);
+    // res?.status && dispatch({ type: TODO_API_DATA, payload: { allMember } });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const FetchToDoByUserApi = (userID) => async (dispatch) => {
+  try {
+    dispatch({
+      type: TODO_API_CALL_OFF,
+    });
+    dispatch({
+      type: TODO_API_LOADER_ON,
+    });
+    const res = await axios.get(`${API_URL}/get-task-by-id/${userID}`, config);
+    res?.status && dispatch({ type: TODO_API_LOADER_OFF });
+    const {
+      data: {
+        data: { allTasksBySelectedId },
+      },
+    } = res;
+    res?.status &&
+      dispatch({ type: TODO_API_DATA, payload: allTasksBySelectedId });
   } catch (error) {
     console.log(error);
   }
