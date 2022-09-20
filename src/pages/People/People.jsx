@@ -11,6 +11,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Select,
   Spinner,
   Text,
   useDisclosure,
@@ -93,13 +94,11 @@ const People = () => {
                   />
                 </FormControl>
                 <FormControl style={{ marginBottom: 20 }}>
-                  <Input
-                    placeholder="Role*"
-                    value={formData?.role}
-                    onChange={(e) =>
-                      setFormData({ ...formData, role: e.target.value })
-                    }
-                  />
+                  <Select placeholder="Select option">
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                  </Select>
                 </FormControl>
                 {err && (
                   <p style={{ color: "tomato" }}>All fields are required!</p>

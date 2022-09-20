@@ -96,7 +96,12 @@ const ToDo = () => {
               }
               bordered={false}
             >
-              <Table showHeader={false} columns={columns} dataSource={data} />
+              <Table
+                style={{ marginTop: "-20px" }}
+                showHeader={false}
+                columns={columns}
+                dataSource={data}
+              />
             </Card>
           </Col>
           <Col span={12}>
