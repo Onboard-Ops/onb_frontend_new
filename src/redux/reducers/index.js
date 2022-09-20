@@ -4,6 +4,7 @@ import { ProjectReducer } from "./project/project.reducer";
 import { PeopleReducer } from "./people/people.reducer";
 import { ToDoReducer } from "./todo/todo.reducer";
 import { RolesReducer } from "./roles/roles.reducer";
+import { DashboardReducer } from "./dashboard/dashboard.reducer";
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   people: PeopleReducer,
   todo: ToDoReducer,
   roles: RolesReducer,
+  dashboard: DashboardReducer,
 });
 
 export default rootReducer;
