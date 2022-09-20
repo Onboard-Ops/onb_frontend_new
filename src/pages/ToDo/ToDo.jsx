@@ -6,15 +6,25 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchToDoByUserApi } from "../../redux/actions/todo/todo.action";
 import dayjs from "dayjs";
+import { FetchPeopleApi } from "../../redux/actions";
+import { useState } from "react";
 
 const ToDo = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(FetchToDoByUserApi("63286517b5955eb54b7cd78d"));
+    dispatch(FetchPeopleApi());
   }, []);
 
   const allTodo = useSelector((state) => state.todo?.todo);
+  const allPeople = useSelector((state) => state.people?.people);
+  const authUser = useSelector((state) => state?.auth?.user);
+
+  const [currentUser, setCurrentUser] = useState({
+    fullName: "My tasks",
+    _id: authUser?._id,
+  });
 
   const columns = [
     {
@@ -51,32 +61,25 @@ const ToDo = () => {
 
   const menu = (
     <Menu
-      items={[
-        {
-          key: "1",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.antgroup.com"
-            >
-              Nandhu
-            </a>
-          ),
-        },
-        {
-          key: "2",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.antgroup.com"
-            >
-              Sandra
-            </a>
-          ),
-        },
-      ]}
+      items={
+        allPeople &&
+        allPeople.length > 0 &&
+        allPeople.map((ele, i) => {
+          return {
+            key: i + 1,
+            label: (
+              <p
+                onClick={() => {
+                  dispatch(FetchToDoByUserApi(ele?._id));
+                  setCurrentUser({ fullName: ele?.fullName, _id: ele?._id });
+                }}
+              >
+                {ele?.fullName}
+              </p>
+            ),
+          };
+        })
+      }
     />
   );
   return (
@@ -90,7 +93,7 @@ const ToDo = () => {
                 <Dropdown overlay={menu}>
                   <a>
                     <Space>
-                      My tasks
+                      {currentUser?.fullName}
                       <DownOutlined />
                     </Space>
                   </a>
