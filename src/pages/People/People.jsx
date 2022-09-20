@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SideBar from "../../Layout/SideBar/SideBar";
 import { CreateUserApi, FetchPeopleApi } from "../../redux/actions";
+import { FetchRolesApi } from "../../redux/actions/roles/roles.action";
 
 import "./style.css";
 
@@ -30,6 +31,7 @@ const People = () => {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [people, setPeople] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [err, setErr] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -38,14 +40,24 @@ const People = () => {
   });
 
   const peopleState = useSelector((state) => state.people);
+  const rolesState = useSelector((state) => state.roles);
 
   useEffect(() => {
     dispatch(FetchPeopleApi());
+    dispatch(FetchRolesApi());
   }, []);
 
   useEffect(() => {
     peopleState?.people.length != 0 && setPeople(peopleState?.people);
   }, [peopleState]);
+
+  useEffect(() => {
+    rolesState?.roles && setRoles(rolesState?.roles);
+  }, [rolesState]);
+
+  const handleRolesOnchange = (value) => {
+    setFormData({ ...formData, role: value });
+  };
 
   const handleAddPerson = () => {
     console.log("COMING HERE");
@@ -53,7 +65,7 @@ const People = () => {
     if (!formData.email || !formData.fullName || !formData.role) {
       return setErr(true);
     }
-    dispatch(CreateUserApi(formData)); // Needs to Change (Role Populate issue)
+    dispatch(CreateUserApi(formData));
   };
 
   return (
@@ -94,10 +106,14 @@ const People = () => {
                   />
                 </FormControl>
                 <FormControl style={{ marginBottom: 20 }}>
-                  <Select placeholder="Select option">
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
+                  <Select
+                    placeholder="Select option"
+                    onChange={(e) => handleRolesOnchange(e.target.value)}
+                  >
+                    {roles &&
+                      roles.map((ele) => {
+                        return <option value={ele?._id}>{ele?.value}</option>;
+                      })}
                   </Select>
                 </FormControl>
                 {err && (

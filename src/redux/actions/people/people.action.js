@@ -48,7 +48,7 @@ export const CreateUserApi = (formData) => async (dispatch) => {
     });
     const res = await axios.post(`${API_URL}/signup`, formData, config);
     res?.status && dispatch({ type: PEOPLE_API_LOADER_OFF });
-    console.log(res);
+    res?.status && dispatch(FetchPeopleApi());
   } catch (error) {
     console.log(error);
   }
