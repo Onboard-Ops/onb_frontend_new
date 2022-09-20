@@ -17,42 +17,22 @@ import {
 import React from "react";
 
 import "./style.css";
+import dayjs from "dayjs";
+import TaskCard from "../TaskCard/TaskCard";
 
-const MilestoneBoard = () => {
+const MilestoneBoard = (data) => {
+  // console.log(data, "MILESTONE");
+  const { data: milestone } = data;
+  // console.log(milestone);
   return (
     <div style={{ width: "20%", marginBottom: "20px" }}>
       <div className="milestone_header">
-        <h1 className="milestone_title">On Progress</h1>
+        <h1 className="milestone_title">{milestone?.title}</h1>
         <Tag variant="solid" bgColor="#b1b1b1" fontSize="12px">
-          Due 6/14
+          Due {dayjs(milestone?.dueDate).format("DD/MM")}
         </Tag>
       </div>
-      <Box
-        w="100%"
-        borderWidth="1px"
-        borderRadius="6px"
-        padding="10px"
-        marginBottom="15px"
-        borderColor="#bdbdbd"
-        cursor="pointer"
-      >
-        <Flex justifyContent="space-between">
-          <Tag size="sm" key="sm" variant="subtle" colorScheme="green">
-            <TagLeftIcon boxSize="12px" as={CheckCircleIcon} />
-            <TagLabel>Complete</TagLabel>
-          </Tag>
-          <Icon as={ViewOffIcon} color="#727272" />
-        </Flex>
-        <Heading marginTop="20px" size="md" fontSize="18px" fontWeight="normal">
-          Get account info
-        </Heading>
-        <Flex justifyContent="space-between" marginTop="20px">
-          <Tag colorScheme="red" borderRadius="full" fontSize="11px">
-            Assigned to
-          </Tag>
-          <p style={{ fontSize: "11px", color: "#727272" }}>30/12/2022</p>
-        </Flex>
-      </Box>
+      <TaskCard tasks={milestone?.tasks} />
       <Icon
         style={{ display: "flex", justifyContent: "center", margin: "auto" }}
         as={PlusSquareIcon}
