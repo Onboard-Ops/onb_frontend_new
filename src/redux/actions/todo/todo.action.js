@@ -3,7 +3,7 @@ import { API_URL } from "../../../utils/url";
 import { ToDoTypes } from "../../actionTypes";
 
 const {
-  TODO_API_CALL,
+  TODO_MENTIONS_API_DATA,
   TODO_API_CALL_OFF,
   TODO_API_LOADER_ON,
   TODO_API_LOADER_OFF,
@@ -18,7 +18,7 @@ const config = {
   },
 };
 
-export const FetchToDoApi = () => async (dispatch) => {
+export const FetchMentionsAPi = () => async (dispatch) => {
   try {
     dispatch({
       type: TODO_API_CALL_OFF,
@@ -27,12 +27,12 @@ export const FetchToDoApi = () => async (dispatch) => {
       type: TODO_API_LOADER_ON,
     });
     const res = await axios.get(`${API_URL}/get-all-todos`, config);
-    res?.status && dispatch({ type: TODO_API_LOADER_OFF });
+    console.log(res);
     const {
-      data: { allMember },
+      data: { allMentions },
     } = res;
-    // console.log(allMember);
-    // res?.status && dispatch({ type: TODO_API_DATA, payload: { allMember } });
+    res?.status &&
+      dispatch({ type: TODO_MENTIONS_API_DATA, payload: { allMentions } });
   } catch (error) {
     console.log(error);
   }

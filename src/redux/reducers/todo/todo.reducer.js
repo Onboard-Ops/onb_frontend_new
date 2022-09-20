@@ -1,14 +1,9 @@
 import { ToDoTypes } from "../../actionTypes";
-const {
-  TODO_API_CALL,
-  TODO_API_CALL_OFF,
-  TODO_API_LOADER_OFF,
-  TODO_API_LOADER_ON,
-  TODO_API_DATA,
-} = ToDoTypes;
+const { TODO_MENTIONS_API_DATA, TODO_API_DATA } = ToDoTypes;
 
 const InitialState = {
   todo: [],
+  mentions: [],
   todoLoading: false,
   todoApiCall: {
     apiCalled: false,
@@ -26,14 +21,10 @@ export const ToDoReducer = (state = InitialState, action) => {
         todo: payload,
       };
       break;
-    case TODO_API_CALL:
+    case TODO_MENTIONS_API_DATA:
       state = {
         ...state,
-        todoApiCall: {
-          apiCalled: payload?.apiCalled,
-          title: payload?.title,
-          status: payload?.status ? "success" : "error",
-        },
+        mentions: payload?.allMentions,
       };
       break;
   }

@@ -4,7 +4,10 @@ import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import SideBar from "../../Layout/SideBar/SideBar";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchToDoByUserApi } from "../../redux/actions/todo/todo.action";
+import {
+  FetchMentionsAPi,
+  FetchToDoByUserApi,
+} from "../../redux/actions/todo/todo.action";
 import dayjs from "dayjs";
 import { FetchPeopleApi } from "../../redux/actions";
 import { useState } from "react";
@@ -12,12 +15,8 @@ import { useState } from "react";
 const ToDo = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(FetchToDoByUserApi("63286517b5955eb54b7cd78d"));
-    dispatch(FetchPeopleApi());
-  }, []);
-
   const allTodo = useSelector((state) => state.todo?.todo);
+  const allMentions = useSelector((state) => state.todo?.mentions);
   const allPeople = useSelector((state) => state.people?.people);
   const authUser = useSelector((state) => state?.auth?.user);
 
@@ -26,27 +25,46 @@ const ToDo = () => {
     _id: authUser?._id,
   });
 
-  const columns = [
+  useEffect(() => {
+    dispatch(FetchToDoByUserApi(currentUser?._id));
+    dispatch(FetchPeopleApi());
+    dispatch(FetchMentionsAPi());
+  }, []);
+
+  const todoColumn = [
     {
-      // title: "Name",
       dataIndex: "title",
       key: "title",
     },
     {
-      // title: "Age",
       dataIndex: "status",
       key: "status",
       render: (text) => <Tag color="blue">{text?.replace("_", " ")}</Tag>,
     },
     {
-      // title: "Address",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (text) => <>Due {dayjs(text).format("DD/MM")}</>,
     },
   ];
 
-  const data =
+  const mentionsColumn = [
+    {
+      dataIndex: "commentBody",
+      key: "commentBody",
+    },
+    {
+      dataIndex: "commentBy",
+      key: "commentBy",
+    },
+    {
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => <>{dayjs(text).format("MM:DD:YYYY")}</>,
+    },
+  ];
+
+  const todoData =
     allTodo &&
     allTodo.length > 0 &&
     allTodo.map((ele) => {
@@ -56,6 +74,17 @@ const ToDo = () => {
         title: ele?.title,
         status: ele?.status,
         dueDate: ele?.dueDate,
+      };
+    });
+
+  const mentionsData =
+    allMentions &&
+    allMentions.length > 0 &&
+    allMentions.map((ele) => {
+      return {
+        commentBody: ele?.commentBody,
+        commentBy: ele?.commentBy?.fullName,
+        createdAt: ele?.createdAt,
       };
     });
 
@@ -104,14 +133,19 @@ const ToDo = () => {
               <Table
                 style={{ marginTop: "-20px" }}
                 showHeader={false}
-                columns={columns}
-                dataSource={data}
+                columns={todoColumn}
+                dataSource={todoData}
               />
             </Card>
           </Col>
           <Col span={12}>
             <Card title="My mentions" bordered={false}>
-              My mentions
+              <Table
+                style={{ marginTop: "-20px" }}
+                showHeader={false}
+                columns={mentionsColumn}
+                dataSource={mentionsData}
+              />
             </Card>
           </Col>
         </Row>
