@@ -16,19 +16,22 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { DashboardTypes } from "../../redux/actionTypes";
-const { DASHBOARD_TASK_MODAL_ON, DASHBOARD_TASK_MODAL_OFF } = DashboardTypes;
+const {
+  DASHBOARD_TASK_MODAL_ON,
+  DASHBOARD_TASK_MODAL_OFF,
+  DASHBOARD_SET_CURRENT_MILESTONE,
+} = DashboardTypes;
 
 const { Option } = Select;
 
 const MilestoneBoard = (data) => {
   const navigate = useNavigate();
-  const [currentMileStone, setCurrentMileStone] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     task_content: "",
     assignedTo: "",
+    milestone_ref: "",
     assignedBy: null,
-    milestone_ref: currentMileStone,
     // comment: "",
     status: "",
     dependencies: "",
@@ -43,6 +46,11 @@ const MilestoneBoard = (data) => {
   const dashboard = useSelector((state) => state?.dashboard);
 
   const currentProject = localStorage.getItem("currentProject");
+  const currentMileStone = localStorage.getItem("currentMileStone");
+
+  useEffect(() => {
+    setFormData({ ...formData, milestone_ref: dashboard?.currentMileStone });
+  }, [dashboard]);
 
   useEffect(() => {
     if (!currentProject) {
@@ -54,14 +62,8 @@ const MilestoneBoard = (data) => {
     setFormData({ ...formData, assignedBy: authUser?._id });
   }, []);
 
-  useEffect(() => {
-    setFormData({ ...formData, milestone_ref: currentMileStone });
-  }, [milestone, currentMileStone]);
-
   const handleCreateTask = () => {
-    console.log("AUTH USER", authUser?._id);
     setFormData({ ...formData, assignedBy: authUser?._id });
-    console.log(formData, "CALLING");
     dispatch(CreateTaskApi(formData));
   };
 
@@ -203,7 +205,7 @@ const MilestoneBoard = (data) => {
       )}
       <h1 className="milestone_title">{milestone?.title}</h1>
       <p className="milestone_due">
-        Due {dayjs(milestone?.dueDate).format("DD/MM")}
+        Due {dayjs(milestone?.dueDate).format("MM/DD")}
       </p>
       <hr
         style={{ marginBottom: 20, border: "1px solid #c4c4c4", marginTop: 5 }}
@@ -211,9 +213,13 @@ const MilestoneBoard = (data) => {
       <TaskCard tasks={milestone?.tasks} />
       <PlusOutlined
         onClick={() => {
+          dispatch({
+            type: DASHBOARD_SET_CURRENT_MILESTONE,
+            payload: milestone?._id,
+          });
+          localStorage.setItem("currentMileStone", milestone?._id);
           dispatch(FetchPeopleApi());
           dispatch({ type: DASHBOARD_TASK_MODAL_ON });
-          setCurrentMileStone(milestone?._id);
         }}
         style={{
           display: "flex",

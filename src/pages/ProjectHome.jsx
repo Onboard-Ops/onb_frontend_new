@@ -250,7 +250,7 @@ const ProjectHome = () => {
                       >
                         <Text>{item.title}</Text>{" "}
                         <Text>
-                          {dayjs(item.dueDate).format("DD-MM-YYYY hh:mm A")}
+                          {dayjs(item.dueDate).format("MM-DD-YYYY h:mm A")}
                         </Text>
                       </Box>
                     </Link>

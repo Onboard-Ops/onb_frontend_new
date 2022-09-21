@@ -166,7 +166,7 @@ const People = () => {
                     <Text>{ele?.role}</Text>
                     <Text>{ele?.email}</Text>
                     <Text>
-                      {dayjs(ele?.createdAt).format("DD:MM:YYYY hh:mm A")}
+                      {dayjs(ele?.createdAt).format("MM:DD:YYYY h:mm A")}
                     </Text>
                   </Box>
                 </Link>

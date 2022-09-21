@@ -44,7 +44,7 @@ const ToDo = () => {
     {
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (text) => <>Due {dayjs(text).format("DD/MM")}</>,
+      render: (text) => <>Due {dayjs(text).format("MM/DD")}</>,
     },
   ];
 

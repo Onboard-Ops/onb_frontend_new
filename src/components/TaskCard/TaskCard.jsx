@@ -69,7 +69,7 @@ const TaskCard = ({ tasks }) => {
                 Assigned to
               </Tag>
               <p style={{ fontSize: "11px", color: "#727272" }}>
-                Due {dayjs(ele?.dueDate).format("DD/MM")}
+                Due {dayjs(ele?.dueDate).format("MM/DD")}
               </p>
             </Flex>
           </Box>

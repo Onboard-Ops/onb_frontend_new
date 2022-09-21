@@ -1,13 +1,13 @@
+import { message as notify } from "antd";
 import axios from "axios";
 import { API_URL } from "../../../utils/url";
 import { DashboardTypes } from "../../actionTypes";
 
 const {
-  DASHBOARD_MENTIONS_API_DATA,
-  DASHBOARD_API_CALL_OFF,
   DASHBOARD_API_LOADER_ON,
   DASHBOARD_API_LOADER_OFF,
   DASHBOARD_API_DATA,
+  DASHBOARD_TASK_MODAL_OFF,
 } = DashboardTypes;
 
 const token = window.localStorage.getItem("token");
@@ -44,10 +44,16 @@ export const FetchCurrentMilestone = (projectID) => async (dispatch) => {
 
 export const CreateTaskApi = (formData) => async (dispatch) => {
   try {
+    const currentProject = localStorage.getItem("currentProject");
     const res = await axios.post(`${API_URL}/create-task`, formData, config);
-    console.log(res);
+    res && notify.success(res?.data?.message);
+    res?.data?.status && dispatch(FetchCurrentMilestone(currentProject));
+    res?.data?.status && dispatch({ type: DASHBOARD_TASK_MODAL_OFF });
   } catch (error) {
-    console.log(error);
+    const {
+      response: { data },
+    } = error;
+    notify.error(data?.message);
   }
 };
 
