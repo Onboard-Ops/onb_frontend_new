@@ -22,6 +22,7 @@
 ::-webkit-scrollbar {
   width: 6px;
   scrollbar-width: thin;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {

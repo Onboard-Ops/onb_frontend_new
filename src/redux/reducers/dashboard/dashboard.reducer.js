@@ -4,12 +4,18 @@ const {
   DASHBOARD_API_LOADER_OFF,
   DASHBOARD_API_LOADER_ON,
   DASHBOARD_CURRENT_PROJECT,
+  DASHBOARD_MILESTONE_MODAL_OFF,
+  DASHBOARD_MILESTONE_MODAL_ON,
+  DASHBOARD_TASK_MODAL_OFF,
+  DASHBOARD_TASK_MODAL_ON,
 } = DashboardTypes;
 
 const InitialState = {
   dashboard: [],
   currentProject: null,
   dashboardLoading: false,
+  taskModal: false,
+  mileStoneModal: false,
   dashboardApiCall: {
     apiCalled: false,
     title: "",
@@ -36,6 +42,30 @@ export const DashboardReducer = (state = InitialState, action) => {
       state = {
         ...state,
         dashboardLoading: false,
+      };
+      break;
+    case DASHBOARD_MILESTONE_MODAL_ON:
+      state = {
+        ...state,
+        mileStoneModal: true,
+      };
+      break;
+    case DASHBOARD_MILESTONE_MODAL_OFF:
+      state = {
+        ...state,
+        mileStoneModal: false,
+      };
+      break;
+    case DASHBOARD_TASK_MODAL_ON:
+      state = {
+        ...state,
+        taskModal: true,
+      };
+      break;
+    case DASHBOARD_TASK_MODAL_OFF:
+      state = {
+        ...state,
+        taskModal: false,
       };
       break;
     case DASHBOARD_CURRENT_PROJECT:

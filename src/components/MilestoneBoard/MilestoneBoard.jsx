@@ -1,13 +1,3 @@
-import {
-  Box,
-  Tag,
-  TagLeftIcon,
-  TagLabel,
-  Flex,
-  Icon,
-  Heading,
-} from "@chakra-ui/react";
-
 import { PlusOutlined } from "@ant-design/icons";
 
 import React from "react";
@@ -25,13 +15,14 @@ import { FetchPeopleApi } from "../../redux/actions/people/people.action";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { DashboardTypes } from "../../redux/actionTypes";
+const { DASHBOARD_TASK_MODAL_ON, DASHBOARD_TASK_MODAL_OFF } = DashboardTypes;
+
 const { Option } = Select;
 
 const MilestoneBoard = (data) => {
-  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
   const [currentMileStone, setCurrentMileStone] = useState("");
-  console.log(currentMileStone, "MILE");
   const [formData, setFormData] = useState({
     title: "",
     task_content: "",
@@ -49,6 +40,7 @@ const MilestoneBoard = (data) => {
 
   const people = useSelector((state) => state?.people?.people);
   const authUser = useSelector((state) => state?.auth?.user);
+  const dashboard = useSelector((state) => state?.dashboard);
 
   const currentProject = localStorage.getItem("currentProject");
 
@@ -75,7 +67,7 @@ const MilestoneBoard = (data) => {
 
   return (
     <div style={{ width: "250px", marginBottom: "20px" }}>
-      {modalOpen && (
+      {dashboard?.taskModal && (
         <Modal
           className="ant-modal"
           title={
@@ -92,10 +84,10 @@ const MilestoneBoard = (data) => {
             </div>
           }
           width="100vh"
-          open={modalOpen}
+          open={dashboard?.taskModal}
           footer={null}
           // onOk={handleOk}
-          onCancel={() => setModalOpen(false)}
+          onCancel={() => dispatch({ type: DASHBOARD_TASK_MODAL_OFF })}
         >
           <Input
             size="large"
@@ -220,8 +212,7 @@ const MilestoneBoard = (data) => {
       <PlusOutlined
         onClick={() => {
           dispatch(FetchPeopleApi());
-          setModalOpen(true);
-          console.log(milestone?._id, "ID");
+          dispatch({ type: DASHBOARD_TASK_MODAL_ON });
           setCurrentMileStone(milestone?._id);
         }}
         style={{
