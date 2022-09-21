@@ -129,9 +129,9 @@ const People = () => {
             </ModalContent>
           </Modal>
           <div className="people_flex">
-            <Heading as="h4" size="xl" style={{ textDecoration: "underline" }}>
+            <p style={{ color: "#333", fontWeight: "bold", fontSize: 35 }}>
               People
-            </Heading>
+            </p>
             <Button
               onClick={onOpen}
               colorScheme="linkedin"
@@ -143,6 +143,7 @@ const People = () => {
               Add people
             </Button>
           </div>
+          <hr style={{ border: "1px solid #c4c4c4" }} />
           {people &&
             people.map((ele) => {
               return (
