@@ -60,14 +60,10 @@ const TaskCard = ({ tasks }) => {
               </Tag>
               <Icon as={ViewOffIcon} color="#727272" />
             </Flex>
-            <Heading
-              marginTop="25px"
-              size="md"
-              fontSize="18px"
-              fontWeight="normal"
-            >
+            <p style={{ marginTop: 25, fontSize: 16, fontWeight: 400 }}>
               {ele?.title}
-            </Heading>
+            </p>
+
             <Flex justifyContent="space-between" marginTop="25px">
               <Tag colorScheme="red" borderRadius="full" fontSize="11px">
                 Assigned to

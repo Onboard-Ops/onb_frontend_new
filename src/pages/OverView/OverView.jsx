@@ -52,7 +52,7 @@ const OverView = () => {
 
   return (
     <SideBar>
-      <Box w="100%" p={4}>
+      <Box w="100%" p={4} style={{ marginTop: "-30px" }}>
         {modalOpen && (
           <Modal
             className="ant-modal"
