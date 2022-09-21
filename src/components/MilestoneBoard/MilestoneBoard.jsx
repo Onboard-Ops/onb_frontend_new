@@ -23,12 +23,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { CreateTaskApi } from "../../redux/actions/dashboard/dashboard.action";
 import { FetchPeopleApi } from "../../redux/actions/people/people.action";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
 const MilestoneBoard = (data) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
   const [currentMileStone, setCurrentMileStone] = useState("");
+  console.log(currentMileStone, "MILE");
   const [formData, setFormData] = useState({
     title: "",
     task_content: "",
@@ -47,7 +50,13 @@ const MilestoneBoard = (data) => {
   const people = useSelector((state) => state?.people?.people);
   const authUser = useSelector((state) => state?.auth?.user);
 
-  console.log(authUser);
+  const currentProject = localStorage.getItem("currentProject");
+
+  useEffect(() => {
+    if (!currentProject) {
+      navigate("/projects");
+    }
+  }, []);
 
   useEffect(() => {
     setFormData({ ...formData, assignedBy: authUser?._id });
@@ -212,7 +221,8 @@ const MilestoneBoard = (data) => {
         onClick={() => {
           dispatch(FetchPeopleApi());
           setModalOpen(true);
-          setCurrentMileStone(milestone?.tasks[0]?.milestone_ref);
+          console.log(milestone?._id, "ID");
+          setCurrentMileStone(milestone?._id);
         }}
         style={{
           display: "flex",

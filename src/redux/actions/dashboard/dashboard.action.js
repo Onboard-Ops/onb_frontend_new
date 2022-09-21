@@ -44,8 +44,21 @@ export const FetchCurrentMilestone = (projectID) => async (dispatch) => {
 
 export const CreateTaskApi = (formData) => async (dispatch) => {
   try {
-    console.log(formData, "DATA");
     const res = await axios.post(`${API_URL}/create-task`, formData, config);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const CreateMileStone = (formData) => async (dispatch) => {
+  try {
+    console.log(formData, "DATA");
+    const res = await axios.post(
+      `${API_URL}/create-milestone`,
+      formData,
+      config
+    );
     console.log(res);
   } catch (error) {
     console.log(error);

@@ -17,3 +17,23 @@
   background-color: #2a3246 !important;
   outline: none !important;
 }
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ebebeb;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #afafaf;
+  scrollbar-width: thin;
+}
