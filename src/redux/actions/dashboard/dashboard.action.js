@@ -42,19 +42,12 @@ export const FetchCurrentMilestone = (projectID) => async (dispatch) => {
   }
 };
 
-// export const CreateToDoApi = (formData) => async (dispatch) => {
-//   try {
-//     console.log(formData, "DATA");
-//     dispatch({
-//       type: TODO_API_CALL_OFF,
-//     });
-//     dispatch({
-//       type: TODO_API_LOADER_ON,
-//     });
-//     const res = await axios.post(`${API_URL}/signup`, formData, config);
-//     res?.status && dispatch({ type: TODO_API_LOADER_OFF });
-//     console.log(res);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+export const CreateTaskApi = (formData) => async (dispatch) => {
+  try {
+    console.log(formData, "DATA");
+    const res = await axios.post(`${API_URL}/create-task`, formData, config);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};

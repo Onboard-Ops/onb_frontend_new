@@ -19,7 +19,6 @@ import dayjs from "dayjs";
 import { MinusCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 
 const TaskCard = ({ tasks }) => {
-  console.log(tasks, "THIS");
   return (
     <>
       {tasks?.map((ele, i) => {
