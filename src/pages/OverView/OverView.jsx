@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Box, Icon } from "@chakra-ui/react";
-import { PlusSquareIcon } from "@chakra-ui/icons";
+import { Box } from "@chakra-ui/react";
 import SideBar from "../../Layout/SideBar/SideBar";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,6 +13,10 @@ import {
 import { Button, DatePicker, Input, Modal, Skeleton } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { DashboardTypes } from "../../redux/actionTypes";
+
+const { DASHBOARD_MILESTONE_MODAL_ON, DASHBOARD_MILESTONE_MODAL_OFF } =
+  DashboardTypes;
 
 const OverView = () => {
   const dispatch = useDispatch();
@@ -53,14 +56,14 @@ const OverView = () => {
   return (
     <SideBar>
       <Box w="100%" p={4} style={{ marginTop: "-30px" }}>
-        {modalOpen && (
+        {dashboardData?.mileStoneModal && (
           <Modal
             className="ant-modal"
             title="Create milestone"
-            open={modalOpen}
+            open={dashboardData?.mileStoneModal}
             footer={null}
             // onOk={handleOk}
-            onCancel={() => setModalOpen(false)}
+            onCancel={() => dispatch({ type: DASHBOARD_MILESTONE_MODAL_OFF })}
           >
             <div style={{ padding: 20, width: 300, margin: "0 auto" }}>
               <p style={{ marginRight: 10, color: "#929292" }}>Title</p>
@@ -100,7 +103,7 @@ const OverView = () => {
                   return <MilestoneBoard data={ele} />;
                 })}
               <PlusOutlined
-                onClick={() => setModalOpen(true)}
+                onClick={() => dispatch({ type: DASHBOARD_MILESTONE_MODAL_ON })}
                 style={{
                   marginTop: 20,
                   cursor: "pointer",
