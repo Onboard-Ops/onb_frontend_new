@@ -10,15 +10,25 @@ import { useEffect } from "react";
 import { FetchCurrentMilestone } from "../../redux/actions/dashboard/dashboard.action";
 import { Skeleton } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const OverView = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [milestone, setMileStone] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const dashboardData = useSelector((state) => state?.dashboard);
+  const currentProject = localStorage.getItem("currentProject");
 
   useEffect(() => {
-    dispatch(FetchCurrentMilestone("63286540b5955eb54b7cd792"));
+    if (!currentProject) {
+      navigate("/projects");
+    }
+  }, [dashboardData]);
+
+  useEffect(() => {
+    dispatch(FetchCurrentMilestone(currentProject));
   }, []);
 
   useEffect(() => {
@@ -38,6 +48,7 @@ const OverView = () => {
                   return <MilestoneBoard data={ele} />;
                 })}
               <PlusOutlined
+                onClick={() => setModalOpen(true)}
                 style={{
                   marginTop: 20,
                   cursor: "pointer",

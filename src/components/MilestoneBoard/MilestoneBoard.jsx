@@ -33,6 +33,7 @@ const MilestoneBoard = (data) => {
     title: "",
     task_content: "",
     assignedTo: "",
+    assignedBy: null,
     milestone_ref: currentMileStone,
     // comment: "",
     status: "",

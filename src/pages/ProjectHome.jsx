@@ -33,6 +33,8 @@ import {
 } from "@chakra-ui/react";
 import SideBar from "../Layout/SideBar/SideBar";
 import dayjs from "dayjs";
+import { DashboardTypes } from "../redux/actionTypes";
+const { DASHBOARD_CURRENT_PROJECT } = DashboardTypes;
 
 const ProjectHome = () => {
   const toast = useToast();
@@ -221,7 +223,16 @@ const ProjectHome = () => {
               {projectStateData?.allProjects?.allProjectsByCurrentUser?.map(
                 (item) => {
                   return (
-                    <Link to={`/dashboard/${item?.magic_link}/${item?._id}`}>
+                    <Link
+                      onClick={() => {
+                        localStorage.setItem("currentProject", item?._id);
+                        dispatch({
+                          type: DASHBOARD_CURRENT_PROJECT,
+                          payload: item?._id,
+                        });
+                      }}
+                      to={`/dashboard/${item?.magic_link}/${item?._id}`}
+                    >
                       <Box
                         borderRadius="lg"
                         display="flex"

@@ -3,11 +3,12 @@ const {
   DASHBOARD_API_DATA,
   DASHBOARD_API_LOADER_OFF,
   DASHBOARD_API_LOADER_ON,
+  DASHBOARD_CURRENT_PROJECT,
 } = DashboardTypes;
 
 const InitialState = {
   dashboard: [],
-  currentProject: "",
+  currentProject: null,
   dashboardLoading: false,
   dashboardApiCall: {
     apiCalled: false,
@@ -20,7 +21,6 @@ export const DashboardReducer = (state = InitialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case DASHBOARD_API_DATA:
-      console.log(payload, "LOAD");
       state = {
         ...state,
         dashboard: payload,
@@ -36,6 +36,13 @@ export const DashboardReducer = (state = InitialState, action) => {
       state = {
         ...state,
         dashboardLoading: false,
+      };
+      break;
+    case DASHBOARD_CURRENT_PROJECT:
+      console.log("CALLING REDUX", payload);
+      state = {
+        ...state,
+        currentProject: payload,
       };
       break;
   }
