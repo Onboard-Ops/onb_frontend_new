@@ -46,8 +46,12 @@ export const FetchToDoByUserApi = (userID) => async (dispatch) => {
     dispatch({
       type: TODO_API_LOADER_ON,
     });
-    const res = await axios.get(`${API_URL}/get-task-by-id/${userID}`, config);
+    const res = await axios.get(
+      `${API_URL}/get-current-people-task/${userID}`,
+      config
+    );
     res?.status && dispatch({ type: TODO_API_LOADER_OFF });
+    console.log(res, "REs");
     const {
       data: {
         data: { allTasksBySelectedId },

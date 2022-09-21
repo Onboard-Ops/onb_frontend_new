@@ -60,7 +60,7 @@ const ToDo = () => {
     {
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (text) => <>{dayjs(text).format("MM:DD:YYYY")}</>,
+      render: (text) => <>{dayjs(text).format("M:DD:YYYY")}</>,
     },
   ];
 
@@ -117,12 +117,14 @@ const ToDo = () => {
         <Row gutter={16}>
           <Col span={12}>
             <Card
-              title="Tasks"
+              title={<p style={{ fontSize: 30, fontWeight: "bold" }}>Tasks</p>}
               extra={
                 <Dropdown overlay={menu}>
                   <a>
                     <Space>
-                      {currentUser?.fullName}
+                      <p style={{ fontSize: 20, fontWeight: "bold" }}>
+                        {currentUser?.fullName}
+                      </p>
                       <DownOutlined />
                     </Space>
                   </a>
@@ -139,7 +141,12 @@ const ToDo = () => {
             </Card>
           </Col>
           <Col span={12}>
-            <Card title="My mentions" bordered={false}>
+            <Card
+              title={
+                <p style={{ fontSize: 30, fontWeight: "bold" }}>My mentions</p>
+              }
+              bordered={false}
+            >
               <Table
                 style={{ marginTop: "-20px" }}
                 showHeader={false}
