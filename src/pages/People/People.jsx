@@ -164,7 +164,7 @@ const People = () => {
                     key={12}
                   >
                     <Text>{ele?.fullName}</Text>
-                    <Text>{ele?.role}</Text>
+                    <Text>{ele?.role?.value}</Text>
                     <Text>{ele?.email}</Text>
                     <Text>
                       {dayjs(ele?.createdAt).format("MM:DD:YYYY h:mm A")}
