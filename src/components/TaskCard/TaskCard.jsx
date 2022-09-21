@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Tag,
   TagLeftIcon,
   TagLabel,
   Flex,
@@ -15,7 +14,9 @@ import {
   TimeIcon,
   PlusSquareIcon,
 } from "@chakra-ui/icons";
+import { Tag } from "antd";
 import dayjs from "dayjs";
+import { MinusCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
 
 const TaskCard = ({ tasks }) => {
   console.log(tasks, "THIS");
@@ -24,35 +25,56 @@ const TaskCard = ({ tasks }) => {
       {tasks?.map((ele, i) => {
         return (
           <Box
-            w="100%"
+            w="250px"
             borderWidth="1px"
             borderRadius="6px"
             padding="10px"
             marginBottom="15px"
             borderColor="#bdbdbd"
             cursor="pointer"
+            backgroundColor="#E9E9E9"
           >
             <Flex justifyContent="space-between">
-              <Tag size="sm" key="sm" variant="subtle" colorScheme="green">
-                <TagLeftIcon boxSize="12px" as={CheckCircleIcon} />
-                <TagLabel>{ele?.status?.replace("_", " ")}</TagLabel>
+              <Tag
+                icon={
+                  ele?.status == "not_started" ? (
+                    <MinusCircleOutlined />
+                  ) : ele?.status == "in_progress" ? (
+                    <ClockCircleOutlined />
+                  ) : (
+                    <MinusCircleOutlined />
+                  )
+                }
+                color={
+                  ele?.status == "not_started"
+                    ? "default"
+                    : ele?.status == "in_progress"
+                    ? "warning"
+                    : "default"
+                }
+              >
+                {ele?.status == "not_started"
+                  ? "Not started"
+                  : ele?.status == "in_progress"
+                  ? "In progress"
+                  : ele?.status?.replace("_", " ")}
               </Tag>
               <Icon as={ViewOffIcon} color="#727272" />
             </Flex>
             <Heading
-              marginTop="20px"
+              marginTop="25px"
               size="md"
               fontSize="18px"
               fontWeight="normal"
             >
               {ele?.title}
             </Heading>
-            <Flex justifyContent="space-between" marginTop="20px">
+            <Flex justifyContent="space-between" marginTop="25px">
               <Tag colorScheme="red" borderRadius="full" fontSize="11px">
                 Assigned to
               </Tag>
               <p style={{ fontSize: "11px", color: "#727272" }}>
-                {dayjs(ele?.dueDate).format("DD-MM-YYYY")}
+                Due {dayjs(ele?.dueDate).format("DD/MM")}
               </p>
             </Flex>
           </Box>

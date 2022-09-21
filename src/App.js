@@ -12,7 +12,6 @@ const theme = extendTheme({
         // fontFamily: "Avenir, Helvetica, Arial, sans-serif",
         fontFamily: "Poppins,sans-serif",
         height: "100%",
-        backgroundColor: "#fff",
       },
     },
   },

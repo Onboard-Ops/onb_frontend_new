@@ -9,6 +9,7 @@ import MilestoneBoard from "../../components/MilestoneBoard/MilestoneBoard";
 import { useEffect } from "react";
 import { FetchCurrentMilestone } from "../../redux/actions/dashboard/dashboard.action";
 import { Skeleton } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 const OverView = () => {
   const dispatch = useDispatch();
@@ -36,11 +37,13 @@ const OverView = () => {
                 milestone.map((ele) => {
                   return <MilestoneBoard data={ele} />;
                 })}
-              <Icon
-                as={PlusSquareIcon}
-                color="#727272"
-                fontSize="2xl"
-                cursor="pointer"
+              <PlusOutlined
+                style={{
+                  marginTop: 10,
+                  cursor: "pointer",
+                  fontSize: "25px",
+                  color: "#929292",
+                }}
               />
             </div>
           </div>

@@ -7,6 +7,7 @@ const {
 
 const InitialState = {
   dashboard: [],
+  currentProject: "",
   dashboardLoading: false,
   dashboardApiCall: {
     apiCalled: false,
