@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import {
   IconButton,
   Avatar,
@@ -16,6 +16,8 @@ import { FiEyeOff, FiMenu, FiLogOut } from "react-icons/fi";
 import { signout } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const currentProject = localStorage.getItem("currentProject");
 const currentProjectName = localStorage.getItem("currentProjectName");
@@ -72,7 +74,13 @@ export default function Dashboard({ children }) {
 const SidebarContent = ({ onClose, ...rest }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const projectData = useSelector((state) => state.project);
+  const projectData = useSelector((state) => state.dashboard);
+  const [projectName, setProjectName] = useState(
+    localStorage.getItem("currentProjectName")
+  );
+
+  useEffect(() => {}, []);
+
   const navigate = useNavigate();
   const handleSignOut = () => {
     dispatch(signout());
@@ -96,7 +104,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
           fontWeight="bold"
           color="white"
         >
-          {projectData?.project?.title}
+          {projectName}
         </Text>
       </Flex>
 

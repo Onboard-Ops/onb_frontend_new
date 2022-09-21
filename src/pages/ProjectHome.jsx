@@ -34,7 +34,8 @@ import {
 import SideBar from "../Layout/SideBar/SideBar";
 import dayjs from "dayjs";
 import { DashboardTypes } from "../redux/actionTypes";
-const { DASHBOARD_CURRENT_PROJECT } = DashboardTypes;
+const { DASHBOARD_CURRENT_PROJECT, DASHBOARD_CURRENT_PROJECT_NAME } =
+  DashboardTypes;
 
 const ProjectHome = () => {
   const toast = useToast();
@@ -227,6 +228,10 @@ const ProjectHome = () => {
                       onClick={() => {
                         localStorage.setItem("currentProject", item?._id);
                         localStorage.setItem("currentProjectName", item?.title);
+                        dispatch({
+                          type: DASHBOARD_CURRENT_PROJECT_NAME,
+                          payload: item?.title,
+                        });
                         dispatch({
                           type: DASHBOARD_CURRENT_PROJECT,
                           payload: item?._id,

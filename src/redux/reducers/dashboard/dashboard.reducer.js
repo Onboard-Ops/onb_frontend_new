@@ -9,11 +9,13 @@ const {
   DASHBOARD_TASK_MODAL_OFF,
   DASHBOARD_TASK_MODAL_ON,
   DASHBOARD_SET_CURRENT_MILESTONE,
+  DASHBOARD_CURRENT_PROJECT_NAME,
 } = DashboardTypes;
 
 const InitialState = {
   dashboard: [],
   currentProject: null,
+  currentProjectName: "",
   currentMileStone: "",
   dashboardLoading: false,
   taskModal: false,
@@ -74,6 +76,13 @@ export const DashboardReducer = (state = InitialState, action) => {
       state = {
         ...state,
         currentProject: payload,
+      };
+      break;
+    case DASHBOARD_CURRENT_PROJECT_NAME:
+      console.log(payload, "pay comning");
+      state = {
+        ...state,
+        currentProjectName: payload,
       };
       break;
     case DASHBOARD_SET_CURRENT_MILESTONE:
