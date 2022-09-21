@@ -3,3 +3,17 @@
   justify-content: center;
   margin: auto;
 }
+
+.button_style {
+  background-color: #536593 !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+  outline: none !important;
+  padding: 10px 20px 33px 20px !important;
+  border-radius: 10px !important;
+}
+
+.button_style:hover {
+  background-color: #2a3246 !important;
+  outline: none !important;
+}

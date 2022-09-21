@@ -15,3 +15,15 @@
   margin-top: 6px;
   color: #929292;
 }
+
+.task_modal_content {
+  padding: 20px;
+}
+
+.task_modal_flex {
+  display: flex;
+  align-items: center;
+}
+
+.assign_select {
+}

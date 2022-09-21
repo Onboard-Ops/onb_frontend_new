@@ -26,11 +26,11 @@ const TaskCard = ({ tasks }) => {
         return (
           <Box
             w="250px"
-            borderWidth="1px"
+            borderWidth="2px"
             borderRadius="6px"
             padding="10px"
             marginBottom="15px"
-            borderColor="#bdbdbd"
+            borderColor="#CCCCCC"
             cursor="pointer"
             backgroundColor="#E9E9E9"
           >
