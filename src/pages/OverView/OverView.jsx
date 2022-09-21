@@ -12,7 +12,7 @@ import {
 } from "../../redux/actions/dashboard/dashboard.action";
 import { Button, DatePicker, Input, Modal, Skeleton } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DashboardTypes } from "../../redux/actionTypes";
 
 const { DASHBOARD_MILESTONE_MODAL_ON, DASHBOARD_MILESTONE_MODAL_OFF } =
@@ -29,16 +29,14 @@ const OverView = () => {
     dueDate: "",
   });
 
+  let { projectid } = useParams();
+
   const dashboardData = useSelector((state) => state?.dashboard);
   const currentProject = localStorage.getItem("currentProject");
 
   useEffect(() => {
-    if (!currentProject) {
-      navigate("/projects");
-    } else {
-      setFormData({ ...formData, projectrefId: currentProject });
-    }
-  }, [dashboardData]);
+    setFormData({ ...formData, projectrefId: projectid });
+  }, [projectid]);
 
   useEffect(() => {
     dispatch(FetchCurrentMilestone(currentProject));

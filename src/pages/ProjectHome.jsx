@@ -226,12 +226,13 @@ const ProjectHome = () => {
                     <Link
                       onClick={() => {
                         localStorage.setItem("currentProject", item?._id);
+                        localStorage.setItem("currentProjectName", item?.title);
                         dispatch({
                           type: DASHBOARD_CURRENT_PROJECT,
                           payload: item?._id,
                         });
                       }}
-                      to={`/dashboard/${item?.magic_link}/${item?._id}`}
+                      to={`/overview/${item?.magic_link}/${item?._id}`}
                     >
                       <Box
                         borderRadius="lg"

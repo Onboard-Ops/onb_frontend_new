@@ -17,8 +17,15 @@ import { signout } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
+const currentProject = localStorage.getItem("currentProject");
+const currentProjectName = localStorage.getItem("currentProjectName");
+
 const LinkItems = [
-  { name: "Overview", icon: "", path: "/overview" },
+  {
+    name: "Overview",
+    icon: "",
+    path: `/overview/${currentProjectName}/${currentProject}`,
+  },
   { name: "To Do", icon: "", path: "/to-do" },
   { name: "People", icon: "", path: "/people" },
   { name: "Resources", icon: "", path: `/resources` },

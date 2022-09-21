@@ -44,7 +44,10 @@ const Router = () => {
             <Route path="/to-do" element={<ToDo key="8" />} />,
             <Route path="/resources" element={<Resources key="8" />} />,
             <Route path="/customer_info" element={<CustomerInfo key="9" />} />,
-            <Route path="/overview" element={<OverView key="10" />} />,
+            <Route
+              path="/overview/:project/:projectid"
+              element={<OverView key="10" />}
+            />,
           ]
         ) : (
           <Route path="*" element={<Four0Four />} key="**" />

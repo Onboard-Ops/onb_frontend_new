@@ -49,7 +49,7 @@ export default function Login() {
     // 	duration: 3000,
     // 	isClosable: true,
     // });
-    navigate("/overview", { replace: true });
+    navigate("/projects", { replace: true });
   }
 
   if (user?.isAuthenticating) {
