@@ -14,6 +14,7 @@ import { CreateTaskApi } from "../../redux/actions/dashboard/dashboard.action";
 import { FetchPeopleApi } from "../../redux/actions/people/people.action";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Mentions } from "antd";
 
 import { DashboardTypes } from "../../redux/actionTypes";
 const {
@@ -22,6 +23,7 @@ const {
   DASHBOARD_SET_CURRENT_MILESTONE,
 } = DashboardTypes;
 
+const { Option: MentionOption } = Mentions;
 const { Option } = Select;
 
 const MilestoneBoard = (data) => {
@@ -37,6 +39,11 @@ const MilestoneBoard = (data) => {
     dependencies: "",
     dueDate: "",
     private: false,
+  });
+  const [mention, setMention] = useState({
+    commentBody: "",
+    taskRef: "",
+    mentionTo: "",
   });
   const dispatch = useDispatch();
   const { data: milestone } = data;
@@ -64,7 +71,7 @@ const MilestoneBoard = (data) => {
 
   const handleCreateTask = () => {
     setFormData({ ...formData, assignedBy: authUser?._id });
-    dispatch(CreateTaskApi(formData));
+    dispatch(CreateTaskApi(formData, mention));
   };
 
   return (
@@ -173,13 +180,36 @@ const MilestoneBoard = (data) => {
           </div>
           <hr />
           <div style={{ padding: 10 }}>
-            <Input
-              bordered={false}
-              placeholder="Add comments"
-              // onChange={(e) =>
-              //   setFormData({ ...formData, comment: e.target.value })
-              // }
-            />
+            <Mentions
+              style={{
+                width: "100%",
+                border: "none",
+                outline: "none",
+              }}
+              onChange={(value) => {
+                setMention({
+                  ...mention,
+                  commentBody: value,
+                });
+              }}
+              onSelect={(option) => {
+                setMention({
+                  ...mention,
+                  mentionTo: option?.key,
+                });
+              }}
+              placeholder="Type @ to mention a user"
+            >
+              {people &&
+                people.length > 0 &&
+                people.map((ele) => {
+                  return (
+                    <Option key={ele?._id} value={ele?.fullName} i>
+                      {ele?.fullName}
+                    </Option>
+                  );
+                })}
+            </Mentions>
           </div>
           <hr />
           <div style={{ padding: 10, marginTop: 10 }}>
