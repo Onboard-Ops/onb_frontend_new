@@ -137,3 +137,13 @@ export const DeleteProject = (projectID) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const DeleteTask = (taskID) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`${API_URL}/delete-task/${taskID}`, config);
+    res?.data?.status && window.location.reload();
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -2,11 +2,13 @@ import {
   Button,
   Checkbox,
   DatePicker,
+  Dropdown,
   Input,
   Mentions,
   Modal,
   Select,
   Skeleton,
+  Menu,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React from "react";
@@ -16,6 +18,8 @@ import ReactQuill from "react-quill";
 import { useSelector, useDispatch } from "react-redux";
 import { DashboardTypes } from "../../redux/actionTypes";
 import "react-quill/dist/quill.snow.css";
+import { EllipsisOutlined, DeleteOutlined } from "@ant-design/icons";
+import { DeleteTask } from "../../redux/actions/dashboard/dashboard.action";
 const { DASHBOARD_TASK_MODAL_VIEW_OFF } = DashboardTypes;
 
 const { Option } = Select;
@@ -29,6 +33,25 @@ const TaskModal = () => {
     (state) => state?.dashboard?.singleTaskDetail
   );
 
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: "2",
+          label: (
+            <p
+              onClick={() => dispatch(DeleteTask(taskDetails?._id))}
+              style={{ color: "tomato" }}
+            >
+              Delete task
+            </p>
+          ),
+          icon: <DeleteOutlined style={{ color: "tomato" }} />,
+        },
+      ]}
+    />
+  );
+
   useEffect(() => {
     taskDetails?._id && setLoader(false);
   }, [taskDetails]);
@@ -40,15 +63,32 @@ const TaskModal = () => {
           className="ant-modal"
           title={
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <p style={{ color: "#333" }}>Create task</p>
-              <Checkbox
-                style={{ marginRight: "25px", fontSize: 16, color: "#929292" }}
-                // onChange={() =>
-                //   setFormData({ ...formData, private: !formData?.private })
-                // }
+              <p style={{ color: "#333" }}>Task details</p>
+              <div
+                style={{
+                  marginRight: 30,
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
-                Private
-              </Checkbox>
+                <Checkbox
+                  style={{
+                    marginRight: "25px",
+                    fontSize: 16,
+                    color: "#929292",
+                  }}
+                  // onChange={() =>
+                  //   setFormData({ ...formData, private: !formData?.private })
+                  // }
+                >
+                  Private
+                </Checkbox>
+                <Dropdown overlay={menu}>
+                  <a onClick={(e) => e.preventDefault()}>
+                    <EllipsisOutlined style={{ fontSize: 25 }} />
+                  </a>
+                </Dropdown>
+              </div>
             </div>
           }
           width="100vh"
