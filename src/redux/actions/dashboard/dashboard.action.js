@@ -8,6 +8,7 @@ const {
   DASHBOARD_API_LOADER_OFF,
   DASHBOARD_API_DATA,
   DASHBOARD_TASK_MODAL_OFF,
+  DASHBOARD_TASK_FETCH,
 } = DashboardTypes;
 
 const token = window.localStorage.getItem("token");
@@ -88,6 +89,36 @@ export const AddComment = (formData) => async (dispatch) => {
   try {
     console.log(formData, "DATA");
     const res = await axios.post(`${API_URL}/add-comment`, formData, config);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const GetTaskByID = (taskID) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${API_URL}/get-task-by-id/${taskID}`, config);
+    console.log(res);
+    const {
+      data: { task },
+    } = res;
+    console.log(task);
+    dispatch({ type: DASHBOARD_TASK_FETCH, payload: task });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const AddCustomerInfo = (formData, projectID) => async (dispatch) => {
+  try {
+    let payloadData = {
+      customer_info: formData,
+    };
+    const res = await axios.put(
+      `${API_URL}/update-project/${projectID}`,
+      payloadData,
+      config
+    );
     console.log(res);
   } catch (error) {
     console.log(error);

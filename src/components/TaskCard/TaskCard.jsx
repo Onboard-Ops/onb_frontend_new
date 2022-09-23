@@ -1,29 +1,29 @@
 import React from "react";
-import {
-  Box,
-  TagLeftIcon,
-  TagLabel,
-  Flex,
-  Icon,
-  Heading,
-} from "@chakra-ui/react";
-import {
-  CheckCircleIcon,
-  InfoIcon,
-  ViewOffIcon,
-  TimeIcon,
-  PlusSquareIcon,
-} from "@chakra-ui/icons";
+import { Box, Flex, Icon } from "@chakra-ui/react";
+import { ViewOffIcon } from "@chakra-ui/icons";
 import { Tag } from "antd";
 import dayjs from "dayjs";
 import { MinusCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+
+import { DashboardTypes } from "../../redux/actionTypes";
+import TaskModal from "../TaskModal/TaskModal";
+import { GetTaskByID } from "../../redux/actions/dashboard/dashboard.action";
+const { DASHBOARD_TASK_MODAL_VIEW_ON } = DashboardTypes;
 
 const TaskCard = ({ tasks }) => {
+  const dispatch = useDispatch();
+
   return (
     <>
+      <TaskModal />
       {tasks?.map((ele, i) => {
         return (
           <Box
+            onClick={() => {
+              dispatch(GetTaskByID(ele?._id));
+              dispatch({ type: DASHBOARD_TASK_MODAL_VIEW_ON });
+            }}
             w="250px"
             borderWidth="2px"
             borderRadius="6px"

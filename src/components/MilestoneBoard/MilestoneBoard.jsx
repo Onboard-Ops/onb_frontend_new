@@ -23,7 +23,6 @@ const {
   DASHBOARD_SET_CURRENT_MILESTONE,
 } = DashboardTypes;
 
-const { Option: MentionOption } = Mentions;
 const { Option } = Select;
 
 const MilestoneBoard = (data) => {

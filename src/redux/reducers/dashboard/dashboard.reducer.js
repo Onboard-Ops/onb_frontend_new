@@ -10,6 +10,9 @@ const {
   DASHBOARD_TASK_MODAL_ON,
   DASHBOARD_SET_CURRENT_MILESTONE,
   DASHBOARD_CURRENT_PROJECT_NAME,
+  DASHBOARD_TASK_MODAL_VIEW_ON,
+  DASHBOARD_TASK_MODAL_VIEW_OFF,
+  DASHBOARD_TASK_FETCH,
 } = DashboardTypes;
 
 const InitialState = {
@@ -18,8 +21,10 @@ const InitialState = {
   currentProjectName: "",
   currentMileStone: "",
   dashboardLoading: false,
+  taskCardModal: false,
   taskModal: false,
   mileStoneModal: false,
+  singleTaskDetail: {},
   dashboardApiCall: {
     apiCalled: false,
     title: "",
@@ -72,6 +77,18 @@ export const DashboardReducer = (state = InitialState, action) => {
         taskModal: false,
       };
       break;
+    case DASHBOARD_TASK_MODAL_VIEW_ON:
+      state = {
+        ...state,
+        taskCardModal: true,
+      };
+      break;
+    case DASHBOARD_TASK_MODAL_VIEW_OFF:
+      state = {
+        ...state,
+        taskCardModal: false,
+      };
+      break;
     case DASHBOARD_CURRENT_PROJECT:
       state = {
         ...state,
@@ -89,6 +106,13 @@ export const DashboardReducer = (state = InitialState, action) => {
       state = {
         ...state,
         currentMileStone: payload,
+      };
+      break;
+    case DASHBOARD_TASK_FETCH:
+      console.log(payload);
+      state = {
+        ...state,
+        singleTaskDetail: payload,
       };
       break;
   }
