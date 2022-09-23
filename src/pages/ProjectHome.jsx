@@ -5,8 +5,9 @@ import {
   AddProjectAction,
   signout,
 } from "../redux/actions";
-import { ArrowBackIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
+import { Modal as AntdModal } from "antd";
 import Loader from "../components/Loader";
 import {
   Tabs,
@@ -21,8 +22,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  InputRightElement,
-  InputGroup,
   FormControl,
   FormLabel,
   Input,
@@ -33,9 +32,13 @@ import {
 } from "@chakra-ui/react";
 import SideBar from "../Layout/SideBar/SideBar";
 import dayjs from "dayjs";
+import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { DashboardTypes } from "../redux/actionTypes";
+import { DeleteProject } from "../redux/actions/dashboard/dashboard.action";
 const { DASHBOARD_CURRENT_PROJECT, DASHBOARD_CURRENT_PROJECT_NAME } =
   DashboardTypes;
+
+const { confirm } = AntdModal;
 
 const ProjectHome = () => {
   const toast = useToast();
@@ -96,6 +99,27 @@ const ProjectHome = () => {
   // if (projectStateData?.gettingAllProjects) {
   // 	return <Loader />;
   // }
+
+  const showDeleteConfirm = (projectID) => {
+    confirm({
+      title: "Are you sure delete this project?",
+      icon: <ExclamationCircleOutlined />,
+      content: "This action can't be undo!",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+
+      onOk() {
+        dispatch(DeleteProject(projectID));
+        console.log("OK");
+      },
+
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   return (
     <SideBar>
       {projectStateData?.projectLoading ? (
@@ -224,21 +248,31 @@ const ProjectHome = () => {
               {projectStateData?.allProjects?.allProjectsByCurrentUser?.map(
                 (item) => {
                   return (
-                    <Link
-                      onClick={() => {
-                        localStorage.setItem("currentProject", item?._id);
-                        localStorage.setItem("currentProjectName", item?.title);
-                        dispatch({
-                          type: DASHBOARD_CURRENT_PROJECT_NAME,
-                          payload: item?.title,
-                        });
-                        dispatch({
-                          type: DASHBOARD_CURRENT_PROJECT,
-                          payload: item?._id,
-                        });
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
-                      to={`/overview/${item?.magic_link}/${item?._id}`}
                     >
+                      {/* <Link
+                        onClick={() => {
+                          localStorage.setItem("currentProject", item?._id);
+                          localStorage.setItem(
+                            "currentProjectName",
+                            item?.title
+                          );
+                          dispatch({
+                            type: DASHBOARD_CURRENT_PROJECT_NAME,
+                            payload: item?.title,
+                          });
+                          dispatch({
+                            type: DASHBOARD_CURRENT_PROJECT,
+                            payload: item?._id,
+                          });
+                        }}
+                        to={`/overview/${item?.magic_link}/${item?._id}`}
+                      > */}
                       <Box
                         borderRadius="lg"
                         display="flex"
@@ -255,11 +289,19 @@ const ProjectHome = () => {
                         key={item._id}
                       >
                         <Text>{item.title}</Text>{" "}
+                        <Text>{item.owner?.fullName}</Text>{" "}
                         <Text>
                           {dayjs(item.dueDate).format("MM-DD-YYYY h:mm A")}
                         </Text>
                       </Box>
-                    </Link>
+                      <DeleteOutlined
+                        onClick={() => {
+                          return showDeleteConfirm(item?._id);
+                        }}
+                        style={{ fontSize: 18, marginTop: 10, marginLeft: 20 }}
+                      />
+                      {/* </Link> */}
+                    </div>
                   );
                 }
               )}
