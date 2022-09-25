@@ -67,6 +67,16 @@ export const DeletePeople = (peopleID) => async (dispatch) => {
   }
 };
 
+export const DeletePeopleRole = (roleID) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`${API_URL}/delete-role/${roleID}`, config);
+    res?.status && window.location.reload();
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const UpdatePeopleRole = (roleData) => async (dispatch) => {
   try {
     const res = await axios.put(

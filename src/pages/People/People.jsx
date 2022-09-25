@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import SideBar from "../../Layout/SideBar/SideBar";
 import {
   CreateUserApi,
+  DeletePeopleRole,
   FetchPeopleApi,
   UpdatePeopleRole,
 } from "../../redux/actions";
@@ -314,7 +315,12 @@ const People = () => {
             marginTop: 20,
           }}
         >
-          <Button className="button_no_outline">Delete Role</Button>
+          <Button
+            onClick={() => dispatch(DeletePeopleRole(roleData?.role?._id))}
+            className="button_no_outline"
+          >
+            Delete Role
+          </Button>
           <Button
             className="button_outline"
             onClick={() => dispatch(UpdatePeopleRole(editRoleData))}
