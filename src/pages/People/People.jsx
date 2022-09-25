@@ -36,8 +36,9 @@ const People = () => {
   const [roles, setRoles] = useState([]);
   const [err, setErr] = useState(false);
   const [viewPeopleModal, setViewPeopleModal] = useState(false);
+  const [editPeopleModal, setEditPeopleModal] = useState(false);
   const [peopleData, setPeopleData] = useState({});
-  const [viewEditProfile, setViewEditProfile] = useState(false);
+  const [editPeopleData, setEditPeopleData] = useState({});
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -91,7 +92,10 @@ const People = () => {
               Profile
             </h1>
             <EditOutlined
-              onClick={() => setViewEditProfile(true)}
+              onClick={() => {
+                setEditPeopleModal(true);
+                setEditPeopleData(peopleData);
+              }}
               style={{ fontSize: 20, cursor: "pointer" }}
             />
           </div>
@@ -133,6 +137,50 @@ const People = () => {
         >
           <Button className="button_outline">Send invite</Button>
           <Button className="button_outline">Done</Button>
+        </div>
+      </AntdModal>
+      <AntdModal
+        closable={false}
+        title={
+          <h1
+            style={{
+              fontSize: 25,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Edit profile
+          </h1>
+        }
+        open={editPeopleModal}
+        // onOk={handleOk}
+        footer={null}
+        onCancel={() => setEditPeopleModal(false)}
+      >
+        <Input
+          style={{ marginBottom: 12 }}
+          placeholder="Full Name"
+          value={editPeopleData?.fullName}
+        />
+        <Input
+          value={editPeopleData?.email}
+          style={{ marginBottom: 12 }}
+          placeholder="Email"
+        />
+        <Input
+          value={editPeopleData?.role?.value}
+          style={{ marginBottom: 12 }}
+          placeholder="Role"
+        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 20,
+          }}
+        >
+          <Button className="button_no_outline">Delete</Button>
+          <Button className="button_outline">Save</Button>
         </div>
       </AntdModal>
       {peopleState?.peopleLoading ? (

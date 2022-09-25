@@ -29,6 +29,17 @@
   background-color: #536593 !important;
 }
 
+.button_no_outline {
+  color: tomato !important;
+  background-color: #fff !important;
+  border: none !important;
+}
+
+.button_no_outline:hover {
+  color: #fff !important;
+  background-color: #536593 !important;
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 6px;

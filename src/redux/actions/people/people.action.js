@@ -53,3 +53,16 @@ export const CreateUserApi = (formData) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const DeletePeople = (peopleID) => async (dispatch) => {
+  try {
+    const res = await axios.delete(
+      `${API_URL}/delete-project/${peopleID}`,
+      config
+    );
+    res?.data?.status && window.location.reload();
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
