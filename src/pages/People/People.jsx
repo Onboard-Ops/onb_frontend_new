@@ -18,16 +18,22 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import React from "react";
-import { Modal as AntdModal } from "antd";
+import { Modal as AntdModal, Select as AntSelect } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SideBar from "../../Layout/SideBar/SideBar";
-import { CreateUserApi, FetchPeopleApi } from "../../redux/actions";
+import {
+  CreateUserApi,
+  FetchPeopleApi,
+  UpdatePeopleRole,
+} from "../../redux/actions";
 import { FetchRolesApi } from "../../redux/actions/roles/roles.action";
 import { EditOutlined } from "@ant-design/icons";
 
 import "./style.css";
+
+const { Option } = AntSelect;
 
 const People = () => {
   const dispatch = useDispatch();
@@ -37,8 +43,12 @@ const People = () => {
   const [err, setErr] = useState(false);
   const [viewPeopleModal, setViewPeopleModal] = useState(false);
   const [editPeopleModal, setEditPeopleModal] = useState(false);
+  const [viewRoleModal, setViewRoleModal] = useState(false);
+  const [editRoleModal, setEditRoleModal] = useState(false);
   const [peopleData, setPeopleData] = useState({});
   const [editPeopleData, setEditPeopleData] = useState({});
+  const [roleData, setRoleData] = useState({});
+  const [editRoleData, setsEditRoleData] = useState({});
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -74,7 +84,8 @@ const People = () => {
     dispatch(CreateUserApi(formData));
   };
 
-  console.log(peopleData);
+  console.log(roleData);
+  console.log(editRoleData, "ROLE");
 
   return (
     <SideBar>
@@ -183,6 +194,135 @@ const People = () => {
           <Button className="button_outline">Save</Button>
         </div>
       </AntdModal>
+      <AntdModal
+        closable={false}
+        title={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: 10,
+            }}
+          >
+            <h1
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              Role
+            </h1>
+            <EditOutlined
+              onClick={() => {
+                setEditRoleModal(true);
+                setsEditRoleData({
+                  value: roleData?.role?.value,
+                  access: roleData?.role?.access,
+                  _id: roleData?.role?._id,
+                });
+              }}
+              style={{ fontSize: 25, cursor: "pointer" }}
+            />
+          </div>
+        }
+        open={viewRoleModal}
+        // onOk={handleOk}
+        footer={null}
+        onCancel={() => setViewRoleModal(false)}
+      >
+        <div
+          style={{
+            color: "#929292",
+            fontSize: 18,
+            padding: 10,
+            display: "flex",
+          }}
+        >
+          <div>
+            <p>Role Name</p>
+            <p>Role Access</p>
+            <p>Assigned to</p>
+          </div>
+          <div style={{ marginLeft: 40 }}>
+            <p style={{ color: "#333" }}>{roleData?.role?.value}</p>
+            <p style={{ color: "#333" }}>{roleData?.role?.access}</p>
+            <p style={{ color: "#333" }}>{roleData?.fullName}</p>
+            <p style={{ color: "#333" }}></p>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: 20,
+          }}
+        >
+          <Button className="button_outline">Done</Button>
+        </div>
+      </AntdModal>
+      <AntdModal
+        closable={false}
+        title={
+          <h1
+            style={{
+              fontSize: 25,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Edit Role
+          </h1>
+        }
+        open={editRoleModal}
+        // onOk={handleOk}
+        footer={null}
+        onCancel={() => setEditRoleModal(false)}
+      >
+        <Input
+          style={{ marginBottom: 12 }}
+          // placeholder={editRoleData?.role?.value}
+          value={editRoleData?.value}
+          onChange={(e) =>
+            setsEditRoleData({ ...editRoleData, value: e.target.value })
+          }
+        />
+        <Select
+          style={{ marginBottom: 12 }}
+          placeholder="Select option"
+          value={editRoleData?.access}
+          onChange={(e) =>
+            setsEditRoleData({ ...editRoleData, access: e.target.value })
+          }
+          // value={roleData?.role?.access}
+        >
+          <option value="internal-admin">Internal Admin</option>
+          <option value="internal-editor">Internal Editor</option>
+          <option value="external-editor">External Editor</option>
+        </Select>
+
+        <Input
+          disabled
+          value={editRoleData?.fullName}
+          style={{ marginBottom: 12 }}
+          placeholder="Role"
+        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 20,
+          }}
+        >
+          <Button className="button_no_outline">Delete Role</Button>
+          <Button
+            className="button_outline"
+            onClick={() => dispatch(UpdatePeopleRole(editRoleData))}
+          >
+            Save
+          </Button>
+        </div>
+      </AntdModal>
       {peopleState?.peopleLoading ? (
         <Spinner
           style={{ display: "flex", justifyContent: "center", margin: "auto" }}
@@ -284,7 +424,14 @@ const People = () => {
                     >
                       {ele?.fullName}
                     </Text>
-                    <Text>{ele?.role?.value}</Text>
+                    <Text
+                      onClick={() => {
+                        setViewRoleModal(true);
+                        setRoleData(ele);
+                      }}
+                    >
+                      {ele?.role?.value}
+                    </Text>
                     <Text>{ele?.email}</Text>
                     <Text>
                       {dayjs(ele?.createdAt).format("MM:DD:YYYY h:mm A")}

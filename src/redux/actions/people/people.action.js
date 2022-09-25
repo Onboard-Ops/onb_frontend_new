@@ -66,3 +66,17 @@ export const DeletePeople = (peopleID) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const UpdatePeopleRole = (roleData) => async (dispatch) => {
+  try {
+    const res = await axios.put(
+      `${API_URL}/update-role/${roleData?._id}`,
+      roleData,
+      config
+    );
+    res?.status && window.location.reload();
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
