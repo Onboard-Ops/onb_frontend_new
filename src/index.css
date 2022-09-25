@@ -40,6 +40,17 @@
   background-color: #536593 !important;
 }
 
+.button_outline_danger {
+  color: tomato !important;
+  border: 2px solid tomato !important;
+  background-color: #fff !important;
+}
+
+.button_outline_danger:hover {
+  color: #fff !important;
+  background-color: tomato !important;
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 6px;

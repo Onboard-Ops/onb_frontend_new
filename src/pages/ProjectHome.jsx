@@ -44,6 +44,9 @@ const ProjectHome = () => {
   const toast = useToast();
   const [isNext, setIsNext] = useState(false);
   const [err, setErr] = useState(false);
+  const [projectID, setProjectID] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [allProjects, setAllProjects] = useState([true]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const projectStateData = useSelector((state) => state.project);
@@ -122,6 +125,83 @@ const ProjectHome = () => {
 
   return (
     <SideBar>
+      <AntdModal
+        title={
+          <p style={{ fontSize: 25, textAlign: "center" }}>Delete Project</p>
+        }
+        footer={null}
+        open={showDeleteModal}
+        // onOk={handleOk}
+        onCancel={() => setShowDeleteModal(false)}
+      >
+        <p style={{ textAlign: "center", color: "#929292" }}>
+          Are you sure? This cannot be undone. Everyone will be notified that
+          the project was deleted by you.
+        </p>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 30,
+          }}
+        >
+          <Button
+            className="button_outline"
+            onClick={() => setShowLeaveModal(true)}
+          >
+            Leave Project
+          </Button>
+          <Button
+            className="button_outline_danger"
+            onClick={() => {
+              showDeleteConfirm(projectID);
+            }}
+          >
+            Delete Project
+          </Button>
+        </div>
+      </AntdModal>
+      <AntdModal
+        title={
+          <p style={{ fontSize: 25, textAlign: "center" }}>Leave Project</p>
+        }
+        footer={null}
+        open={showLeaveModal}
+        // onOk={handleOk}
+        onCancel={() => setShowLeaveModal(false)}
+      >
+        <p style={{ textAlign: "center", color: "#929292" }}>
+          In order to leave [Customer Name] project, you must give full control
+          to someone else.
+        </p>
+        <div style={{ display: "flex" }}>
+          <div>
+            <p style={{ fontSize: 18 }}>Role Name</p>
+            <p style={{ fontSize: 18 }}>Assigned to</p>
+          </div>
+          <div style={{ marginLeft: 40 }}>
+            <p>Point of contact</p>
+            <Input size="small" />
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 30,
+          }}
+        >
+          <Button className="button_outline">Leave Project</Button>
+          <Button
+            className="button_outline_danger"
+            onClick={() => {
+              showDeleteConfirm(projectID);
+            }}
+          >
+            Delete Project
+          </Button>
+        </div>
+      </AntdModal>
       {projectStateData?.projectLoading ? (
         <Spinner
           style={{ display: "flex", justifyContent: "center", margin: "auto" }}
@@ -318,7 +398,8 @@ const ProjectHome = () => {
                       </Box>
                       <DeleteOutlined
                         onClick={() => {
-                          return showDeleteConfirm(item?._id);
+                          setShowDeleteModal(true);
+                          setProjectID(item?._id);
                         }}
                         style={{ fontSize: 18, marginTop: 10, marginLeft: 20 }}
                       />
