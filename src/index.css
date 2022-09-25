@@ -4,7 +4,7 @@
   margin: auto;
 }
 
-.button_style {
+.button_main {
   background-color: #536593 !important;
   color: #fff !important;
   font-weight: 500 !important;
@@ -13,9 +13,20 @@
   border-radius: 10px !important;
 }
 
-.button_style:hover {
+.button_main:hover {
   background-color: #2a3246 !important;
   outline: none !important;
+}
+
+.button_outline {
+  border: 2px solid #536593 !important;
+  color: #536593 !important;
+  background-color: #fff !important;
+}
+
+.button_outline:hover {
+  color: #fff !important;
+  background-color: #536593 !important;
 }
 
 /* Scrollbar Styling */

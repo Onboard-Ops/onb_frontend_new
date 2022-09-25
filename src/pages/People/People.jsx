@@ -36,6 +36,7 @@ const People = () => {
   const [roles, setRoles] = useState([]);
   const [err, setErr] = useState(false);
   const [viewPeopleModal, setViewPeopleModal] = useState(false);
+  const [peopleData, setPeopleData] = useState({});
   const [viewEditProfile, setViewEditProfile] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -72,6 +73,8 @@ const People = () => {
     dispatch(CreateUserApi(formData));
   };
 
+  console.log(peopleData);
+
   return (
     <SideBar>
       <AntdModal
@@ -98,22 +101,38 @@ const People = () => {
         footer={null}
         onCancel={() => setViewPeopleModal(false)}
       >
-        <div style={{ color: "#929292", fontSize: 18, padding: 10 }}>
-          <p>
-            Full Name <span style={{ color: "#333" }}>Dave Smith</span>
-          </p>
-          <p>
-            Email <span style={{ color: "#333" }}>Dave Smith</span>
-          </p>
-          <p>
-            Role Name <span style={{ color: "#333" }}>Dave Smith</span>
-          </p>
-          <p>
-            Role Access <span style={{ color: "#333" }}>Dave Smith</span>
-          </p>
-          <p>
-            Status <span style={{ color: "#333" }}>Dave Smith</span>
-          </p>
+        <div
+          style={{
+            color: "#929292",
+            fontSize: 18,
+            padding: 10,
+            display: "flex",
+          }}
+        >
+          <div>
+            <p>Full Name</p>
+            <p>Email</p>
+            <p>Role Name</p>
+            <p>Role Access</p>
+            <p>Status</p>
+          </div>
+          <div style={{ marginLeft: 40 }}>
+            <p style={{ color: "#333" }}>{peopleData?.fullName}</p>
+            <p style={{ color: "#333" }}>{peopleData?.email}</p>
+            <p style={{ color: "#333" }}>{peopleData?.role?.value}</p>
+            <p style={{ color: "#333" }}>{peopleData?.role?.access}</p>
+            <p style={{ color: "#333" }}></p>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 20,
+          }}
+        >
+          <Button className="button_outline">Send invite</Button>
+          <Button className="button_outline">Done</Button>
         </div>
       </AntdModal>
       {peopleState?.peopleLoading ? (
@@ -212,6 +231,7 @@ const People = () => {
                     <Text
                       onClick={() => {
                         setViewPeopleModal(true);
+                        setPeopleData(ele);
                       }}
                     >
                       {ele?.fullName}

@@ -30,7 +30,7 @@ const CustomerInfo = () => {
             <p style={{ color: "#333", fontSize: 30, fontWeight: "bold" }}>
               OnBoard Ops
             </p>
-            <Button onClick={() => handleUpdateInfo()} className="button_style">
+            <Button onClick={() => handleUpdateInfo()} className="button_main">
               Save info
             </Button>
           </div>

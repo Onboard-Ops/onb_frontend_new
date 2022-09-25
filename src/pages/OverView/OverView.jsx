@@ -83,7 +83,7 @@ const OverView = () => {
 
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Button
-                className="button_style"
+                className="button_main"
                 onClick={() => handleCreateMilestone()}
               >
                 Create

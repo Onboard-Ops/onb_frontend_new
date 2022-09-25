@@ -226,7 +226,7 @@ const MilestoneBoard = (data) => {
             />
           </div>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button className="button_style" onClick={() => handleCreateTask()}>
+            <Button className="button_main" onClick={() => handleCreateTask()}>
               Create task
             </Button>
           </div>
