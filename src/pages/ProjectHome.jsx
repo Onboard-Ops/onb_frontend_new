@@ -288,7 +288,29 @@ const ProjectHome = () => {
                         }}
                         key={item._id}
                       >
-                        <Text>{item.title}</Text>{" "}
+                        <Text
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            localStorage.setItem("currentProject", item?._id);
+                            localStorage.setItem(
+                              "currentProjectName",
+                              item?.title
+                            );
+                            dispatch({
+                              type: DASHBOARD_CURRENT_PROJECT_NAME,
+                              payload: item?.title,
+                            });
+                            dispatch({
+                              type: DASHBOARD_CURRENT_PROJECT,
+                              payload: item?._id,
+                            });
+                            navigate(
+                              `/overview/${item?.magic_link}/${item?._id}`
+                            );
+                          }}
+                        >
+                          {item.title}
+                        </Text>{" "}
                         <Text>{item.owner?.fullName}</Text>{" "}
                         <Text>
                           {dayjs(item.dueDate).format("MM-DD-YYYY h:mm A")}

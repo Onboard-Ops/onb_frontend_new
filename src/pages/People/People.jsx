@@ -18,12 +18,14 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import React from "react";
+import { Modal as AntdModal } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SideBar from "../../Layout/SideBar/SideBar";
 import { CreateUserApi, FetchPeopleApi } from "../../redux/actions";
 import { FetchRolesApi } from "../../redux/actions/roles/roles.action";
+import { EditOutlined } from "@ant-design/icons";
 
 import "./style.css";
 
@@ -33,6 +35,8 @@ const People = () => {
   const [people, setPeople] = useState([]);
   const [roles, setRoles] = useState([]);
   const [err, setErr] = useState(false);
+  const [viewPeopleModal, setViewPeopleModal] = useState(false);
+  const [viewEditProfile, setViewEditProfile] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -70,6 +74,48 @@ const People = () => {
 
   return (
     <SideBar>
+      <AntdModal
+        closable={false}
+        title={
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <h1
+              style={{
+                fontSize: 25,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              Profile
+            </h1>
+            <EditOutlined
+              onClick={() => setViewEditProfile(true)}
+              style={{ fontSize: 20, cursor: "pointer" }}
+            />
+          </div>
+        }
+        open={viewPeopleModal}
+        // onOk={handleOk}
+        footer={null}
+        onCancel={() => setViewPeopleModal(false)}
+      >
+        <div style={{ color: "#929292", fontSize: 18, padding: 10 }}>
+          <p>
+            Full Name <span style={{ color: "#333" }}>Dave Smith</span>
+          </p>
+          <p>
+            Email <span style={{ color: "#333" }}>Dave Smith</span>
+          </p>
+          <p>
+            Role Name <span style={{ color: "#333" }}>Dave Smith</span>
+          </p>
+          <p>
+            Role Access <span style={{ color: "#333" }}>Dave Smith</span>
+          </p>
+          <p>
+            Status <span style={{ color: "#333" }}>Dave Smith</span>
+          </p>
+        </div>
+      </AntdModal>
       {peopleState?.peopleLoading ? (
         <Spinner
           style={{ display: "flex", justifyContent: "center", margin: "auto" }}
@@ -147,7 +193,7 @@ const People = () => {
           {people &&
             people.map((ele) => {
               return (
-                <Link to={`/dashboard`}>
+                <div style={{ cursor: "pointer" }}>
                   <Box
                     borderRadius="lg"
                     display="flex"
@@ -163,14 +209,20 @@ const People = () => {
                     }}
                     key={12}
                   >
-                    <Text>{ele?.fullName}</Text>
+                    <Text
+                      onClick={() => {
+                        setViewPeopleModal(true);
+                      }}
+                    >
+                      {ele?.fullName}
+                    </Text>
                     <Text>{ele?.role?.value}</Text>
                     <Text>{ele?.email}</Text>
                     <Text>
                       {dayjs(ele?.createdAt).format("MM:DD:YYYY h:mm A")}
                     </Text>
                   </Box>
-                </Link>
+                </div>
               );
             })}
         </div>
