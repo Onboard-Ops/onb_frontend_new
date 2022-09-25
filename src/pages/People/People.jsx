@@ -30,7 +30,7 @@ import {
   UpdatePeopleRole,
 } from "../../redux/actions";
 import { FetchRolesApi } from "../../redux/actions/roles/roles.action";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, InfoCircleFilled } from "@ant-design/icons";
 
 import "./style.css";
 
@@ -45,6 +45,7 @@ const People = () => {
   const [viewPeopleModal, setViewPeopleModal] = useState(false);
   const [editPeopleModal, setEditPeopleModal] = useState(false);
   const [viewRoleModal, setViewRoleModal] = useState(false);
+  const [addRoleModal, setAddRoleModal] = useState(false);
   const [editRoleModal, setEditRoleModal] = useState(false);
   const [peopleData, setPeopleData] = useState({});
   const [editPeopleData, setEditPeopleData] = useState({});
@@ -329,6 +330,74 @@ const People = () => {
           </Button>
         </div>
       </AntdModal>
+      <AntdModal
+        closable={false}
+        style={{ zIndex: 999999 }}
+        title={
+          <h1
+            style={{
+              fontSize: 25,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Add Role
+          </h1>
+        }
+        open={addRoleModal}
+        // onOk={handleOk}
+        footer={null}
+        onCancel={() => setAddRoleModal(false)}
+      >
+        <Input
+          style={{ marginBottom: 12 }}
+          // placeholder={editRoleData?.role?.value}
+          value={editRoleData?.value}
+          onChange={(e) =>
+            setsEditRoleData({ ...editRoleData, value: e.target.value })
+          }
+        />
+        <Select
+          style={{ marginBottom: 12 }}
+          placeholder="Select option"
+          value={editRoleData?.access}
+          onChange={(e) =>
+            setsEditRoleData({ ...editRoleData, access: e.target.value })
+          }
+          // value={roleData?.role?.access}
+        >
+          <option value="internal-admin">Internal Admin</option>
+          <option value="internal-editor">Internal Editor</option>
+          <option value="external-editor">External Editor</option>
+        </Select>
+
+        <Input
+          disabled
+          value={editRoleData?.fullName}
+          style={{ marginBottom: 12 }}
+          placeholder="Role"
+        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 20,
+          }}
+        >
+          <Button
+            onClick={() => dispatch(DeletePeopleRole(roleData?.role?._id))}
+            className="button_no_outline"
+          >
+            Delete Role
+          </Button>
+          <Button
+            className="button_outline"
+            onClick={() => dispatch(UpdatePeopleRole(editRoleData))}
+          >
+            Save
+          </Button>
+        </div>
+      </AntdModal>
       {peopleState?.peopleLoading ? (
         <Spinner
           style={{ display: "flex", justifyContent: "center", margin: "auto" }}
@@ -367,12 +436,24 @@ const People = () => {
                 <FormControl style={{ marginBottom: 20 }}>
                   <Select
                     placeholder="Select option"
-                    onChange={(e) => handleRolesOnchange(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value == "add-role") {
+                        setAddRoleModal(true);
+                      } else {
+                        handleRolesOnchange(e.target.value);
+                      }
+                    }}
                   >
                     {roles &&
                       roles.map((ele) => {
                         return <option value={ele?._id}>{ele?.value}</option>;
                       })}
+                    <option
+                      value="add-role"
+                      onClick={() => console.log("CLICKED")}
+                    >
+                      Add Role <InfoCircleFilled style={{ color: "#333" }} />{" "}
+                    </option>
                   </Select>
                 </FormControl>
                 {err && (
