@@ -1,4 +1,4 @@
-import { message as notify } from "antd";
+import { message, message as notify } from "antd";
 import axios from "axios";
 import { API_URL } from "../../../utils/url";
 import { DashboardTypes } from "../../actionTypes";
@@ -80,6 +80,8 @@ export const CreateMileStone = (formData) => async (dispatch) => {
       formData,
       config
     );
+    res?.data?.status && window.location.reload();
+    !res?.data?.status && message.error(res?.data?.message);
   } catch (error) {
     console.log(error);
   }
