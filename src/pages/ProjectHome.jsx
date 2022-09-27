@@ -4,10 +4,11 @@ import {
   GetAllProjectsByCurrentUser,
   AddProjectAction,
   signout,
+  LeaveProject,
 } from "../redux/actions";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
-import { Modal as AntdModal } from "antd";
+import { Modal as AntdModal, Select } from "antd";
 import Loader from "../components/Loader";
 import {
   Tabs,
@@ -35,10 +36,12 @@ import dayjs from "dayjs";
 import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { DashboardTypes } from "../redux/actionTypes";
 import { DeleteProject } from "../redux/actions/dashboard/dashboard.action";
+import { FetchPeopleApi } from "../redux/actions/people/people.action";
 const { DASHBOARD_CURRENT_PROJECT, DASHBOARD_CURRENT_PROJECT_NAME } =
   DashboardTypes;
 
 const { confirm } = AntdModal;
+const { Option } = Select;
 
 const ProjectHome = () => {
   const toast = useToast();
@@ -47,10 +50,12 @@ const ProjectHome = () => {
   const [projectID, setProjectID] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [owner, setOwner] = useState("");
   const [allProjects, setAllProjects] = useState([true]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const projectStateData = useSelector((state) => state.project);
   const projectState = useSelector((state) => state.project.projectApiCall);
+  const people = useSelector((state) => state?.people?.people);
   const dispatch = useDispatch();
   const initialRef = useRef();
   const finalRef = useRef();
@@ -102,6 +107,10 @@ const ProjectHome = () => {
   // if (projectStateData?.gettingAllProjects) {
   // 	return <Loader />;
   // }
+
+  const handleLeaveProject = () => {
+    dispatch(LeaveProject(owner, projectID));
+  };
 
   const showDeleteConfirm = (projectID) => {
     confirm({
@@ -174,14 +183,24 @@ const ProjectHome = () => {
           In order to leave [Customer Name] project, you must give full control
           to someone else.
         </p>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", padding: 30 }}>
           <div>
             <p style={{ fontSize: 18 }}>Role Name</p>
             <p style={{ fontSize: 18 }}>Assigned to</p>
           </div>
-          <div style={{ marginLeft: 40 }}>
+          <div style={{ marginLeft: 40, fontSize: 16 }}>
             <p>Point of contact</p>
-            <Input size="small" />
+            <Select
+              style={{ width: 150 }}
+              onChange={(value) => setOwner(value)}
+              placeholder="Choose a person"
+            >
+              {people &&
+                people.length > 0 &&
+                people?.map((ele) => {
+                  return <Option value={ele?._id}>{ele?.fullName}</Option>;
+                })}
+            </Select>
           </div>
         </div>
         <div
@@ -191,14 +210,19 @@ const ProjectHome = () => {
             marginTop: 30,
           }}
         >
-          <Button className="button_outline">Leave Project</Button>
           <Button
-            className="button_outline_danger"
+            className="button_outline"
             onClick={() => {
-              showDeleteConfirm(projectID);
+              setShowLeaveModal(false);
             }}
           >
             Delete Project
+          </Button>
+          <Button
+            className="button_outline_danger"
+            onClick={() => handleLeaveProject()}
+          >
+            Leave Project
           </Button>
         </div>
       </AntdModal>
@@ -400,6 +424,7 @@ const ProjectHome = () => {
                         onClick={() => {
                           setShowDeleteModal(true);
                           setProjectID(item?._id);
+                          dispatch(FetchPeopleApi());
                         }}
                         style={{ fontSize: 18, marginTop: 10, marginLeft: 20 }}
                       />

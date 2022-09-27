@@ -85,6 +85,20 @@ export const AddProjectAction = (form) => async (dispatch) => {
   }
 };
 
+export const LeaveProject = (ownerID, projectID) => async (dispatch) => {
+  try {
+    const res = await axios.post(
+      `${API_URL}/leave-project/${projectID}`,
+      { owner: ownerID },
+      config
+    );
+    res?.data?.status && window.location.reload();
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // export const AddProjectAction = (form) => {
 //   return async (dispatch) => {
 //     console.log("API CALLINF");
