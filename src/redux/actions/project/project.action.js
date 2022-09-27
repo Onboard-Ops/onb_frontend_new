@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import AxiosInstance from "../../../utils/axios";
 import { API_URL } from "../../../utils/url";
@@ -92,6 +93,8 @@ export const LeaveProject = (ownerID, projectID) => async (dispatch) => {
       { owner: ownerID },
       config
     );
+    console.log(res);
+    !res?.data?.status && message.error(res?.data?.msg);
     res?.data?.status && window.location.reload();
     console.log(res);
   } catch (error) {
