@@ -50,6 +50,7 @@ const People = () => {
   const [editPeopleModal, setEditPeopleModal] = useState(false);
   const [viewRoleModal, setViewRoleModal] = useState(false);
   const [addRoleModal, setAddRoleModal] = useState(false);
+  const [addPeople, setAddPeople] = useState(false);
   const [editRoleModal, setEditRoleModal] = useState(false);
   const [peopleData, setPeopleData] = useState({});
   const [editPeopleData, setEditPeopleData] = useState({});
@@ -105,6 +106,9 @@ const People = () => {
     if (res?.statusText === "Created") {
       dispatch(FetchRolesApi());
       setAddRoleModal(false);
+      if (addPeople) {
+        onOpen();
+      }
     }
   };
 
@@ -385,7 +389,6 @@ const People = () => {
       </AntdModal>
       <AntdModal
         closable={false}
-        style={{ zIndex: 999999 }}
         title={
           <h1
             style={{
@@ -476,6 +479,8 @@ const People = () => {
                     onChange={(e) => {
                       if (e.target.value == "add-role") {
                         setAddRoleModal(true);
+                        setAddPeople(true);
+                        onClose();
                       } else {
                         handleRolesOnchange(e.target.value);
                       }
