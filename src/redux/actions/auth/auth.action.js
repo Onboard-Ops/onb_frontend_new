@@ -35,7 +35,6 @@ export const LoginAction = (user, navigate) => {
           type: LOGIN_SUCCESS,
           payload: { token, user },
         });
-        console.log(token, "TOKWEN");
         token && window.location.replace("/projects");
       }
     } catch (error) {
