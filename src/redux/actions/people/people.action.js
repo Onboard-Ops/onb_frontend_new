@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import { API_URL } from "../../../utils/url";
 import { PeopleTypes } from "../../actionTypes/";
@@ -50,7 +51,7 @@ export const CreateUserApi = (formData, onClose) => async (dispatch) => {
     });
     const res = await axios.post(`${API_URL}/signup`, formData, config);
     res?.status && dispatch({ type: PEOPLE_API_LOADER_OFF });
-    console.log(res);
+    res && message.success(res?.data?.msg);
     res?.status && dispatch(FetchPeopleApi());
     onClose();
   } catch (error) {
