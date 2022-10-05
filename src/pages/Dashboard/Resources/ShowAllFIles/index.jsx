@@ -13,11 +13,16 @@ import {
   TableContainer,
   IconButton,
 } from "@chakra-ui/react";
+import { Modal as AntdModal } from "antd";
 import download from "downloadjs";
 import axios from "axios";
+import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { API_URL } from "../../../../utils/url";
+import { DeleteResource } from "../../../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const ShowAllFiles = () => {
+  const dispatch = useDispatch();
   const [filesList, setFilesList] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -35,7 +40,28 @@ const ShowAllFiles = () => {
     getFilesList();
   }, []);
 
+  const { confirm } = AntdModal;
+
   console.log(filesList, "FILES");
+
+  const showDeleteConfirm = (projectID) => {
+    confirm({
+      title: "Are you sure delete this resource?",
+      icon: <ExclamationCircleOutlined />,
+      content: "This action can't be undo!",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+
+      onOk() {
+        dispatch(DeleteResource(projectID));
+      },
+
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
 
   // const downloadFile = async (id, path, mimetype) => {
   // 	try {
@@ -79,6 +105,7 @@ const ShowAllFiles = () => {
                     <IconButton
                       // colorScheme='blue'
                       icon={<DeleteIcon />}
+                      onClick={() => showDeleteConfirm()}
                       // onClick={() => downloadFile(_id, file_path, file_mimetype)}
                     />
                   </Td>
