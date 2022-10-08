@@ -84,10 +84,11 @@ const People = () => {
   };
 
   const handleAddPerson = () => {
+    const currentProject = localStorage.getItem("currentProject");
     if (!formData.email || !formData.fullName || !formData.role) {
       return setErr(true);
     }
-    dispatch(CreateUserApi(formData, onClose));
+    dispatch(CreateUserApi(formData, onClose, currentProject));
   };
 
   const addRoleApi = async () => {
