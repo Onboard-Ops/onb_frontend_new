@@ -119,7 +119,6 @@ const MilestoneBoard = (data) => {
                   className="assign_select"
                   bordered={false}
                   onChange={(value) => {
-                    console.log(value);
                     setFormData({ ...formData, assignedTo: value });
                   }}
                 >

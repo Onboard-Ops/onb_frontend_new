@@ -192,6 +192,7 @@ const TaskModal = () => {
                             </Option>
                           );
                         })}
+                      <Option value="unassigned">Unassigned</Option>
                     </Select>
                   </div>
                   <div>
