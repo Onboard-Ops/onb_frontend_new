@@ -24,6 +24,7 @@ import {
   UpdateTaskApi,
 } from "../../redux/actions/dashboard/dashboard.action";
 import { FetchPeopleApi } from "../../redux/actions";
+import AddRoleModal from "../AddRoleModal/AddRoleModal";
 const { DASHBOARD_TASK_MODAL_VIEW_OFF } = DashboardTypes;
 
 const { Option } = Select;
@@ -104,6 +105,7 @@ const TaskModal = () => {
 
   return (
     <div>
+      <AddRoleModal />
       {taskModalOpen && (
         <Modal
           // afterClose={() => handleUpdateTask()}

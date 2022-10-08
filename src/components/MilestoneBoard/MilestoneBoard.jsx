@@ -118,9 +118,10 @@ const MilestoneBoard = (data) => {
                   placeholder="Choose person"
                   className="assign_select"
                   bordered={false}
-                  onChange={(value) =>
-                    setFormData({ ...formData, assignedTo: value })
-                  }
+                  onChange={(value) => {
+                    console.log(value);
+                    setFormData({ ...formData, assignedTo: value });
+                  }}
                 >
                   {people &&
                     people.length > 0 &&
@@ -131,6 +132,7 @@ const MilestoneBoard = (data) => {
                         </Option>
                       );
                     })}
+                  <Option value="unassigned">Unassigned</Option>
                 </Select>
               </div>
               <div>
