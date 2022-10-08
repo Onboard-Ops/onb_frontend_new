@@ -281,24 +281,25 @@ const TaskModal = () => {
               </div>
               <hr />
               <div style={{ padding: 10, marginTop: 10 }}>
-                {/* <TextArea
+                <TextArea
                   value={taskDetails?.task_content}
-                  onChange={(e) =>
-                    setFormData({ ...formData, task_content: e.target.value })
-                  }
+                  disabled
+                  // onChange={(e) =>
+                  //   setFormData({ ...formData, task_content: e.target.value })
+                  // }
                   placeholder="Task description"
                   bordered={false}
                   autoSize={{
                     minRows: 3,
                     maxRows: 5,
                   }}
-                /> */}
-                <ReactQuill
+                />
+                {/* <ReactQuill
                   style={{ border: "none" }}
                   theme="snow"
                   value={formData?.task_content}
                   onChange={setTaskContent}
-                />
+                /> */}
               </div>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 {/* <Button
