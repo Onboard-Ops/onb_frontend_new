@@ -110,7 +110,9 @@ const TaskModal = () => {
           className="ant-modal"
           title={
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <p style={{ color: "#333" }}>Task details</p>
+              <p style={{ color: "#333" }}>
+                {taskDetails?.milestone_ref?.title}
+              </p>
               <div
                 style={{
                   marginRight: 30,
