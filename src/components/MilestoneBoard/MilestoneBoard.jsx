@@ -95,7 +95,10 @@ const MilestoneBoard = (data) => {
           open={dashboard?.taskModal}
           footer={null}
           // onOk={handleOk}
-          onCancel={() => dispatch({ type: DASHBOARD_TASK_MODAL_OFF })}
+          onCancel={() => {
+            handleCreateTask();
+            dispatch({ type: DASHBOARD_TASK_MODAL_OFF });
+          }}
         >
           <Input
             size="large"
@@ -247,11 +250,11 @@ const MilestoneBoard = (data) => {
               }}
             />
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          {/* <div style={{ display: "flex", justifyContent: "center" }}>
             <Button className="button_main" onClick={() => handleCreateTask()}>
               Create task
             </Button>
-          </div>
+          </div> */}
         </Modal>
       )}
       <h1 className="milestone_title">{milestone?.title}</h1>
