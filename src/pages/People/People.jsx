@@ -37,6 +37,7 @@ import { EditOutlined, InfoCircleFilled } from "@ant-design/icons";
 import "./style.css";
 import axios from "axios";
 import { API_URL } from "../../utils/url";
+import { validateEmail } from "../../utils/validations";
 
 const { Option } = AntSelect;
 
@@ -46,6 +47,7 @@ const People = () => {
   const [people, setPeople] = useState([]);
   const [roles, setRoles] = useState([]);
   const [err, setErr] = useState(false);
+  const [errMsg, setErrMsg] = useState(null);
   const [viewPeopleModal, setViewPeopleModal] = useState(false);
   const [editPeopleModal, setEditPeopleModal] = useState(false);
   const [viewRoleModal, setViewRoleModal] = useState(false);
@@ -84,6 +86,13 @@ const People = () => {
   };
 
   const handleAddPerson = () => {
+    setErr(false);
+    setErrMsg(null);
+    if (!validateEmail(formData?.email)) {
+      setErr(true);
+      setErrMsg("Invalid email");
+      return;
+    }
     const currentProject = localStorage.getItem("currentProject");
     if (!formData.email || !formData.fullName || !formData.role) {
       return setErr(true);
@@ -476,7 +485,7 @@ const People = () => {
                 </FormControl>
                 <FormControl style={{ marginBottom: 20 }}>
                   <Select
-                    placeholder="Select option"
+                    placeholder="Role name"
                     onChange={(e) => {
                       if (e.target.value == "add-role") {
                         setAddRoleModal(true);
@@ -502,6 +511,7 @@ const People = () => {
                 {err && (
                   <p style={{ color: "tomato" }}>All fields are required!</p>
                 )}
+                {errMsg && <p style={{ color: "tomato" }}>{errMsg}</p>}
                 <Button
                   style={{ marginBottom: 20 }}
                   onClick={() => handleAddPerson()}
