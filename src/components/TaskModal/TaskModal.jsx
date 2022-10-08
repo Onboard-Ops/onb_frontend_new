@@ -19,7 +19,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { DashboardTypes } from "../../redux/actionTypes";
 import "react-quill/dist/quill.snow.css";
 import { EllipsisOutlined, DeleteOutlined } from "@ant-design/icons";
-import { DeleteTask } from "../../redux/actions/dashboard/dashboard.action";
+import {
+  DeleteTask,
+  UpdateTaskApi,
+} from "../../redux/actions/dashboard/dashboard.action";
+import { FetchPeopleApi } from "../../redux/actions";
 const { DASHBOARD_TASK_MODAL_VIEW_OFF } = DashboardTypes;
 
 const { Option } = Select;
@@ -29,9 +33,30 @@ const TaskModal = () => {
   const [loader, setLoader] = useState(true);
   const taskModalOpen = useSelector((state) => state?.dashboard?.taskCardModal);
   const [taskContent, setTaskContent] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    task_content: taskContent,
+    assignedTo: "",
+    milestone_ref: "",
+    assignedBy: null,
+    comment: "",
+    status: "",
+    dependencies: [],
+    dueDate: "",
+    private: false,
+  });
+  const [mention, setMention] = useState({
+    commentBody: "",
+    taskRef: "",
+    mentionTo: "",
+  });
+
+  const people = useSelector((state) => state?.people?.people);
   const taskDetails = useSelector(
     (state) => state?.dashboard?.singleTaskDetail
   );
+
+  // console.log(taskDetails);
 
   const menu = (
     <Menu
@@ -53,13 +78,35 @@ const TaskModal = () => {
   );
 
   useEffect(() => {
+    dispatch(FetchPeopleApi());
+  }, []);
+
+  useEffect(() => {
+    setFormData({
+      title: taskDetails?.title,
+      task_content: taskDetails?.task_content,
+      assignedTo: taskDetails?.assignedTo?._id,
+      assignedBy: taskDetails?.assignedBy?._id,
+      milestone_ref: taskDetails?.milestone_ref?._id,
+      comment: taskDetails?.comment,
+      status: taskDetails?.status,
+      dependencies: taskDetails?.dependencies,
+      dueDate: taskDetails?.dueDate,
+      private: taskDetails?.is_private,
+    });
     taskDetails?._id && setLoader(false);
   }, [taskDetails]);
+
+  const handleUpdateTask = () => {
+    console.log("CPMNGNNGN");
+    dispatch(UpdateTaskApi(formData, formData?.comment, taskDetails?._id));
+  };
 
   return (
     <div>
       {taskModalOpen && (
         <Modal
+          // afterClose={() => handleUpdateTask()}
           className="ant-modal"
           title={
             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -77,9 +124,9 @@ const TaskModal = () => {
                     fontSize: 16,
                     color: "#929292",
                   }}
-                  // onChange={() =>
-                  //   setFormData({ ...formData, private: !formData?.private })
-                  // }
+                  onChange={() =>
+                    setFormData({ ...formData, private: !formData?.private })
+                  }
                 >
                   Private
                 </Checkbox>
@@ -95,7 +142,10 @@ const TaskModal = () => {
           open={taskModalOpen}
           footer={null}
           // onOk={handleOk}
-          onCancel={() => dispatch({ type: DASHBOARD_TASK_MODAL_VIEW_OFF })}
+          onCancel={() => {
+            handleUpdateTask();
+            dispatch({ type: DASHBOARD_TASK_MODAL_VIEW_OFF });
+          }}
         >
           {loader ? (
             <Skeleton />
@@ -105,10 +155,10 @@ const TaskModal = () => {
                 size="large"
                 placeholder="Task title"
                 style={{ borderBottom: "1px solid #ddd", marginBottom: 10 }}
-                value={taskDetails?.title}
-                // onChange={(e) =>
-                //   setFormData({ ...formData, title: e.target.value })
-                // }
+                value={formData?.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 bordered={false}
               />
               <div className="task_modal_content">
@@ -118,26 +168,26 @@ const TaskModal = () => {
                       Assign to
                     </p>
                     <Select
-                      value={taskDetails?.assignedTo?.fullName}
+                      value={formData?.assignedTo?.fullName}
                       style={{
                         width: 200,
                       }}
                       placeholder="Choose person"
                       className="assign_select"
                       bordered={false}
-                      //   onChange={(value) =>
-                      //     setFormData({ ...formData, assignedTo: value })
-                      //   }
+                      onChange={(value) =>
+                        setFormData({ ...formData, assignedTo: value })
+                      }
                     >
-                      {/* {people &&
-                    people.length > 0 &&
-                    people.map((ele, i) => {
-                      return (
-                        <Option key={i} value={ele?._id}>
-                          {ele?.fullName}
-                        </Option>
-                      );
-                    })} */}
+                      {people &&
+                        people.length > 0 &&
+                        people.map((ele, i) => {
+                          return (
+                            <Option key={i} value={ele?._id}>
+                              {ele?.fullName}
+                            </Option>
+                          );
+                        })}
                     </Select>
                   </div>
                   <div>
@@ -145,10 +195,10 @@ const TaskModal = () => {
                       Due date
                     </p>
                     <DatePicker
-                      //   value={taskDetails?.dueDate}
-                      //   onChange={(value) =>
-                      //     setFormData({ ...formData, dueDate: value?._d })
-                      //   }
+                      // value={taskDetails?.dueDate}
+                      onChange={(value) =>
+                        setFormData({ ...formData, dueDate: value?._d })
+                      }
                       bordered={false}
                     />
                   </div>
@@ -158,15 +208,15 @@ const TaskModal = () => {
                     <p style={{ marginRight: 10, color: "#929292" }}>Status</p>
                     <Select
                       bordered={false}
-                      value={taskDetails?.status?.replace("_", " ")}
+                      value={formData?.status?.replace("_", " ")}
                       style={{
                         width: 200,
                       }}
                       placeholder="Choose a status"
                       className="assign_select"
-                      //   onChange={(value) =>
-                      //     setFormData({ ...formData, status: value })
-                      //   }
+                      onChange={(value) =>
+                        setFormData({ ...formData, status: value })
+                      }
                     >
                       <Option value="not_started">Not started</Option>
                       <Option value="in_progress">In progress</Option>
@@ -179,9 +229,12 @@ const TaskModal = () => {
                       Dependencies
                     </p>
                     <Input
-                      //   onChange={(e) =>
-                      //     setFormData({ ...formData, dependencies: e.target.value })
-                      //   }
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          dependencies: e.target.value,
+                        })
+                      }
                       bordered={false}
                       placeholder="Type in here"
                     />
@@ -196,38 +249,38 @@ const TaskModal = () => {
                     border: "none",
                     outline: "none",
                   }}
-                  //   onChange={(value) => {
-                  //     setMention({
-                  //       ...mention,
-                  //       commentBody: value,
-                  //     });
-                  //   }}
-                  //   onSelect={(option) => {
-                  //     setMention({
-                  //       ...mention,
-                  //       mentionTo: option?.key,
-                  //     });
-                  //   }}
+                  onChange={(value) => {
+                    setMention({
+                      ...mention,
+                      commentBody: value,
+                    });
+                  }}
+                  onSelect={(option) => {
+                    setMention({
+                      ...mention,
+                      mentionTo: option?.key,
+                    });
+                  }}
                   placeholder="Type @ to mention a user"
                 >
-                  {/* {people &&
-                people.length > 0 &&
-                people.map((ele) => {
-                  return (
-                    <Option key={ele?._id} value={ele?.fullName} i>
-                      {ele?.fullName}
-                    </Option>
-                  );
-                })} */}
+                  {people &&
+                    people.length > 0 &&
+                    people.map((ele) => {
+                      return (
+                        <Option key={ele?._id} value={ele?.fullName} i>
+                          {ele?.fullName}
+                        </Option>
+                      );
+                    })}
                 </Mentions>
               </div>
               <hr />
               <div style={{ padding: 10, marginTop: 10 }}>
                 {/* <TextArea
                   value={taskDetails?.task_content}
-                  //   onChange={(e) =>
-                  //     setFormData({ ...formData, task_content: e.target.value })
-                  //   }
+                  onChange={(e) =>
+                    setFormData({ ...formData, task_content: e.target.value })
+                  }
                   placeholder="Task description"
                   bordered={false}
                   autoSize={{
@@ -238,7 +291,7 @@ const TaskModal = () => {
                 <ReactQuill
                   style={{ border: "none" }}
                   theme="snow"
-                  value={taskDetails?.task_content}
+                  value={formData?.task_content}
                   onChange={setTaskContent}
                 />
               </div>
