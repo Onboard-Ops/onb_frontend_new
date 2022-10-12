@@ -72,7 +72,7 @@ const AddRoleModal = (props, { openModal }) => {
         />
         <Select
           style={{ marginBottom: 12, width: "100%" }}
-          placeholder="Select option"
+          placeholder="Role access"
           value={addRoleData?.access}
           onChange={(e) =>
             setAddRoleData({ ...addRoleData, access: e.target.value })

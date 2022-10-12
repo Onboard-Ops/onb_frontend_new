@@ -359,7 +359,7 @@ const People = () => {
         />
         <Select
           style={{ marginBottom: 12 }}
-          placeholder="Select option"
+          placeholder="Role Access"
           value={editRoleData?.access}
           onChange={(e) =>
             setsEditRoleData({ ...editRoleData, access: e.target.value })
