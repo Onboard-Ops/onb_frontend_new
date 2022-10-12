@@ -55,6 +55,7 @@ const People = () => {
   const [addPeople, setAddPeople] = useState(false);
   const [editRoleModal, setEditRoleModal] = useState(false);
   const [peopleData, setPeopleData] = useState({});
+  const [signStatus, setSignStatus] = useState(null);
   const [editPeopleData, setEditPeopleData] = useState({});
   const [addRoleData, setAddRoleData] = useState({});
   const [roleData, setRoleData] = useState({});
@@ -382,11 +383,7 @@ const People = () => {
           {peopleState &&
             peopleState?.people &&
             peopleState?.people?.map((ele) => {
-              return (
-                <option tets={console.log(ele)} value={ele?._id}>
-                  {ele?.fullName}
-                </option>
-              );
+              return <option value={ele?._id}>{ele?.fullName}</option>;
             })}
 
           <option value="internal-editor">Internal Editor</option>
@@ -590,6 +587,7 @@ const People = () => {
                       {ele?.role?.value}
                     </Text>
                     <Text>{ele?.email}</Text>
+                    <Text>{ele?.is_verified && "Signed up"}</Text>
                     {/* <Text>
                       {dayjs(ele?.createdAt).format("MM:DD:YYYY h:mm A")}
                     </Text> */}
