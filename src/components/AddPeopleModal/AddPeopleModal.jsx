@@ -28,6 +28,9 @@ import { EditOutlined, InfoCircleFilled } from "@ant-design/icons";
 import { CreateUserApi } from "../../redux/actions";
 import { useEffect } from "react";
 import { FetchRolesApi } from "../../redux/actions/roles/roles.action";
+import { RolesTypes } from "../../redux/actionTypes";
+
+const { ROLES_GLOBAL_MODAL_ON } = RolesTypes;
 
 const AddPeopleModal = (props) => {
   const dispatch = useDispatch();
@@ -110,6 +113,7 @@ const AddPeopleModal = (props) => {
                 placeholder="Role name"
                 onChange={(e) => {
                   if (e.target.value == "add-role") {
+                    dispatch({ type: ROLES_GLOBAL_MODAL_ON });
                     setAddRoleModal(true);
                     setAddPeople(true);
                     onClose();
