@@ -30,7 +30,6 @@ import { useEffect } from "react";
 import { FetchRolesApi } from "../../redux/actions/roles/roles.action";
 
 const AddPeopleModal = (props) => {
-  console.log(props.callBack);
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [people, setPeople] = useState([]);
@@ -56,8 +55,6 @@ const AddPeopleModal = (props) => {
 
   const peopleState = useSelector((state) => state.people);
   const rolesState = useSelector((state) => state.roles);
-
-  console.log(rolesState);
 
   useEffect(() => {
     dispatch(FetchRolesApi());
@@ -125,7 +122,7 @@ const AddPeopleModal = (props) => {
                   rolesState?.roles?.map((ele) => {
                     return <option value={ele?._id}>{ele?.value}</option>;
                   })}
-                <option value="add-role" onClick={() => console.log("CLICKED")}>
+                <option value="add-role">
                   Add Role <InfoCircleFilled style={{ color: "#333" }} />{" "}
                 </option>
               </Select>
