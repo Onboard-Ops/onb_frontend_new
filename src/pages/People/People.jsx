@@ -586,7 +586,8 @@ const People = () => {
                     >
                       {ele?.role?.value}
                     </Text>
-                    <Text>{ele?.email}</Text>
+                    <Text tets={console.log(ele)}>{ele?.role?.access}</Text>
+                    <Text tets={console.log(ele)}>{ele?.email}</Text>
                     <Text>{ele?.is_verified && "Signed up"}</Text>
                     {/* <Text>
                       {dayjs(ele?.createdAt).format("MM:DD:YYYY h:mm A")}
