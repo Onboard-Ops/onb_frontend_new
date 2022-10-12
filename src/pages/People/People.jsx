@@ -370,12 +370,29 @@ const People = () => {
           <option value="external-editor">External Editor</option>
         </Select>
 
-        <Input
-          disabled
-          value={editRoleData?.fullName}
+        <Select
           style={{ marginBottom: 12 }}
-          placeholder="Role"
-        />
+          placeholder="Assigned to"
+          value={editRoleData?.assignedTo?.value}
+          onChange={(e) =>
+            setsEditRoleData({ ...editRoleData, assignedTo: e.target.value })
+          }
+          // value={roleData?.role?.access}
+        >
+          {peopleState &&
+            peopleState?.people &&
+            peopleState?.people?.map((ele) => {
+              return (
+                <option tets={console.log(ele)} value={ele?._id}>
+                  {ele?.fullName}
+                </option>
+              );
+            })}
+
+          <option value="internal-editor">Internal Editor</option>
+          <option value="external-editor">External Editor</option>
+        </Select>
+
         <div
           style={{
             display: "flex",

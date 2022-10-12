@@ -161,8 +161,12 @@ const MilestoneBoard = (data) => {
                       );
                     })}
                   <Option value="unassigned">Unassigned</Option>
-                  <Option value="add_people">Add People</Option>
-                  <Option value="add_role">Add Role</Option>
+                  <Option value="add_people">
+                    <i class="bi bi-person-plus"></i> Add People
+                  </Option>
+                  <Option value="add_role">
+                    <i class="bi bi-plus-circle"></i> Add Role
+                  </Option>
                 </Select>
               </div>
               <div>
