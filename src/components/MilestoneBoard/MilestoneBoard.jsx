@@ -24,6 +24,7 @@ import {
 } from "../../redux/actionTypes";
 import AddRoleModal from "../AddRoleModal/AddRoleModal";
 import AddPeopleModal from "../AddPeopleModal/AddPeopleModal";
+import ReactQuill from "react-quill";
 const {
   DASHBOARD_TASK_MODAL_ON,
   DASHBOARD_TASK_MODAL_OFF,
@@ -272,7 +273,13 @@ const MilestoneBoard = (data) => {
           </div> */}
           <hr />
           <div style={{ padding: 10, marginTop: 10 }}>
-            <TextArea
+            <ReactQuill
+              style={{ border: "none" }}
+              theme="snow"
+              // value={formData?.task_content}
+              onChange={(e) => setFormData({ ...formData, task_content: e })}
+            />
+            {/* <TextArea
               // value={value}
               onChange={(e) =>
                 setFormData({ ...formData, task_content: e.target.value })
@@ -283,7 +290,7 @@ const MilestoneBoard = (data) => {
                 minRows: 3,
                 maxRows: 5,
               }}
-            />
+            /> */}
           </div>
           {/* <div style={{ display: "flex", justifyContent: "center" }}>
             <Button className="button_main" onClick={() => handleCreateTask()}>
