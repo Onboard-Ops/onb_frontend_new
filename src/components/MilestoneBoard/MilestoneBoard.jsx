@@ -49,7 +49,7 @@ const MilestoneBoard = (data) => {
     status: "",
     dependencies: "",
     dueDate: "",
-    private: false,
+    is_private: false,
   });
   const [mention, setMention] = useState({
     commentBody: "",
@@ -105,7 +105,10 @@ const MilestoneBoard = (data) => {
               <Checkbox
                 style={{ marginRight: "25px", fontSize: 16, color: "#929292" }}
                 onChange={() =>
-                  setFormData({ ...formData, private: !formData?.private })
+                  setFormData({
+                    ...formData,
+                    is_private: !formData?.is_private,
+                  })
                 }
               >
                 Private

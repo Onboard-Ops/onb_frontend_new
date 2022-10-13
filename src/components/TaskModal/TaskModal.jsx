@@ -44,7 +44,7 @@ const TaskModal = () => {
     status: "",
     dependencies: [],
     dueDate: "",
-    private: false,
+    is_private: false,
   });
   const [mention, setMention] = useState({
     commentBody: "",
@@ -129,7 +129,10 @@ const TaskModal = () => {
                     color: "#929292",
                   }}
                   onChange={() =>
-                    setFormData({ ...formData, private: !formData?.private })
+                    setFormData({
+                      ...formData,
+                      is_private: !formData?.is_private,
+                    })
                   }
                 >
                   Private
