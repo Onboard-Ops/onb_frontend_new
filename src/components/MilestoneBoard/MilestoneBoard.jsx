@@ -6,7 +6,15 @@ import "./style.css";
 import dayjs from "dayjs";
 import TaskCard from "../TaskCard/TaskCard";
 import { useState } from "react";
-import { Button, Checkbox, DatePicker, Input, Modal, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Input,
+  message,
+  Modal,
+  Select,
+} from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import "../../index.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +33,8 @@ import {
 import AddRoleModal from "../AddRoleModal/AddRoleModal";
 import AddPeopleModal from "../AddPeopleModal/AddPeopleModal";
 import ReactQuill from "react-quill";
+import axios from "axios";
+import { API_URL } from "../../utils/url";
 const {
   DASHBOARD_TASK_MODAL_ON,
   DASHBOARD_TASK_MODAL_OFF,
@@ -40,6 +50,8 @@ const MilestoneBoard = (data) => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [openPeople, setOpenPeople] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [mileStoneTitle, setMileStoneTitle] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     task_content: "",
@@ -88,6 +100,29 @@ const MilestoneBoard = (data) => {
 
   const toChildCallback = (status) => {
     setOpenPeople(false);
+  };
+
+  const handleUpdateMileStone = async () => {
+    const token = window.localStorage.getItem("token");
+    const currentProject = localStorage.getItem("currentProject");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    };
+    await axios
+      .put(
+        `${API_URL}/update-milestone/${currentProject}`,
+        { title: mileStoneTitle },
+        config
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        message.error(err?.response?.data?.msg);
+      });
   };
 
   return (
@@ -299,7 +334,28 @@ const MilestoneBoard = (data) => {
           </div> */}
         </Modal>
       )}
-      <h1 className="milestone_title">{milestone?.title}</h1>
+      {editMode ? (
+        <Input
+          bordered={false}
+          onChange={(e) => setMileStoneTitle(e.target.value)}
+          style={{
+            fontSize: 24,
+            border: "1px solid #ddd",
+            borderTop: 0,
+            borderRight: 0,
+            borderLeft: 0,
+            outline: "none",
+          }}
+          onBlur={() => {
+            handleUpdateMileStone();
+            setEditMode(false);
+          }}
+        />
+      ) : (
+        <h1 className="milestone_title" onClick={() => setEditMode(true)}>
+          {milestone?.title}
+        </h1>
+      )}
       <p className="milestone_due">
         Due {dayjs(milestone?.dueDate).format("MM/DD")}
       </p>
