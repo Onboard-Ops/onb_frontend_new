@@ -18,7 +18,10 @@ import {
 import TextArea from "antd/lib/input/TextArea";
 import "../../index.css";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateTaskApi } from "../../redux/actions/dashboard/dashboard.action";
+import {
+  CreateTaskApi,
+  FetchCurrentMilestone,
+} from "../../redux/actions/dashboard/dashboard.action";
 import { FetchPeopleApi } from "../../redux/actions/people/people.action";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -103,8 +106,12 @@ const MilestoneBoard = (data) => {
   };
 
   const handleUpdateMileStone = async () => {
+    if (mileStoneTitle.length <= 0) {
+      setEditMode(true);
+      return;
+    }
     const token = window.localStorage.getItem("token");
-    const currentProject = localStorage.getItem("currentProject");
+    const currentProject = window.localStorage.getItem("currentProject");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -113,12 +120,13 @@ const MilestoneBoard = (data) => {
     };
     await axios
       .put(
-        `${API_URL}/update-milestone/${currentProject}`,
+        `${API_URL}/update-milestone/${milestone?._id}`,
         { title: mileStoneTitle },
         config
       )
       .then((res) => {
-        console.log(res);
+        message.success(res?.data?.msg);
+        dispatch(FetchCurrentMilestone(currentProject));
       })
       .catch((err) => {
         message.error(err?.response?.data?.msg);
