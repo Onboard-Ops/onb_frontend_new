@@ -98,9 +98,17 @@ const TaskModal = () => {
     taskDetails?._id && setLoader(false);
   }, [taskDetails]);
 
+  console.log(taskDetails, "DETAILS");
+
   const handleUpdateTask = () => {
-    console.log("CPMNGNNGN");
-    dispatch(UpdateTaskApi(formData, formData?.comment, taskDetails?._id));
+    dispatch(
+      UpdateTaskApi(
+        formData,
+        formData?.comment,
+        taskDetails?._id,
+        taskDetails?._id
+      )
+    );
   };
 
   return (
@@ -257,12 +265,6 @@ const TaskModal = () => {
                     border: "none",
                     outline: "none",
                   }}
-                  onChange={(value) => {
-                    setMention({
-                      ...mention,
-                      commentBody: value,
-                    });
-                  }}
                   onSelect={(option) => {
                     setMention({
                       ...mention,
@@ -270,6 +272,13 @@ const TaskModal = () => {
                     });
                   }}
                   placeholder="Type @ to mention a user"
+                  onChange={(value) => {
+                    setMention({
+                      ...mention,
+                      commentBody: value,
+                    });
+                    setFormData({ ...formData, comment: mention });
+                  }}
                 >
                   {people &&
                     people.length > 0 &&
