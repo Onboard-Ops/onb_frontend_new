@@ -237,8 +237,8 @@ const TaskModal = () => {
                     >
                       <Option value="not_started">Not started</Option>
                       <Option value="in_progress">In progress</Option>
-                      <Option value="complete">Complete</Option>
-                      <Option value="on_hold">On hold</Option>
+                      <Option value="completed">Complete</Option>
+                      <Option value="on-hold">On hold</Option>
                     </Select>
                   </div>
                   <div>
