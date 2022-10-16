@@ -184,7 +184,8 @@ const TaskModal = () => {
                       Assign to
                     </p>
                     <Select
-                      value={formData?.assignedTo?.fullName}
+                      defaultValue={taskDetails?.assignedTo?.fullName}
+                      // value={formData?.assignedTo?._id}
                       style={{
                         width: 200,
                       }}
@@ -266,6 +267,7 @@ const TaskModal = () => {
                     border: "none",
                     outline: "none",
                   }}
+                  defaultValue={formData?.comment?.commentBody}
                   onSelect={(option) => {
                     setMention({
                       ...mention,
