@@ -93,7 +93,7 @@ const TaskModal = () => {
       status: taskDetails?.status,
       dependencies: taskDetails?.dependencies,
       dueDate: taskDetails?.dueDate,
-      private: taskDetails?.is_private,
+      is_private: taskDetails?.is_private,
     });
     taskDetails?._id && setLoader(false);
   }, [taskDetails]);
@@ -136,6 +136,7 @@ const TaskModal = () => {
                     fontSize: 16,
                     color: "#929292",
                   }}
+                  checked={formData?.is_private}
                   onChange={() =>
                     setFormData({
                       ...formData,
