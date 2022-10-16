@@ -389,8 +389,8 @@ const People = () => {
               return <option value={ele?._id}>{ele?.fullName}</option>;
             })}
 
-          <option value="internal-editor">Internal Editor</option>
-          <option value="external-editor">External Editor</option>
+          {/* <option value="internal-editor">Internal Editor</option>
+          <option value="external-editor">External Editor</option> */}
         </Select>
 
         <div
