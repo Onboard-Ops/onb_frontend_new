@@ -290,9 +290,10 @@ const ProjectHome = () => {
 						<Text ml={16}>No projects found</Text>
 					) : (
 						<>
-							{projectStateData?.allProjects?.allProjectsByCurrentUser?.map((item) => {
+							{projectStateData?.allProjects?.allProjectsByCurrentUser?.map((item, index) => {
 								return (
 									<div
+										key={index}
 										style={{
 											display: 'flex',
 											justifyContent: 'center',
