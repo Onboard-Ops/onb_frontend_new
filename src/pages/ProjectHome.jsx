@@ -237,10 +237,10 @@ const ProjectHome = () => {
 								Logout
 							</Button> */}
 							<Menu>
-								<MenuButton as={Avatar} mr={8} src='https://bit.ly/dan-abramov' />
+								<MenuButton as={Avatar} mr={8} src='https://joeschmoe.io/api/v1/random' />
 								<MenuList mr={8}>
 									<VStack mb={4}>
-										<Avatar size='xl' mt={4} mb={4} name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
+										<Avatar size='xl' mt={4} mb={4} name='Dan Abrahmov' src='https://joeschmoe.io/api/v1/random' />
 										<Text mt={2} as='b'>
 											{projectStateData?.allProjects?.owner?.fullName}
 										</Text>
