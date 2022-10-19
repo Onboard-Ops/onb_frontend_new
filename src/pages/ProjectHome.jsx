@@ -8,6 +8,7 @@ import Loader from '../components/Loader';
 import {
 	Tabs,
 	Text,
+	Avatar,
 	Box,
 	Button,
 	Modal,
@@ -23,8 +24,17 @@ import {
 	Input,
 	Divider,
 	Stack,
+	VStack,
 	useDisclosure,
 	Spinner,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	MenuItemOption,
+	MenuGroup,
+	MenuOptionGroup,
+	MenuDivider,
 } from '@chakra-ui/react';
 import SideBar from '../Layout/SideBar/SideBar';
 import dayjs from 'dayjs';
@@ -57,7 +67,6 @@ const ProjectHome = () => {
 	const [project, setProject] = useState({
 		title: '',
 		kickOff: '',
-		magic_link: '',
 		error: '',
 	});
 	const onChangeHandler = (e) => {
@@ -81,7 +90,7 @@ const ProjectHome = () => {
 
 	const handleSignOut = () => {
 		dispatch(signout());
-		navigate('/', { replace: true });
+		navigate('/login', { replace: true });
 	};
 
 	useEffect(() => {
@@ -97,10 +106,6 @@ const ProjectHome = () => {
 			});
 		}
 	}, [projectStateData?.projectApiCall]);
-
-	// if (projectStateData?.gettingAllProjects) {
-	// 	return <Loader />;
-	// }
 
 	const handleLeaveProject = () => {
 		dispatch(LeaveProject(owner, projectID));
@@ -216,16 +221,36 @@ const ProjectHome = () => {
 			) : (
 				<>
 					<Tabs align='end' display='flex' justifyContent='space-between'>
-						<Text mt={4} ml={52} fontSize='2xl' as='b'>
+						<Text mt={4} ml={48} fontSize='2xl' as='b'>
 							My Projects
 						</Text>
-						<Stack direction='row' align='center'>
+						<Stack direction='row' align='center' mr={8}>
 							<Button onClick={onOpen} colorScheme='linkedin' variant='outline' mt={4} mr={8} mb={4}>
 								Create project
 							</Button>
-							<Button colorScheme='linkedin' mr={16} variant='outline' onClick={handleSignOut}>
+							{/* <Button colorScheme='linkedin' mr={16} variant='outline' onClick={handleSignOut}>
 								Logout
-							</Button>
+							</Button> */}
+							<Menu>
+								<MenuButton as={Avatar} mr={8} src='https://joeschmoe.io/api/v1/random' />
+								<MenuList mr={8}>
+									<VStack mb={4}>
+										<Avatar size='xl' mt={4} mb={4} name='Dan Abrahmov' src='https://joeschmoe.io/api/v1/random' />
+										<Text mt={2} as='b'>
+											{projectStateData?.allProjects?.owner?.fullName}
+										</Text>
+										<Text mt={4}>{projectStateData?.allProjects?.owner?.email}</Text>
+									</VStack>
+									<MenuGroup>
+										<MenuItem>My Account</MenuItem>
+										<MenuItem>Settings </MenuItem>
+									</MenuGroup>
+									<MenuDivider />
+									<MenuGroup>
+										<MenuItem onClick={handleSignOut}>Logout</MenuItem>
+									</MenuGroup>
+								</MenuList>
+							</Menu>
 						</Stack>
 					</Tabs>
 					<Divider />
@@ -259,7 +284,7 @@ const ProjectHome = () => {
 									<Button
 										colorScheme='teal'
 										onClick={() => {
-											if (project.title.length == 0) {
+											if (project.title === '') {
 												return setErr(true);
 											}
 											setIsNext(!isNext);
@@ -287,7 +312,7 @@ const ProjectHome = () => {
 						)}
 					</Modal>
 					{projectStateData?.totalProjects === 0 ? (
-						<Text ml={16}>No projects found</Text>
+						<Text ml={46}>No projects found</Text>
 					) : (
 						<>
 							{projectStateData?.allProjects?.allProjectsByCurrentUser?.map((item, index) => {
