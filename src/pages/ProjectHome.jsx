@@ -67,7 +67,6 @@ const ProjectHome = () => {
 	const [project, setProject] = useState({
 		title: '',
 		kickOff: '',
-		magic_link: '',
 		error: '',
 	});
 	const onChangeHandler = (e) => {
@@ -108,10 +107,6 @@ const ProjectHome = () => {
 		}
 	}, [projectStateData?.projectApiCall]);
 
-	// if (projectStateData?.gettingAllProjects) {
-	// 	return <Loader />;
-	// }
-	console.log(projectStateData?.allProjects?.owner);
 	const handleLeaveProject = () => {
 		dispatch(LeaveProject(owner, projectID));
 	};
@@ -289,7 +284,7 @@ const ProjectHome = () => {
 									<Button
 										colorScheme='teal'
 										onClick={() => {
-											if (project.title.length == 0) {
+											if (project.title === '') {
 												return setErr(true);
 											}
 											setIsNext(!isNext);

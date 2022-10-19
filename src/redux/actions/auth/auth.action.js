@@ -40,8 +40,7 @@ export const LoginAction = (user, navigate) => {
 			}
 		} catch (error) {
 			dispatch({ type: LOGIN_FAILURE });
-			console.log('Error message from action', error?.response);
-			message.error(error?.response?.data?.msg);
+			message.error('Invalid email-id/password');
 		}
 		// const response = await AxiosInstance.post(`/signin`, {
 		//   ...user,
