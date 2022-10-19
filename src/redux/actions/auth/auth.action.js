@@ -18,62 +18,60 @@ const {
 	BUTTON_LOADER_OFF,
 } = AuthTypes;
 
-export const LoginAction = (user, navigate) => {
-	return async (dispatch) => {
-		// dispatch({ type: LOGIN_REQUEST });
-		try {
-			// dispatch({ type: BUTTON_LOADER_ON });
-			dispatch({ type: LOGIN_REQUEST });
-			let response = await axios.post(`${API_URL}/signin`, { ...user });
-			response?.status && dispatch({ type: BUTTON_LOADER_OFF });
-			const { data } = response;
-			if (data?.status == true) {
-				const { token, user } = response?.data;
-				localStorage.setItem('token', token);
-				localStorage.setItem('user', JSON.stringify(user));
+export const LoginAction = (user, navigate) => async (dispatch) => {
+	// dispatch({ type: LOGIN_REQUEST });
+	try {
+		// dispatch({ type: BUTTON_LOADER_ON });
+		dispatch({ type: LOGIN_REQUEST });
+		let response = await axios.post(`${API_URL}/signin`, { ...user });
+		response?.status && dispatch({ type: BUTTON_LOADER_OFF });
+		const { data } = response;
+		if (data?.status == true) {
+			const { token, user } = response?.data;
+			localStorage.setItem('token', token);
+			localStorage.setItem('user', JSON.stringify(user));
 
-				dispatch({
-					type: LOGIN_SUCCESS,
-					payload: { token, user },
-				});
-				token && window.location.replace('/projects');
-			}
-		} catch (error) {
-			dispatch({ type: LOGIN_FAILURE });
-			message.error('Invalid email-id/password');
+			dispatch({
+				type: LOGIN_SUCCESS,
+				payload: { token, user },
+			});
+			token && window.location.replace('/projects');
 		}
-		// const response = await AxiosInstance.post(`/signin`, {
-		//   ...user,
-		// })
-		//   .then((response) => {
-		//   const { token, user } = response?.data;
-		//   localStorage.setItem("token", token);
-		//   localStorage.setItem("user", JSON.stringify(user));
+	} catch (error) {
+		dispatch({ type: LOGIN_FAILURE });
+		message.error('Invalid email-id/password');
+	}
+	// const response = await AxiosInstance.post(`/signin`, {
+	//   ...user,
+	// })
+	//   .then((response) => {
+	//   const { token, user } = response?.data;
+	//   localStorage.setItem("token", token);
+	//   localStorage.setItem("user", JSON.stringify(user));
 
-		//   dispatch({
-		//     type: LOGIN_SUCCESS,
-		//     payload: { token, user },
-		//   });
-		//   console.log(token, "TOKWEN");
-		//   token && navigate("/projects");
-		// })
-		//   .catch((err) => {
-		//     console.log(err);
-		//     message.error(err?.response?.data?.msg);
-		//   });
-		// console.log("Token from action", response);
-		// if (response?.status === 200) {
+	//   dispatch({
+	//     type: LOGIN_SUCCESS,
+	//     payload: { token, user },
+	//   });
+	//   console.log(token, "TOKWEN");
+	//   token && navigate("/projects");
+	// })
+	//   .catch((err) => {
+	//     console.log(err);
+	//     message.error(err?.response?.data?.msg);
+	//   });
+	// console.log("Token from action", response);
+	// if (response?.status === 200) {
 
-		// } else {
-		//   if (response.status === 400 || response.status === 404) {
-		//     console.log("COPMKG}D");
-		//     dispatch({
-		//       type: LOGIN_FAILURE,
-		//       payload: { error: response.data.error },
-		//     });
-		//   }
-		// }
-	};
+	// } else {
+	//   if (response.status === 400 || response.status === 404) {
+	//     console.log("COPMKG}D");
+	//     dispatch({
+	//       type: LOGIN_FAILURE,
+	//       payload: { error: response.data.error },
+	//     });
+	//   }
+	// }
 };
 
 export const SignupAction = (user) => async (dispatch) => {
@@ -133,36 +131,32 @@ export const SignupAction = (user) => async (dispatch) => {
 //   };
 // };
 
-export const isUserLoggedIn = () => {
-	return async (dispatch) => {
-		const token = localStorage.getItem('token');
-		if (token) {
-			const user = JSON.parse(localStorage.getItem('user'));
-			dispatch({
-				type: LOGIN_SUCCESS,
-				payload: { token, user },
-			});
-		}
+export const isUserLoggedIn = () => async (dispatch) => {
+	const token = localStorage.getItem('token');
+	if (token) {
+		const user = JSON.parse(localStorage.getItem('user'));
 		dispatch({
-			payload: {
-				type: LOGIN_FAILURE,
-				message: 'User is not logged in',
-			},
+			type: LOGIN_SUCCESS,
+			payload: { token, user },
 		});
-	};
+	}
+	dispatch({
+		payload: {
+			type: LOGIN_FAILURE,
+			message: 'User is not logged in',
+		},
+	});
 };
 
-export const signout = () => {
-	return async (dispatch) => {
-		dispatch({
-			type: LOGOUT_REQUEST,
-		});
-		const response = await AxiosInstance.post('/signout');
-		if (response.status === 200) {
-			localStorage.clear();
-			dispatch({ type: LOGOUT_SUCCESS });
-		} else {
-			dispatch({ type: LOGOUT_FAILURE, payload: response.data.error });
-		}
-	};
+export const signout = () => async (dispatch) => {
+	dispatch({
+		type: LOGOUT_REQUEST,
+	});
+	const response = await AxiosInstance.post('/signout');
+	if (response.status === 200) {
+		localStorage.clear();
+		dispatch({ type: LOGOUT_SUCCESS });
+	} else {
+		dispatch({ type: LOGOUT_FAILURE, payload: response.data.error });
+	}
 };
