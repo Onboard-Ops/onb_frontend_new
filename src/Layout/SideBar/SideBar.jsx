@@ -104,7 +104,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 	const navigate = useNavigate();
 	const handleSignOut = () => {
 		dispatch(signout());
-		navigate('/', { replace: true });
+		navigate('/login', { replace: true });
 	};
 
 	return (

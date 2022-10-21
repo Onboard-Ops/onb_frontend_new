@@ -34,19 +34,7 @@ export default function Login() {
 		};
 		dispatch(LoginAction(user, navigate));
 	};
-	// if (user?.isAauthenticated) {
-	//   // toast({
-	//   // 	title: '🎉 Successfully logged in',
-	//   // 	status: 'success',
-	//   // 	duration: 3000,
-	//   // 	isClosable: true,
-	//   // });
-	//   navigate("/projects", { replace: true });
-	// }
 
-	// if (user?.isAuthenticating) {
-	//   return <Loader />;
-	// }
 	return (
 		<AuthLayout>
 			<Text fontSize='large' textAlign='center' color='gray.600' fontWeight='bold' mb='2'>
@@ -68,7 +56,7 @@ export default function Login() {
 							onChange={onChangeHandler}
 						/>
 					</FormControl>
-					<FormControl isRequired>
+					<FormControl>
 						<FormLabel htmlFor='user-password'>Password</FormLabel>
 						<Input
 							size='lg'
@@ -91,15 +79,6 @@ export default function Login() {
 					>
 						Login
 					</Button>
-					{/* {login ? (
-						<Text color='gray.600' fontSize='sm'>
-							<b>Note:</b> Some note <code>Note</code> Some note{' '}
-						</Text>
-					) : (
-						<Text color='gray.600' fontSize='sm'>
-							<b>Note:</b> Configure the password to start using your dashboard.
-						</Text>
-					)} */}
 				</VStack>
 			</form>
 		</AuthLayout>
