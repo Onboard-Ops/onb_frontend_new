@@ -33,7 +33,7 @@ const Router = () => {
 				<Route path='/' element={<Frontpage />} key='1' />
 				<Route path='/signup' element={<Signup />} key='2' />
 				<Route path='/login' element={<Login />} key='3' />
-				{user?.token ? (
+				{user?.token && user?.user?.role?.access === 'project-admin' ? (
 					[
 						<Route path='/projects' element={<ProjectHome />} key='4' />,
 						<Route path='/people' element={<People key='6' />} />,
@@ -43,7 +43,7 @@ const Router = () => {
 						<Route path='/customer_info' element={<CustomerInfo key='9' />} />,
 						<Route path='/overview/:project/:projectid' element={<OverView key='10' />} />,
 					]
-				) : user?.token && user?.user?.role?.access === 'customer' ? (
+				) : user?.token ? (
 					[
 						<Route path='/people' element={<People key='6' />} />,
 						<Route path='/resources' element={<Resources />} key='7' />,
