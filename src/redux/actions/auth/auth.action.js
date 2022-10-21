@@ -35,6 +35,7 @@ export const LoginAction = (user, navigate) => async (dispatch) => {
 				localStorage.setItem('token', token);
 				localStorage.setItem('user', JSON.stringify(user));
 				localStorage.setItem('currentProject', data?.project?._id);
+				localStorage.setItem('currentProjectName', data?.project?.title);
 
 				dispatch({
 					type: LOGIN_SUCCESS,
