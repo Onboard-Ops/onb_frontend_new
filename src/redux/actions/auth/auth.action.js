@@ -16,76 +16,66 @@ const {
 	SIGN_UP_SUCCESS,
 	BUTTON_LOADER_ON,
 	BUTTON_LOADER_OFF,
+	VERIFICATION_REQUEST,
+	VERIFICATION_SUCCESS,
+	VERIFICATION_FAILURE,
 } = AuthTypes;
 
 export const LoginAction = (user, navigate) => async (dispatch) => {
-	// dispatch({ type: LOGIN_REQUEST });
 	try {
-		console.log('Login started...');
-		// dispatch({ type: BUTTON_LOADER_ON });
 		dispatch({ type: LOGIN_REQUEST });
 		let response = await axios.post(`${API_URL}/signin`, { ...user });
 		response?.status && dispatch({ type: BUTTON_LOADER_OFF });
 		const { data } = response;
-		console.log('User from auth action', data);
-		// data.project
-		setTimeout(() => {
-			if (data?.status == true) {
-				const { token, user } = response?.data;
-				localStorage.setItem('token', token);
-				localStorage.setItem('user', JSON.stringify(user));
-				localStorage.setItem('currentProject', data?.project?._id);
-				localStorage.setItem('currentProjectName', data?.project?.title);
 
-				dispatch({
-					type: LOGIN_SUCCESS,
-					payload: { token, user },
-				});
+		if (data?.status == true) {
+			const { token, user } = response?.data;
+			localStorage.setItem('token', token);
+			localStorage.setItem('user', JSON.stringify(user));
+			localStorage.setItem('currentProject', data?.project?._id);
+			localStorage.setItem('currentProjectName', data?.project?.title);
 
-				if (token) {
-					window.location.replace(`/overview/${data?.project?.magic_link}/${data?.project?._id}`);
-				}
-				if (token && user?.role?.access === 'project-admin') {
-					window.location.replace('/projects');
-				}
+			dispatch({
+				type: LOGIN_SUCCESS,
+				payload: { token, user },
+			});
+
+			if (token) {
+				window.location.replace(`/overview/${data?.project?.magic_link}/${data?.project?._id}`);
 			}
-		}, 300);
+
+			if (token && user?.role?.access === 'project-admin') {
+				// window.location.replace('/projects');
+				navigate('/projects');
+			}
+		}
 	} catch (error) {
 		dispatch({ type: LOGIN_FAILURE });
 		message.error('Invalid email-id/password');
 	}
-	// navigate(`/overview/${item?.magic_link}/${item?._id}`);
-	// const response = await AxiosInstance.post(`/signin`, {
-	//   ...user,
-	// })
-	//   .then((response) => {
-	//   const { token, user } = response?.data;
-	//   localStorage.setItem("token", token);
-	//   localStorage.setItem("user", JSON.stringify(user));
+};
+export const EmailVerificationAction = (otp, userData, navigate) => async (dispatch) => {
+	try {
+		dispatch({ type: VERIFICATION_REQUEST });
+		let response = await axios.post(`${API_URL}/email-validation/${userData._id}`, { otp });
 
-	//   dispatch({
-	//     type: LOGIN_SUCCESS,
-	//     payload: { token, user },
-	//   });
-	//   console.log(token, "TOKWEN");
-	//   token && navigate("/projects");
-	// })
-	//   .catch((err) => {
-	//     console.log(err);
-	//     message.error(err?.response?.data?.msg);
-	//   });
-	// console.log("Token from action", response);
-	// if (response?.status === 200) {
-
-	// } else {
-	//   if (response.status === 400 || response.status === 404) {
-	//     console.log("COPMKG}D");
-	//     dispatch({
-	//       type: LOGIN_FAILURE,
-	//       payload: { error: response.data.error },
-	//     });
-	//   }
-	// }
+		if (response?.data?.status) {
+			const project = JSON.parse(localStorage.getItem('currentProjectData'));
+			dispatch({
+				type: VERIFICATION_SUCCESS,
+				payload: response?.data?.status,
+			});
+			window.location.replace(`/projects`, {
+				replace: true,
+			});
+		}
+		dispatch({
+			type: VERIFICATION_FAILURE,
+			payload: response?.data?.msg,
+		});
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 export const SignupAction = (user) => async (dispatch) => {
@@ -111,40 +101,6 @@ export const SignupAction = (user) => async (dispatch) => {
 	}
 };
 
-// export const SignupAction = (user) => {
-//   return async (dispatch) => {
-//     dispatch({ type: SIGN_UP_REQUEST });
-//     const response = await AxiosInstance.post(`/signup`, {
-//       ...user,
-//     });
-
-//     if (response?.status === 200) {
-//       const token = response?.data.user.token;
-//       const user = response?.data.user._user;
-//       localStorage.setItem("token", token);
-//       localStorage.setItem("user", JSON.stringify(user));
-
-//       dispatch({
-//         type: SIGN_UP_SUCCESS,
-//         payload: { token, user },
-//       });
-//       return response;
-//     } else {
-//       if (
-//         response.status === 400 ||
-//         response.status === 404 ||
-//         response.status === 409
-//       ) {
-//         dispatch({
-//           type: SIGN_UP_FAILURE,
-//           payload: { error: response.data.error },
-//         });
-//         return message.error(response?.msg);
-//       }
-//     }
-//   };
-// };
-
 export const isUserLoggedIn = () => async (dispatch) => {
 	const token = localStorage.getItem('token');
 	if (token) {
@@ -153,13 +109,14 @@ export const isUserLoggedIn = () => async (dispatch) => {
 			type: LOGIN_SUCCESS,
 			payload: { token, user },
 		});
+	} else {
+		dispatch({
+			payload: {
+				type: LOGIN_FAILURE,
+				message: 'User is not logged in',
+			},
+		});
 	}
-	dispatch({
-		payload: {
-			type: LOGIN_FAILURE,
-			message: 'User is not logged in',
-		},
-	});
 };
 
 export const signout = () => async (dispatch) => {
