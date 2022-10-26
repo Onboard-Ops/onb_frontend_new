@@ -73,6 +73,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const projectData = useSelector((state) => state.dashboard);
+	const user = useSelector((state) => state.auth);
 	const [toDo, setToDo] = useState([]);
 	const [projectName, setProjectName] = useState(localStorage.getItem('currentProjectName'));
 
@@ -181,9 +182,13 @@ const SidebarContent = ({ onClose, ...rest }) => {
 				<FiLogOut />
 				<Text ml={2}>Sign out</Text>
 			</NavItemAction>
-			<NavItemAction color='white' mt={52} to='/projects'>
-				<Text ml={2}>View all projects</Text>
-			</NavItemAction>
+			{user?.user?.role?.access === 'project-admin' ? (
+				<NavItemAction color='white' mt={52} to='/projects'>
+					<Text ml={2}>View all projects</Text>
+				</NavItemAction>
+			) : (
+				''
+			)}
 		</Box>
 	);
 };

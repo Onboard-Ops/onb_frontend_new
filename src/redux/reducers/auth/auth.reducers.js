@@ -11,6 +11,9 @@ const {
 	SIGN_UP_FAILURE,
 	BUTTON_LOADER_ON,
 	BUTTON_LOADER_OFF,
+	VERIFICATION_REQUEST,
+	VERIFICATION_SUCCESS,
+	VERIFICATION_FAILURE,
 } = AuthTypes;
 
 const InitialState = {
@@ -31,6 +34,8 @@ const InitialState = {
 	},
 	error: '',
 	message: '',
+	isVerified: false,
+	isVeryfying: false,
 };
 
 export const AuthReducer = (state = InitialState, action) => {
@@ -79,6 +84,27 @@ export const AuthReducer = (state = InitialState, action) => {
 				isSignedUp: false,
 				isSigningIn: false,
 				error: payload.error,
+			};
+			break;
+		case VERIFICATION_REQUEST:
+			state = {
+				...state,
+				isVeryfying: true,
+			};
+			break;
+		case VERIFICATION_SUCCESS:
+			state = {
+				...state,
+				isVeryfying: false,
+				isVerified: true,
+			};
+			break;
+		case VERIFICATION_FAILURE:
+			state = {
+				...state,
+				isVeryfying: false,
+				isVerified: false,
+				error: payload,
 			};
 			break;
 		case LOGOUT_REQUEST:
