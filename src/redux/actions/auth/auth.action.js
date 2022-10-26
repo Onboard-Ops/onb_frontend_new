@@ -60,10 +60,14 @@ export const EmailVerificationAction = (otp, userData, navigate) => async (dispa
 		let response = await axios.post(`${API_URL}/email-validation/${userData._id}`, { otp });
 
 		if (response?.data?.status) {
-			const project = JSON.parse(localStorage.getItem('currentProjectData'));
+			// const project = JSON.parse(localStorage.getItem('currentProjectData'));
+			const status = response?.data?.status;
+			const userData = response?.data?.UserData;
+			console.log('User data from verify', userData);
+
 			dispatch({
 				type: VERIFICATION_SUCCESS,
-				payload: response?.data?.status,
+				payload: { status, userData },
 			});
 			window.location.replace(`/projects`, {
 				replace: true,
@@ -86,13 +90,17 @@ export const SignupAction = (user) => async (dispatch) => {
 		});
 		if (res?.status === 200) {
 			const token = res?.data.user.token;
-			const user = res?.data.user._user;
+			const userRes = res?.data?.user;
+			const roleAccess = res?.data.user?.role?.roleAccess;
+			const roleValue = res?.data.user?.role?.roleValue;
+			console.log('Res from auth.action', res?.data);
+
 			localStorage.setItem('token', token);
-			localStorage.setItem('user', JSON.stringify(user));
+			localStorage.setItem('user', JSON.stringify(userRes));
 
 			dispatch({
 				type: SIGN_UP_SUCCESS,
-				payload: { token, user },
+				payload: { token, userRes, roleAccess, roleValue },
 			});
 			return res;
 		}
