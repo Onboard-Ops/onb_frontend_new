@@ -120,7 +120,11 @@ const AddPeopleModal = (props) => {
 							>
 								{rolesState?.roles &&
 									rolesState?.roles?.map((ele) => {
-										return <option value={ele?._id}>{ele?.value}</option>;
+										return (
+											<option key={ele?._id} value={ele?._id}>
+												{ele?.value} {ele?.access}
+											</option>
+										);
 									})}
 								<option value='add-role'>
 									Add Role <InfoCircleFilled style={{ color: '#333' }} />{' '}

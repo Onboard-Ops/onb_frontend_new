@@ -37,9 +37,9 @@ const Router = () => {
 				{/* <Route path='/signup' element={<Signup />} key={uid} />, */}
 				<Route path='/login' element={<Login />} key={uid} />,
 				<Route path='/verify' element={<Verification />} key={uid} />,
-				{user?.token && user?.user?.role?.access === 'project-admin' ? (
+				{user?.token && user?.user?.role?.roleAccess !== 'project-admin' ? (
 					[
-						<Route path='/projects' element={<ProjectHome />} key={uid} />,
+						// <Route path='/projects' element={<ProjectHome />} key={uid} />,
 						<Route path='/people' element={<People key={uid} />} />,
 						<Route path='/resources' element={<Resources />} key={uid} />,
 						<Route path='/to-do' element={<ToDo key={uid} />} />,
@@ -47,7 +47,7 @@ const Router = () => {
 						<Route path='/customer_info' element={<CustomerInfo key={uid} />} />,
 						<Route path='/overview/:project/:projectid' element={<OverView key={uid} />} />,
 					]
-				) : user?.token ? (
+				) : user?.token && user?.user?.role?.roleAccess === 'project-admin' ? (
 					[
 						<Route path='/projects' element={<ProjectHome />} key={uid} />,
 						<Route path='/people' element={<People key={uid} />} />,

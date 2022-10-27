@@ -22,8 +22,12 @@ const InitialState = {
 		fullName: '',
 		username: '',
 		email: '',
-		role: '',
+		role: {
+			roleAccess: '',
+			roleValue: '',
+		},
 	},
+
 	isAauthenticated: false,
 	isAuthenticating: false,
 	isSignedUp: false,
@@ -71,10 +75,14 @@ export const AuthReducer = (state = InitialState, action) => {
 		case SIGN_UP_SUCCESS:
 			state = {
 				...state,
-				user: payload._user,
+				user: payload.userRes,
 				token: payload.token,
 				isSignedUp: true,
 				isSigningIn: false,
+				role: {
+					roleValue: payload.roleValue,
+					roleAccess: payload.roleAccess,
+				},
 				message: 'You have successfully signed up',
 			};
 			break;
