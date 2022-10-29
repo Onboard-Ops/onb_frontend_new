@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetAllProjectsByCurrentUser, AddProjectAction, signout, LeaveProject } from '../redux/actions';
+import {
+	GetAllProjectsByCurrentUser,
+	AddProjectAction,
+	signout,
+	LeaveProject,
+	DeleteAccountAction,
+} from '../redux/actions';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { Modal as AntdModal, Select } from 'antd';
@@ -60,6 +66,7 @@ const ProjectHome = () => {
 	const projectStateData = useSelector((state) => state.project);
 	const projectState = useSelector((state) => state.project.projectApiCall);
 	const people = useSelector((state) => state?.people?.people);
+	const roles = useSelector((state) => state?.roles);
 	const dispatch = useDispatch();
 	const initialRef = useRef();
 	const finalRef = useRef();
@@ -76,6 +83,7 @@ const ProjectHome = () => {
 			[e.target.name]: e.target.value,
 		}));
 	};
+	const currentProjectOwner = JSON.parse(localStorage.getItem('user'));
 
 	const onHandleSubmit = async (event) => {
 		event.preventDefault();
@@ -91,6 +99,9 @@ const ProjectHome = () => {
 	const handleSignOut = () => {
 		dispatch(signout());
 		navigate('/login', { replace: true });
+	};
+	const handleAccountDelete = () => {
+		dispatch(DeleteAccountAction(navigate));
 	};
 
 	useEffect(() => {
@@ -108,7 +119,7 @@ const ProjectHome = () => {
 	}, [projectStateData?.projectApiCall]);
 
 	const handleLeaveProject = () => {
-		dispatch(LeaveProject(owner, projectID));
+		dispatch(LeaveProject(owner, currentProjectOwner?._id, projectID));
 	};
 
 	const showDeleteConfirm = (projectID) => {
@@ -130,7 +141,7 @@ const ProjectHome = () => {
 			},
 		});
 	};
-
+	// console.log('uiiinnn', projectStateData);
 	return (
 		<>
 			<AntdModal
@@ -171,7 +182,7 @@ const ProjectHome = () => {
 				onCancel={() => setShowLeaveModal(false)}
 			>
 				<p style={{ textAlign: 'center', color: '#929292' }}>
-					In order to leave [Customer Name] project, you must give full control to someone else.
+					In order to leave this project, you must give full control to someone else.
 				</p>
 				<div style={{ display: 'flex', padding: 30 }}>
 					<div>
@@ -184,7 +195,11 @@ const ProjectHome = () => {
 							{people &&
 								people.length > 0 &&
 								people?.map((ele) => {
-									return <Option value={ele?._id}>{ele?.fullName}</Option>;
+									return (
+										<Option value={ele?._id}>
+											{ele?.role?.access === 'project-admin' ? ele?.fullName + '/CA' : ele?.fullName}
+										</Option>
+									);
 								})}
 						</Select>
 					</div>
@@ -192,18 +207,18 @@ const ProjectHome = () => {
 				<div
 					style={{
 						display: 'flex',
-						justifyContent: 'space-between',
+						justifyContent: 'flex-end',
 						marginTop: 30,
 					}}
 				>
-					<Button
+					{/* <Button
 						className='button_outline'
 						onClick={() => {
-							setShowLeaveModal(false);
+							DeleteAccountAction(navigate);
 						}}
 					>
-						Delete Project
-					</Button>
+						Delete Account x
+					</Button> */}
 					<Button className='button_outline_danger' onClick={() => handleLeaveProject()}>
 						Leave Project
 					</Button>
@@ -243,11 +258,18 @@ const ProjectHome = () => {
 									</VStack>
 									<MenuGroup>
 										<MenuItem>My Account</MenuItem>
-										<MenuItem>Settings </MenuItem>
+										<MenuItem to='/settings'>Settings </MenuItem>
 									</MenuGroup>
 									<MenuDivider />
 									<MenuGroup>
-										<MenuItem onClick={handleSignOut}>Logout</MenuItem>
+										<MenuItem color='blue' onClick={handleSignOut}>
+											Logout
+										</MenuItem>
+									</MenuGroup>
+									<MenuGroup>
+										<MenuItem color='red' onClick={handleAccountDelete}>
+											Delete Account
+										</MenuItem>
 									</MenuGroup>
 								</MenuList>
 							</Menu>

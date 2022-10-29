@@ -163,7 +163,7 @@ export const DeleteProject = (projectID) => async (dispatch) => {
 	try {
 		const res = await axios.delete(`${API_URL}/delete-project/${projectID}`, config);
 		res?.data?.status && window.location.reload();
-		console.log(res);
+		console.log('Res from delete project', res);
 	} catch (error) {
 		console.log(error);
 	}

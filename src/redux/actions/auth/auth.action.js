@@ -19,6 +19,9 @@ const {
 	VERIFICATION_REQUEST,
 	VERIFICATION_SUCCESS,
 	VERIFICATION_FAILURE,
+	DELETE_ACCOUNT_REQUEST,
+	DELETE_ACCOUNT_SUCCESS,
+	DELETE_ACCOUNT_FAILURE,
 } = AuthTypes;
 
 export const LoginAction = (user, navigate) => async (dispatch) => {
@@ -27,7 +30,8 @@ export const LoginAction = (user, navigate) => async (dispatch) => {
 		let response = await axios.post(`${API_URL}/signin`, { ...user });
 		response?.status && dispatch({ type: BUTTON_LOADER_OFF });
 		const { data } = response;
-
+		console.log('Data from login', data);
+		console.log('Access from login', data?.user?.role?.access);
 		if (data?.status == true) {
 			const { token, user } = response?.data;
 			localStorage.setItem('token', token);
@@ -35,19 +39,21 @@ export const LoginAction = (user, navigate) => async (dispatch) => {
 			localStorage.setItem('currentProject', data?.project?._id);
 			localStorage.setItem('currentProjectName', data?.project?.title);
 
+			// setTimeout(() => {
 			dispatch({
 				type: LOGIN_SUCCESS,
 				payload: { token, user },
 			});
-
-			if (token) {
-				window.location.replace(`/overview/${data?.project?.magic_link}/${data?.project?._id}`);
-			}
-
 			if (token && user?.role?.access === 'project-admin') {
-				// window.location.replace('/projects');
-				navigate('/projects');
+				window.location.replace('/projects');
+				// navigate('/projects');
+			} else if (token) {
+				window.location.replace(`/overview/${data?.project?.magic_link}/${data?.project?._id}`);
+			} else {
+				window.location.replace('/login');
 			}
+
+			// }, 40000);
 		}
 	} catch (error) {
 		dispatch({ type: LOGIN_FAILURE });
@@ -88,12 +94,14 @@ export const SignupAction = (user) => async (dispatch) => {
 		const res = await AxiosInstance.post(`/signup`, {
 			...user,
 		});
+		console.log('Data from signup', res);
+
+		// setTimeout(() => {
 		if (res?.status === 200) {
-			const token = res?.data.user.token;
+			const token = res?.data?.user.token;
 			const userRes = res?.data?.user;
-			const roleAccess = res?.data.user?.role?.roleAccess;
-			const roleValue = res?.data.user?.role?.roleValue;
-			console.log('Res from auth.action', res?.data);
+			const roleAccess = res?.data?.user?.role?.roleAccess;
+			const roleValue = res?.data?.user?.role?.roleValue;
 
 			localStorage.setItem('token', token);
 			localStorage.setItem('user', JSON.stringify(userRes));
@@ -104,6 +112,7 @@ export const SignupAction = (user) => async (dispatch) => {
 			});
 			return res;
 		}
+		// }, 40000);
 	} catch (error) {
 		message.error(error);
 	}
@@ -137,5 +146,38 @@ export const signout = () => async (dispatch) => {
 		dispatch({ type: LOGOUT_SUCCESS });
 	} else {
 		dispatch({ type: LOGOUT_FAILURE, payload: response.data.error });
+	}
+};
+
+export const DeleteAccountAction = (navigate) => async (dispatch) => {
+	try {
+		const token = window.localStorage.getItem('token');
+		// const config = {
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		authorization: `Bearer ${token}`,
+		// 	},
+		// };
+		dispatch({
+			type: DELETE_ACCOUNT_REQUEST,
+		});
+		const response = await AxiosInstance.delete('/delete-account');
+		console.log('Response from delete account', response);
+		if (response?.data?.status === true) {
+			dispatch({ type: DELETE_ACCOUNT_SUCCESS, payload: response?.data?.msg });
+			message.success(response?.data?.msg, 4);
+			navigate('/', { replace: true });
+		}
+		if (response?.data?.status === false) {
+			dispatch({ type: DELETE_ACCOUNT_FAILURE, payload: response?.data?.msg });
+			message.error(response?.data?.msg);
+		}
+		if (response?.status !== 200) {
+			dispatch({ type: LOGOUT_FAILURE, payload: 'Something went wrong' });
+			message.error('Something went wrong');
+		}
+	} catch (error) {
+		console.error(error);
+		message.error(error.message);
 	}
 };

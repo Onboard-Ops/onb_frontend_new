@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, Input, useToast, VStack, Text } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, useToast, VStack, Text, Code } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import AuthLayout from '../Layout/AuthLayout';
 import { useNavigate } from 'react-router-dom';
@@ -81,6 +81,13 @@ export default function Login() {
 					</Button>
 				</VStack>
 			</form>
+			<Text ml={12} mt={4}>
+				Don't have an account ?{' '}
+				<Code color='blue' onClick={() => navigate('/')}>
+					Sign up
+				</Code>{' '}
+				now
+			</Text>
 		</AuthLayout>
 	);
 }

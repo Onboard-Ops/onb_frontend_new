@@ -27,7 +27,7 @@ const TaskModal = () => {
 		milestone_ref: '',
 		assignedBy: null,
 		comment: '',
-		status: '',
+		status: 'not_started',
 		dependencies: [],
 		dueDate: '',
 		is_private: false,
@@ -41,7 +41,7 @@ const TaskModal = () => {
 	const people = useSelector((state) => state?.people?.people);
 	const taskDetails = useSelector((state) => state?.dashboard?.singleTaskDetail);
 
-	// console.log(taskDetails);
+	console.log(taskDetails);
 
 	const menu = (
 		<Menu
@@ -186,7 +186,7 @@ const TaskModal = () => {
 										<p style={{ marginRight: 10, color: '#929292' }}>Status</p>
 										<Select
 											bordered={false}
-											value={formData?.status?.replace('_', ' ')}
+											value={formData?.status}
 											style={{
 												width: 200,
 											}}

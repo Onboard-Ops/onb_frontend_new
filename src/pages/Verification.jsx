@@ -34,9 +34,9 @@ export default function Verification() {
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
 		const newOtp = parseInt(otp.otp);
-		dispatch(EmailVerificationAction(newOtp, userData?.user?._user, navigate));
+		dispatch(EmailVerificationAction(newOtp, userData?.user, navigate));
 	};
-	console.log('User data', userData);
+	console.log('User data', userData?.user);
 	if (userData?.error) {
 		toast({
 			title: userData?.error,
