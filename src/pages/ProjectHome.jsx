@@ -84,7 +84,7 @@ const ProjectHome = () => {
 		}));
 	};
 	const currentProjectOwner = JSON.parse(localStorage.getItem('user'));
-
+	console.log();
 	const onHandleSubmit = async (event) => {
 		event.preventDefault();
 		let projectData = {

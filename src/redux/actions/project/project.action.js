@@ -136,7 +136,7 @@ export const LeaveProject = (ownerID, currentProjectOwnerId, projectID) => async
 		if (!ownerID) {
 			message.error('Please select a person');
 		}
-
+		console.log('currentProjectOwnerId', currentProjectOwnerId);
 		const res2 = await AxiosInstance.put(`${API_URL}/update-people/${currentProjectOwnerId}`, {
 			project: '',
 		});
