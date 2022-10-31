@@ -18,6 +18,8 @@ import People from '../pages/People/People';
 import OverView from '../pages/OverView/OverView';
 import Verification from '../pages/Verification';
 import Settings from '../pages/Settings';
+import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
 
 import '../index.css';
 
@@ -25,24 +27,27 @@ const Router = () => {
 	const user = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 	const uid = uuidv4();
-	useEffect(() => {
+	const token = useEffect(() => {
 		if (!user.isAauthenticated) {
 			dispatch(isUserLoggedIn());
 		}
 	}, []);
-	console.log(user?.user?.role?.roleAccess, user?.user?.role?.access);
-	console.log('User is authenticated', user);
+	// console.log(user?.user?.role?.roleAccess, user?.user?.role?.access);
+	// console.log('User is authenticated', user);
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path='/' element={<Frontpage />} key={uid} />,
 				{/* <Route path='/signup' element={<Signup />} key={uid} />, */}
+				<Route path='/forgot-password' element={<ForgotPassword />} key={uid} />,
 				<Route path='/login' element={<Login />} key={uid} />,
 				<Route path='/verify' element={<Verification />} key={uid} />,
 				{(user?.token && user?.user?.role?.access === 'project-admin') ||
 				(user?.token && user?.user?.role?.roleAccess === 'project-admin') ? (
 					[
 						<Route path='/projects' element={<ProjectHome />} key={uid} />,
+						<Route path='/reset-password' element={<ResetPassword />} key={uid} />,
+						<Route path='/users/password/reset/:token' element={<ResetPassword />} key={uid} />,
 						<Route path='/people' element={<People key={uid} />} />,
 						<Route path='/resources' element={<Resources />} key={uid} />,
 						<Route path='/to-do' element={<ToDo key={uid} />} />,
@@ -56,6 +61,8 @@ const Router = () => {
 					[
 						// <Route path='/projects' element={<ProjectHome />} key={uid} />,
 						<Route path='/people' element={<People key={uid} />} />,
+						<Route path='/reset-password' element={<ResetPassword />} key={uid} />,
+						<Route path='/users/password/reset/:token' element={<ResetPassword />} key={uid} />,
 						<Route path='/resources' element={<Resources />} key={uid} />,
 						<Route path='/to-do' element={<ToDo key={uid} />} />,
 						<Route path='/resources' element={<Resources key={uid} />} />,

@@ -111,7 +111,7 @@ export const AddProjectAction = (form) => async (dispatch) => {
 			config
 		)
 		.then((res) => {
-			console.log(res);
+			console.log('Project res', res);
 			const { data } = res;
 			localStorage.setItem('currentProjectData', JSON.stringify(data));
 			data && dispatch(GetAllProjectsByCurrentUser());
@@ -136,13 +136,11 @@ export const LeaveProject = (ownerID, currentProjectOwnerId, projectID) => async
 		if (!ownerID) {
 			message.error('Please select a person');
 		}
-		console.log('currentProjectOwnerId', currentProjectOwnerId);
 		const res2 = await AxiosInstance.put(`${API_URL}/update-people/${currentProjectOwnerId}`, {
-			project: '',
+			role: '635d43f1a15f67f60b3d0b59',
+			project: '635d43f1a15f67f60b000000',
 		});
 		const res = await axios.post(`${API_URL}/leave-project/${projectID}`, { owner: ownerID }, config);
-		console.log('Res from leave project', res);
-		console.log('Res2 from leave project', res2);
 		!res?.data?.status && message.error(res?.data?.msg);
 		res?.data?.status && window.location.reload();
 		console.log(res);

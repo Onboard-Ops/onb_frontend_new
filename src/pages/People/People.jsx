@@ -237,7 +237,11 @@ const People = () => {
 					{rolesState &&
 						rolesState?.roles?.length > 0 &&
 						rolesState?.roles?.map((ele) => {
-							return <option value={ele?._id}>{ele?.value}</option>;
+							return (
+								<option value={ele?._id} key={ele?._id}>
+									{ele?.value}
+								</option>
+							);
 						})}
 					<option value='new'>Add new role</option>
 				</Select>
@@ -374,7 +378,11 @@ const People = () => {
 					{peopleState &&
 						peopleState?.people &&
 						peopleState?.people?.map((ele) => {
-							return <option value={ele?._id}>{ele?.fullName}</option>;
+							return (
+								<option value={ele?._id} key={ele?._id}>
+									{ele?.fullName}
+								</option>
+							);
 						})}
 
 					{/* <option value="internal-editor">Internal Editor</option>
@@ -493,7 +501,11 @@ const People = () => {
 									>
 										{roles &&
 											roles.map((ele) => {
-												return <option value={ele?._id}>{ele?.value}</option>;
+												return (
+													<option value={ele?._id} key={ele?._id}>
+														{ele?.value}
+													</option>
+												);
 											})}
 										<option value='add-role'>
 											Add Role <i class='bi bi-plus-circle'></i>{' '}

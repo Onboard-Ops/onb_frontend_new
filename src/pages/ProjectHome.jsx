@@ -83,8 +83,7 @@ const ProjectHome = () => {
 			[e.target.name]: e.target.value,
 		}));
 	};
-	const currentProjectOwner = JSON.parse(localStorage.getItem('user'));
-	console.log();
+
 	const onHandleSubmit = async (event) => {
 		event.preventDefault();
 		let projectData = {
@@ -118,8 +117,12 @@ const ProjectHome = () => {
 		}
 	}, [projectStateData?.projectApiCall]);
 
+	const currentProjectOwner = JSON.parse(localStorage.getItem('user'));
+	const currentProjectOwnerId = currentProjectOwner?._id ? currentProjectOwner?._id : currentProjectOwner?._user?._id;
+	// console.log('currentProjectOwner?._id', typeof currentProjectOwnerId);
+	// console.log('would be owner', typeof owner);
 	const handleLeaveProject = () => {
-		dispatch(LeaveProject(owner, currentProjectOwner?._id, projectID));
+		dispatch(LeaveProject(owner, currentProjectOwnerId, projectID));
 	};
 
 	const showDeleteConfirm = (projectID) => {
@@ -196,8 +199,8 @@ const ProjectHome = () => {
 								people.length > 0 &&
 								people?.map((ele) => {
 									return (
-										<Option value={ele?._id}>
-											{ele?.role?.access === 'project-admin' ? ele?.fullName + '/CA' : ele?.fullName}
+										<Option value={ele?._id} key={ele?._id}>
+											{ele?.fullName}
 										</Option>
 									);
 								})}

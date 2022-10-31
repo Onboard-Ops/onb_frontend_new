@@ -39,7 +39,6 @@ export const LoginAction = (user, navigate) => async (dispatch) => {
 			localStorage.setItem('currentProject', data?.project?._id);
 			localStorage.setItem('currentProjectName', data?.project?.title);
 
-			// setTimeout(() => {
 			dispatch({
 				type: LOGIN_SUCCESS,
 				payload: { token, user },
@@ -52,8 +51,6 @@ export const LoginAction = (user, navigate) => async (dispatch) => {
 			} else {
 				window.location.replace('/login');
 			}
-
-			// }, 40000);
 		}
 	} catch (error) {
 		dispatch({ type: LOGIN_FAILURE });
@@ -166,7 +163,10 @@ export const DeleteAccountAction = (navigate) => async (dispatch) => {
 		if (response?.data?.status === true) {
 			dispatch({ type: DELETE_ACCOUNT_SUCCESS, payload: response?.data?.msg });
 			message.success(response?.data?.msg, 4);
-			navigate('/', { replace: true });
+			localStorage.clear();
+			setTimeout(() => {
+				navigate('/', { replace: true });
+			}, 3000);
 		}
 		if (response?.data?.status === false) {
 			dispatch({ type: DELETE_ACCOUNT_FAILURE, payload: response?.data?.msg });

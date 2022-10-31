@@ -116,7 +116,7 @@ const Frontpage = () => {
 	if (authStateData?.isSigningIn && projectStateData.isProjectAdding) {
 		return <Loader />;
 	}
-	console.log('Auth state data', authStateData);
+	// console.log('Auth state data', authStateData);
 	return (
 		<div>
 			<Modal
