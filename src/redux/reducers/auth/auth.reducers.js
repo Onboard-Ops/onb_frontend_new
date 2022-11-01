@@ -14,6 +14,9 @@ const {
 	VERIFICATION_REQUEST,
 	VERIFICATION_SUCCESS,
 	VERIFICATION_FAILURE,
+	DELETE_ACCOUNT_REQUEST,
+	DELETE_ACCOUNT_SUCCESS,
+	DELETE_ACCOUNT_FAILURE,
 } = AuthTypes;
 
 const InitialState = {
@@ -40,6 +43,8 @@ const InitialState = {
 	message: '',
 	isVerified: false,
 	isVeryfying: false,
+	isDeletingAccount: false,
+	isDeletedAccount: false,
 };
 
 export const AuthReducer = (state = InitialState, action) => {
@@ -132,6 +137,28 @@ export const AuthReducer = (state = InitialState, action) => {
 				...state,
 				error: payload.error,
 				loading: false,
+			};
+			break;
+		case DELETE_ACCOUNT_REQUEST:
+			state = {
+				...state,
+				isDeletingAccount: true,
+			};
+			break;
+		case DELETE_ACCOUNT_SUCCESS:
+			state = {
+				...state,
+				isDeletingAccount: false,
+				isDeletedAccount: true,
+				message: payload,
+			};
+			break;
+		case DELETE_ACCOUNT_SUCCESS:
+			state = {
+				...state,
+				isDeletingAccount: false,
+				isDeletedAccount: false,
+				error: payload,
 			};
 			break;
 		case BUTTON_LOADER_ON:

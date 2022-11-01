@@ -33,7 +33,7 @@ const LinkItems = [
 	{ name: 'To Do', icon: '', path: '/to-do' },
 	{ name: 'People', icon: '', path: '/people' },
 	{ name: 'Resources', icon: '', path: `/resources` },
-	{ name: 'Customer Info', icon: <FiEyeOff />, path: '/customer_info' },
+	// { name: 'Customer Info', icon: <FiEyeOff />, path: '/customer_info' },
 ];
 
 export default function Dashboard({ children }) {
@@ -182,7 +182,8 @@ const SidebarContent = ({ onClose, ...rest }) => {
 				<FiLogOut />
 				<Text ml={2}>Sign out</Text>
 			</NavItemAction>
-			{user?.user?.role?.access === 'project-admin' ? (
+			{user?.user?.role?.access === 'project-admin' ||
+			(user?.token && user?.user?.role?.roleAccess === 'project-admin') ? (
 				<NavItemAction color='white' mt={52} to='/projects'>
 					<Text ml={2}>View all projects</Text>
 				</NavItemAction>

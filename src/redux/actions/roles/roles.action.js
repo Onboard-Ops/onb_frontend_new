@@ -12,7 +12,7 @@ const config = {
 	},
 };
 
-export const FetchRolesApi = () => async (dispatch) => {
+export const FetchRolesApi = (currentProject) => async (dispatch) => {
 	try {
 		dispatch({
 			type: ROLES_API_CALL_OFF,
@@ -20,7 +20,7 @@ export const FetchRolesApi = () => async (dispatch) => {
 		dispatch({
 			type: ROLES_API_LOADER_ON,
 		});
-		const res = await axios.get(`${API_URL}/get-all-role`, config);
+		const res = await axios.get(`${API_URL}/get-all-role/${currentProject}`, config);
 		res?.status && dispatch({ type: ROLES_API_LOADER_OFF });
 		// console.log(res);
 		const {

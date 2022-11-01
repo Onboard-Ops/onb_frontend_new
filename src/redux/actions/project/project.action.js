@@ -51,48 +51,44 @@ export const GetAllProjectsByCurrentUser = () => {
 	};
 };
 
-export const GetCurrenntProjectDetails = () => {
-	return async (dispatch) => {
-		const currentProject = localStorage.getItem('currentProject');
-		const response = await AxiosInstance.get(`/get-all-tasks-by-project-id/${currentProject}`);
-		if (response?.status === 201) {
-			console.log(response);
+export const GetCurrenntProjectDetails = async (dispatch) => {
+	const currentProject = localStorage.getItem('currentProject');
+	const response = await AxiosInstance.get(`/get-all-tasks-by-project-id/${currentProject}`);
+	if (response?.status === 201) {
+		console.log(response);
 
+		dispatch({
+			type: CURRENT_PROJECT_INFO,
+			// payload: { projects, length },
+		});
+	} else {
+		if (response.status === 400 || response.status === 404) {
 			dispatch({
-				type: CURRENT_PROJECT_INFO,
-				// payload: { projects, length },
+				type: GET_ALL_PROJECT_FAILURE,
+				payload: { error: response.data.error },
 			});
-		} else {
-			if (response.status === 400 || response.status === 404) {
-				dispatch({
-					type: GET_ALL_PROJECT_FAILURE,
-					payload: { error: response.data.error },
-				});
-			}
 		}
-	};
+	}
 };
 
-export const FetchAllTasksOfProject = () => {
-	return async (dispatch) => {
-		const currentProject = localStorage.getItem('currentProject');
-		const response = await AxiosInstance.get(`/get-all-tasks-by-project-id/${currentProject}`);
-		if (response?.status === 201) {
-			console.log(response);
+export const FetchAllTasksOfProject = async (dispatch) => {
+	const currentProject = localStorage.getItem('currentProject');
+	const response = await AxiosInstance.get(`/get-all-tasks-by-project-id/${currentProject}`);
+	if (response?.status === 201) {
+		console.log(response);
 
+		dispatch({
+			type: CURRENT_PROJECT_INFO,
+			// payload: { projects, length },
+		});
+	} else {
+		if (response.status === 400 || response.status === 404) {
 			dispatch({
-				type: CURRENT_PROJECT_INFO,
-				// payload: { projects, length },
+				type: GET_ALL_PROJECT_FAILURE,
+				payload: { error: response.data.error },
 			});
-		} else {
-			if (response.status === 400 || response.status === 404) {
-				dispatch({
-					type: GET_ALL_PROJECT_FAILURE,
-					payload: { error: response.data.error },
-				});
-			}
 		}
-	};
+	}
 };
 
 export const AddProjectAction = (form) => async (dispatch) => {
@@ -115,7 +111,7 @@ export const AddProjectAction = (form) => async (dispatch) => {
 			config
 		)
 		.then((res) => {
-			console.log(res);
+			console.log('Project res', res);
 			const { data } = res;
 			localStorage.setItem('currentProjectData', JSON.stringify(data));
 			data && dispatch(GetAllProjectsByCurrentUser());
@@ -135,10 +131,16 @@ export const AddProjectAction = (form) => async (dispatch) => {
 		});
 };
 
-export const LeaveProject = (ownerID, projectID) => async (dispatch) => {
+export const LeaveProject = (ownerID, currentProjectOwnerId, projectID) => async (dispatch) => {
 	try {
+		if (!ownerID) {
+			message.error('Please select a person');
+		}
+		const res2 = await AxiosInstance.put(`${API_URL}/update-people/${currentProjectOwnerId}`, {
+			role: '635d43f1a15f67f60b3d0b59',
+			project: '635d43f1a15f67f60b000000',
+		});
 		const res = await axios.post(`${API_URL}/leave-project/${projectID}`, { owner: ownerID }, config);
-		console.log(res);
 		!res?.data?.status && message.error(res?.data?.msg);
 		res?.data?.status && window.location.reload();
 		console.log(res);

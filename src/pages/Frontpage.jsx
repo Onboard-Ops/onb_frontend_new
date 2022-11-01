@@ -92,7 +92,7 @@ const Frontpage = () => {
 		// NEEDS TO CHANGE
 		dispatch(SignupAction(user)).then((res) => {
 			console.log(res, 'HEYA');
-			if (res.status === 200) {
+			if (res?.status === 200) {
 				dispatch(AddProjectAction(projectData));
 			}
 		});
@@ -116,7 +116,7 @@ const Frontpage = () => {
 	if (authStateData?.isSigningIn && projectStateData.isProjectAdding) {
 		return <Loader />;
 	}
-	console.log('Auth state data', authStateData);
+	// console.log('Auth state data', authStateData);
 	return (
 		<div>
 			<Modal
