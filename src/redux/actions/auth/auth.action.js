@@ -149,12 +149,7 @@ export const signout = () => async (dispatch) => {
 export const DeleteAccountAction = (navigate) => async (dispatch) => {
 	try {
 		const token = window.localStorage.getItem('token');
-		// const config = {
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 		authorization: `Bearer ${token}`,
-		// 	},
-		// };
+
 		dispatch({
 			type: DELETE_ACCOUNT_REQUEST,
 		});

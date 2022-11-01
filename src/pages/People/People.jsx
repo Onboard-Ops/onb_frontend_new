@@ -63,7 +63,7 @@ const People = () => {
 	const [formData, setFormData] = useState({
 		fullName: '',
 		email: '',
-		role: '',
+		role: '63289ba99bd33cc1a10246f7',
 	});
 
 	const peopleState = useSelector((state) => state.people);
@@ -72,7 +72,7 @@ const People = () => {
 	console.log('Role state', rolesState);
 	useEffect(() => {
 		dispatch(FetchPeopleApi(currentProject));
-		dispatch(FetchRolesApi(currentProject));
+		// dispatch(FetchRolesApi(currentProject));
 	}, []);
 
 	useEffect(() => {
@@ -83,9 +83,9 @@ const People = () => {
 		rolesState?.roles && setRoles(rolesState?.roles);
 	}, [rolesState]);
 
-	const handleRolesOnchange = (value) => {
-		setFormData({ ...formData, role: value });
-	};
+	// const handleRolesOnchange = (value) => {
+	// 	setFormData({ ...formData, role: value });
+	// };
 
 	const handleAddPerson = () => {
 		setErr(false);
@@ -100,31 +100,6 @@ const People = () => {
 			return setErr(true);
 		}
 		dispatch(CreateUserApi(formData, onClose, currentProject));
-	};
-
-	const addRoleApi = async () => {
-		const token = window.localStorage.getItem('token');
-		const currentProject = window.localStorage.getItem('currentProject');
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				authorization: `Bearer ${token}`,
-			},
-		};
-		const res = await axios
-			.post(`${API_URL}/add-role/${currentProject}`, { ...addRoleData }, config)
-			.then((response) => {
-				if (response?.statusText === 'Created') {
-					dispatch(FetchRolesApi());
-					setAddRoleModal(false);
-					if (addPeople) {
-						onOpen();
-					}
-				}
-			})
-			.catch((err) => {
-				message.error(err?.response?.data?.msg);
-			});
 	};
 
 	const handleSave = () => {
@@ -404,57 +379,7 @@ const People = () => {
 					</Button>
 				</div>
 			</AntdModal>
-			<AntdModal
-				closable={false}
-				title={
-					<h1
-						style={{
-							fontSize: 25,
-							fontWeight: 'bold',
-							textAlign: 'center',
-						}}
-					>
-						Add Role
-					</h1>
-				}
-				open={addRoleModal}
-				// onOk={handleOk}
-				footer={null}
-				onCancel={() => setAddRoleModal(false)}
-			>
-				<Input
-					style={{ marginBottom: 12 }}
-					placeholder='Roll Name'
-					value={editRoleData?.value}
-					onChange={(e) => setAddRoleData({ ...addRoleData, value: e.target.value })}
-				/>
-				<Select
-					style={{ marginBottom: 12 }}
-					placeholder='Select access'
-					value={addRoleData?.access}
-					onChange={(e) => setAddRoleData({ ...addRoleData, access: e.target.value })}
-					// value={roleData?.role?.access}
-				>
-					{/* <option value="company-admin">Company Admin</option> */}
-					<option value='project-admin'>Project Admin</option>
-					<option value='team-member'>Team Member</option>
-					<option value='customer'>Customer/3rd Party</option>
-					{/* <option value="external-viewer">External Viewer</option> */}
-					{/* <option value="internal-editor">Internal Editor</option>
-          <option value="external-editor">External Editor</option> */}
-				</Select>
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						marginTop: 20,
-					}}
-				>
-					<Button className='button_outline' onClick={() => addRoleApi()}>
-						Save
-					</Button>
-				</div>
-			</AntdModal>
+
 			{peopleState?.peopleLoading ? (
 				<Spinner
 					style={{ display: 'flex', justifyContent: 'center', margin: 'auto' }}
@@ -486,32 +411,7 @@ const People = () => {
 										onChange={(e) => setFormData({ ...formData, email: e.target.value })}
 									/>
 								</FormControl>
-								<FormControl style={{ marginBottom: 20 }}>
-									<Select
-										placeholder='Role name'
-										onChange={(e) => {
-											if (e.target.value == 'add-role') {
-												setAddRoleModal(true);
-												setAddPeople(true);
-												onClose();
-											} else {
-												handleRolesOnchange(e.target.value);
-											}
-										}}
-									>
-										{roles &&
-											roles.map((ele) => {
-												return (
-													<option value={ele?._id} key={ele?._id}>
-														{ele?.value}
-													</option>
-												);
-											})}
-										<option value='add-role'>
-											Add Role <i class='bi bi-plus-circle'></i>{' '}
-										</option>
-									</Select>
-								</FormControl>
+
 								{err && <p style={{ color: 'tomato' }}>All fields are required!</p>}
 								{errMsg && <p style={{ color: 'tomato' }}>{errMsg}</p>}
 								<Button style={{ marginBottom: 20 }} onClick={() => handleAddPerson()}>
