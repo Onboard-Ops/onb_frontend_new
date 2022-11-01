@@ -55,17 +55,17 @@ const MilestoneBoard = (data) => {
 	});
 	const dispatch = useDispatch();
 	const { data: milestone } = data;
-	const depandancyData = [
-		{
-			taskName: 'Add data pipeline',
-		},
-		{
-			taskName: 'Test all features',
-		},
-		{
-			taskName: 'Sign the aggrement',
-		},
-	];
+	// const depandancyData = [
+	// 	{
+	// 		taskName: 'Add data pipeline',
+	// 	},
+	// 	{
+	// 		taskName: 'Test all features',
+	// 	},
+	// 	{
+	// 		taskName: 'Sign the aggrement',
+	// 	},
+	// ];
 	const people = useSelector((state) => state?.people?.people);
 	const authUser = useSelector((state) => state?.auth?.user);
 	const dashboard = useSelector((state) => state?.dashboard);
@@ -221,7 +221,7 @@ const MilestoneBoard = (data) => {
 								</Select>
 							</div>
 							<div>
-								<p style={{ marginRight: 10, color: '#929292' }}>Dependencies</p>
+								{/* <p style={{ marginRight: 10, color: '#929292' }}>Dependencies</p>
 								<Select
 									style={{
 										width: 200,
@@ -240,7 +240,7 @@ const MilestoneBoard = (data) => {
 												</Option>
 											);
 										})}
-								</Select>
+								</Select> */}
 								{/* <Input
                   onChange={(e) =>
                     setFormData({ ...formData, dependencies: e.target.value })
