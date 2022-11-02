@@ -90,7 +90,7 @@ const Frontpage = () => {
 		};
 
 		// NEEDS TO CHANGE
-		dispatch(SignupAction(user)).then((res) => {
+		dispatch(SignupAction(user, setIsLogOpen, onClose)).then((res) => {
 			console.log(res, 'HEYA');
 			if (res?.status === 200) {
 				dispatch(AddProjectAction(projectData));
