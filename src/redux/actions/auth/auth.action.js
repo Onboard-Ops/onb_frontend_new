@@ -52,9 +52,9 @@ export const LoginAction = (user, navigate) => async (dispatch) => {
 				window.location.replace('/login');
 			}
 		}
-	} catch (error) {
+	} catch (err) {
 		dispatch({ type: LOGIN_FAILURE });
-		message.error('Invalid email-id/password');
+		message.error(err?.response?.data?.msg);
 	}
 };
 export const EmailVerificationAction = (otp, userData, navigate) => async (dispatch) => {
@@ -85,7 +85,7 @@ export const EmailVerificationAction = (otp, userData, navigate) => async (dispa
 	}
 };
 
-export const SignupAction = (user) => async (dispatch) => {
+export const SignupAction = (user, setIsLogOpen, onClose) => async (dispatch) => {
 	try {
 		dispatch({ type: SIGN_UP_REQUEST });
 		const res = await AxiosInstance.post(`/signup`, {
@@ -111,7 +111,12 @@ export const SignupAction = (user) => async (dispatch) => {
 		}
 		// }, 40000);
 	} catch (error) {
-		message.error(error);
+		setIsLogOpen(false);
+		onClose();
+		message.error(error?.response?.data?.msg);
+		await window.location.replace(`/login`, {
+			replace: true,
+		});
 	}
 };
 

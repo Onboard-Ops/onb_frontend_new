@@ -182,14 +182,10 @@ const SidebarContent = ({ onClose, ...rest }) => {
 				<FiLogOut />
 				<Text ml={2}>Sign out</Text>
 			</NavItemAction>
-			{user?.user?.role?.access === 'project-admin' ||
-			(user?.token && user?.user?.role?.roleAccess === 'project-admin') ? (
-				<NavItemAction color='white' mt={52} to='/projects'>
-					<Text ml={2}>View all projects</Text>
-				</NavItemAction>
-			) : (
-				''
-			)}
+
+			<NavItemAction color='white' mt={52} to='/projects'>
+				<Text ml={2}>View all projects</Text>
+			</NavItemAction>
 		</Box>
 	);
 };
