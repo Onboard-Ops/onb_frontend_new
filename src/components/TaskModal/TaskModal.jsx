@@ -200,7 +200,7 @@ const TaskModal = () => {
 											<Option value='on-hold'>On hold</Option>
 										</Select>
 									</div>
-									<div>
+									{/* <div>
 										<p style={{ marginRight: 10, color: '#929292' }}>Dependencies</p>
 										<Input
 											onChange={(e) =>
@@ -212,7 +212,7 @@ const TaskModal = () => {
 											bordered={false}
 											placeholder='Type in here'
 										/>
-									</div>
+									</div> */}
 								</div>
 							</div>
 							<hr />
