@@ -42,8 +42,7 @@ const Router = () => {
 				<Route path='/forgot-password' element={<ForgotPassword />} key={uid} />,
 				<Route path='/login' element={<Login />} key={uid} />,
 				<Route path='/verify' element={<Verification />} key={uid} />,
-				{(user?.token && user?.user?.role?.access === 'project-admin') ||
-				(user?.token && user?.user?.role?.roleAccess === 'project-admin') ? (
+				{user?.token ? (
 					[
 						<Route path='/projects' element={<ProjectHome />} key={uid} />,
 						<Route path='/reset-password' element={<ResetPassword />} key={uid} />,
