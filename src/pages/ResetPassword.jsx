@@ -80,14 +80,19 @@ const ResetPassword = ({ match }) => {
 
 			<AuthLayout>
 				<Text fontSize='large' textAlign='center' color='gray.500' mb='8'>
-					Reset Your Password
+					Reset password
 				</Text>
 
 				<form onSubmit={handleSubmit}>
 					<VStack spacing='5' justify='space-between'>
 						<FormControl isRequired>
 							<InputGroup>
-								<Input type='password' placeholder='password' onChange={handleChange('password1')} value={password1} />
+								<Input
+									type='password'
+									placeholder='New password'
+									onChange={handleChange('password1')}
+									value={password1}
+								/>
 								<InputRightElement h={'full'}>
 									<Button variant={'ghost'} onClick={() => setShowPassword((showPassword) => !showPassword)}>
 										{showPassword ? <ViewIcon /> : <ViewOffIcon />}
