@@ -68,7 +68,13 @@ const ForgetPassword = ({ history }) => {
 					<VStack spacing='5' justify='space-between'>
 						<FormControl isRequired>
 							{/* <FormLabel htmlFor='username'>Email</FormLabel> */}
-							<Input type='email' placeholder='Email' onChange={handleChange('email')} value={email} />
+							<Input
+								type='email'
+								placeholder='Email'
+								onChange={handleChange('email')}
+								value={email}
+								autocomplete='on'
+							/>
 						</FormControl>
 
 						<Button isLoading={loading} colorScheme='teal' size='md' w='100%' d='block' type='submit'>
