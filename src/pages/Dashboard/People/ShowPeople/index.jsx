@@ -39,12 +39,6 @@ const ShowAllFiles = () => {
 		<TableContainer>
 			{errorMsg && <p className='errorMsg'>{errorMsg}</p>}
 			<Table variant='striped' colorScheme='grey'>
-				{/* <Thead>
-					<Tr>
-						<Th>Title</Th>
-						<Th>Download</Th>
-					</Tr>
-				</Thead> */}
 				<Tbody>
 					{peopleList.length > 0 ? (
 						peopleList.map(({ _id, fullName, email, role, access }) => (
