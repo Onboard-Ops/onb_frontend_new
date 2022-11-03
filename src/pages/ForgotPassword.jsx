@@ -45,8 +45,8 @@ const ForgetPassword = ({ history }) => {
 					setLoading(false);
 				})
 				.catch((err) => {
-					console.log(err.response);
-					toast.error(err?.message);
+					// console.log('Err res ====>', err.response);
+					toast.error(err?.response?.data?.error);
 					setLoading(false);
 				});
 		} else {
