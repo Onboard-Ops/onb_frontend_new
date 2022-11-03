@@ -1,4 +1,5 @@
 import { Button, Checkbox, DatePicker, Dropdown, Input, Mentions, Modal, Select, Skeleton, Menu } from 'antd';
+import moment from 'moment';
 import TextArea from 'antd/lib/input/TextArea';
 import React from 'react';
 import { useEffect } from 'react';
@@ -175,7 +176,7 @@ const TaskModal = () => {
 									<div>
 										<p style={{ marginRight: 10, color: '#929292' }}>Due date</p>
 										<DatePicker
-											// value={taskDetails?.dueDate}
+											value={moment(taskDetails?.dueDate)}
 											onChange={(value) => setFormData({ ...formData, dueDate: value?._d })}
 											bordered={false}
 										/>
