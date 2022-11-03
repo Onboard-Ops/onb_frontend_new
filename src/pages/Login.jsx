@@ -127,7 +127,7 @@ export default function Login() {
 				<HStack justify='space-between' spacing='24px'>
 					<Text>
 						<Code mt={4} color='blue' onClick={() => navigate('/forgot-password')}>
-							Forget Password ?
+							Forgot Password?
 						</Code>{' '}
 						<Code color='blue' onClick={() => navigate('/')} ml={48} mt={4}>
 							Sign up

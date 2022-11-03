@@ -59,7 +59,7 @@ const ForgetPassword = ({ history }) => {
 			<ToastContainer />
 			<AuthLayout>
 				<Text fontSize='large' textAlign='center' color='gray.500' mb='8'>
-					Forget Password
+					Forgot Password
 				</Text>
 				<Text fontSize='medium' textAlign='center' color='gray.500' mb='8'>
 					Enter your email ID here
