@@ -1,3 +1,8 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { authenticate, isAuth } from '../utils/auth';
+import { Link, Redirect } from 'react-router-dom';
+import { GoogleLogin } from 'react-google-login';
 import {
 	Button,
 	FormControl,
@@ -12,7 +17,6 @@ import {
 	InputGroup,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import React, { useEffect, useState } from 'react';
 import AuthLayout from '../Layout/AuthLayout';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
@@ -49,6 +53,25 @@ export default function Login() {
 		dispatch(LoginAction(user, navigate));
 	};
 
+	// Google login
+	// const sendGoogleToken = (tokenId) => {
+	// 	axios
+	// 		.post(`${process.env.REACT_APP_API_URL}/googlelogin`, {
+	// 			idToken: tokenId,
+	// 		})
+	// 		.then((res) => {
+	// 			console.log(res.data);
+	// 			informParent(res);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log('GOOGLE SIGNIN ERROR', error.response);
+	// 		});
+	// };
+	// const informParent = (response) => {
+	// 	authenticate(response, () => {
+	// 		isAuth() && isAuth().role === 'admin' ? history.push('/admin') : history.push('/private');
+	// 	});
+	// };
 	return (
 		<AuthLayout>
 			<Text fontSize='large' textAlign='center' color='gray.600' fontWeight='bold' mb='2'>
