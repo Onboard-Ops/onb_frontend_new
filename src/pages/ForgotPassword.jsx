@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_URL } from '../utils/url';
 import {
 	Button,
 	FormControl,
@@ -30,7 +31,7 @@ const ForgetPassword = ({ history }) => {
 			setLoading(true);
 			setFormData({ ...formData, textChange: 'Submitting' });
 			axios
-				.put(`http://localhost:5000/api/v1/forgotpassword`, {
+				.put(`${API_URL}forgotpassword`, {
 					email,
 				})
 				.then((res) => {

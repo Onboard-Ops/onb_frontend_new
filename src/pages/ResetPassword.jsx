@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AuthLayout from '../Layout/AuthLayout';
+import { API_URL } from '../utils/url';
 import {
 	Button,
 	FormControl,
@@ -47,7 +48,7 @@ const ResetPassword = ({ match }) => {
 			setLoading(true);
 			setFormData({ ...formData, textChange: 'Submitting' });
 			axios
-				.put(`http://localhost:5000/api/v1/resetpassword`, {
+				.put(`${API_URL}/resetpassword`, {
 					newPassword: password1,
 					resetPasswordLink: token,
 				})
