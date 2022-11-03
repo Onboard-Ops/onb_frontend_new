@@ -54,24 +54,24 @@ export default function Login() {
 	};
 
 	// Google login
-	const sendGoogleToken = (tokenId) => {
-		axios
-			.post(`${process.env.REACT_APP_API_URL}/googlelogin`, {
-				idToken: tokenId,
-			})
-			.then((res) => {
-				console.log(res.data);
-				informParent(res);
-			})
-			.catch((error) => {
-				console.log('GOOGLE SIGNIN ERROR', error.response);
-			});
-	};
-	const informParent = (response) => {
-		authenticate(response, () => {
-			isAuth() && isAuth().role === 'admin' ? history.push('/admin') : history.push('/private');
-		});
-	};
+	// const sendGoogleToken = (tokenId) => {
+	// 	axios
+	// 		.post(`${process.env.REACT_APP_API_URL}/googlelogin`, {
+	// 			idToken: tokenId,
+	// 		})
+	// 		.then((res) => {
+	// 			console.log(res.data);
+	// 			informParent(res);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log('GOOGLE SIGNIN ERROR', error.response);
+	// 		});
+	// };
+	// const informParent = (response) => {
+	// 	authenticate(response, () => {
+	// 		isAuth() && isAuth().role === 'admin' ? history.push('/admin') : history.push('/private');
+	// 	});
+	// };
 	return (
 		<AuthLayout>
 			<Text fontSize='large' textAlign='center' color='gray.600' fontWeight='bold' mb='2'>
