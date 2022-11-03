@@ -199,7 +199,11 @@ const MilestoneBoard = (data) => {
 							</div>
 							<div>
 								<p style={{ marginRight: 10, color: '#929292' }}>Due date</p>
-								<DatePicker onChange={(value) => setFormData({ ...formData, dueDate: value?._d })} bordered={false} />
+								<DatePicker
+									onChange={(value) => setFormData({ ...formData, dueDate: value?._d })}
+									bordered={false}
+									value={formData?.dueDate}
+								/>
 							</div>
 						</div>
 						<div className='task_modal_flex'>
