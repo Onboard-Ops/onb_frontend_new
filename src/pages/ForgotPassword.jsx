@@ -31,7 +31,7 @@ const ForgetPassword = ({ history }) => {
 			setLoading(true);
 			setFormData({ ...formData, textChange: 'Submitting' });
 			axios
-				.put(`${API_URL}forgotpassword`, {
+				.put(`${API_URL}/forgotpassword`, {
 					email,
 				})
 				.then((res) => {
