@@ -1,6 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { authenticate, isAuth } from '../utils/auth';
+import { API_URL } from '../utils/url';
+import { auth } from '../utils/firebase';
 import { FcGoogle } from 'react-icons/fc';
+import GoogleButton from 'react-google-button';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { ArrowBackIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import Loader from '../components/Loader';
 import {
@@ -97,7 +103,49 @@ const Frontpage = () => {
 			}
 		});
 	};
+	// GOOGLE AUTH HANDLER
+	function googleSignIn() {
+		const googleAuthProvider = new GoogleAuthProvider();
+		return signInWithPopup(auth, googleAuthProvider);
+	}
+	const handleGoogleSignIn = async (e) => {
+		e.preventDefault();
 
+		try {
+			const res = await googleSignIn();
+			sendGoogleToken(res?.user?.accessToken);
+			console.log('Google res', res?.user?.emailVerified);
+			// if (res?.user?.emailVerified === true) {
+			// 	dispatch(AddProjectAction(projectData));
+			// }
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
+	const sendGoogleToken = (tokenId) => {
+		let projectData = {
+			title: project.title,
+			kickOff: project.kickOff,
+		};
+		axios
+			.post(`${API_URL}/google-signin`, {
+				idToken: tokenId,
+			})
+			.then((res) => {
+				console.log('GOOGLE SIGNIN SUCCESS', res);
+				localStorage.setItem('token', res?.data?.token);
+				localStorage.setItem('user', JSON.stringify(res?.data?.user));
+				// navigate('/projects');
+				// informParent(res);
+				if (res?.status === 200) {
+					dispatch(AddProjectAction(projectData));
+				}
+			})
+			.catch((error) => {
+				console.log('GOOGLE SIGNIN ERROR', error.response);
+			});
+	};
 	useEffect(() => {
 		if (authStateData?.isSignedUp && projectStateData.isProjectAdded) {
 			toast({
@@ -239,6 +287,7 @@ const Frontpage = () => {
 							>
 								Sign up
 							</Button>
+							<GoogleButton className='g-btn' type='dark' onClick={handleGoogleSignIn} />
 						</ModalFooter>
 						<Divider />
 						{/* <ModalFooter>

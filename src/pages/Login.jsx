@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { authenticate, isAuth } from '../utils/auth';
 import { Link, Redirect } from 'react-router-dom';
-import { GoogleLogin } from 'react-google-login';
+import { auth } from '../utils/firebase';
+import GoogleButton from 'react-google-button';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import {
 	Button,
 	FormControl,
@@ -16,7 +18,9 @@ import {
 	InputRightElement,
 	InputGroup,
 } from '@chakra-ui/react';
+import { API_URL } from '../utils/url';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { FcGoogle } from 'react-icons/fc';
 import AuthLayout from '../Layout/AuthLayout';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
@@ -53,23 +57,45 @@ export default function Login() {
 		dispatch(LoginAction(user, navigate));
 	};
 
-	// Google login
-	// const sendGoogleToken = (tokenId) => {
-	// 	axios
-	// 		.post(`${process.env.REACT_APP_API_URL}/googlelogin`, {
-	// 			idToken: tokenId,
-	// 		})
-	// 		.then((res) => {
-	// 			console.log(res.data);
-	// 			informParent(res);
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log('GOOGLE SIGNIN ERROR', error.response);
-	// 		});
+	// GOOGLE AUTH HANDLER
+	function googleSignIn() {
+		const googleAuthProvider = new GoogleAuthProvider();
+		return signInWithPopup(auth, googleAuthProvider);
+	}
+	const handleGoogleSignIn = async (e) => {
+		e.preventDefault();
+		try {
+			const res = await googleSignIn();
+			console.log('Google res', res);
+			sendGoogleToken(res?.user?.accessToken);
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
+	const sendGoogleToken = (tokenId) => {
+		axios
+			.post(`${API_URL}/google-signin`, {
+				idToken: tokenId,
+			})
+			.then((res) => {
+				console.log('GOOGLE SIGNIN SUCCESS', res.data);
+				localStorage.setItem('token', res?.data?.token);
+				localStorage.setItem('user', JSON.stringify(res?.data?.user));
+				navigate('/projects');
+				// informParent(res);
+			})
+			.catch((error) => {
+				console.log('GOOGLE SIGNIN ERROR', error.response);
+			});
+	};
+	// const responseGoogle = (response) => {
+	// 	console.log('GOOGLE RESPONSE', response);
+	// 	sendGoogleToken(response?.tokenId);
 	// };
 	// const informParent = (response) => {
 	// 	authenticate(response, () => {
-	// 		isAuth() && isAuth().role === 'admin' ? history.push('/admin') : history.push('/private');
+	// 		isAuth() && navigate('/projects');
 	// 	});
 	// };
 	return (
@@ -115,7 +141,7 @@ export default function Login() {
 					<Button
 						isLoading={user?.isAuthenticating}
 						// isLoading={signUpResult.fetching || loginResult.fetching}
-						colorScheme='teal'
+						colorScheme='linkedin'
 						size='lg'
 						w='100%'
 						d='block'
@@ -124,6 +150,9 @@ export default function Login() {
 						Login
 					</Button>
 				</VStack>
+
+				{/* GOOGLE SIGN IN */}
+				<GoogleButton className='g-btn' type='dark' onClick={handleGoogleSignIn} />
 				<HStack justify='space-between' spacing='24px'>
 					<Text>
 						<Code mt={4} color='blue' onClick={() => navigate('/forgot-password')}>
