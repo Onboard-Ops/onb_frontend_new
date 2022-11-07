@@ -27,6 +27,7 @@ const Router = () => {
 	const token = localStorage.getItem('token');
 	console.log('From route', token);
 	const user = useSelector((state) => state.auth);
+	console.log('From route', user);
 	const dispatch = useDispatch();
 	const uid = uuidv4();
 	// const token = useEffect(() => {
