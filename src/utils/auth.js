@@ -6,7 +6,7 @@ export const setCookie = (key, value) => {
 	if (window !== 'undefiend') {
 		cookie.set(key, value, {
 			// 1 Day
-			expires: 1,
+			expires: 365,
 		});
 	}
 };
@@ -44,8 +44,8 @@ export const removeLocalStorage = (key) => {
 // Auth enticate user by passing data to cookie and localstorage during signin
 export const authenticate = (response, next) => {
 	console.log('AUTHENTICATE HELPER ON SIGNIN RESPONSE', response);
-	setCookie('token', response.data.token);
-	setLocalStorage('user', response.data.user);
+	setCookie('token', response?.data?.token);
+	setLocalStorage('user', response?.data?.user);
 	next();
 };
 

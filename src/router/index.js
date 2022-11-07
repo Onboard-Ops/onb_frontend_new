@@ -24,16 +24,17 @@ import ResetPassword from '../pages/ResetPassword';
 import '../index.css';
 
 const Router = () => {
+	const token = localStorage.getItem('token');
+	console.log('From route', token);
 	const user = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 	const uid = uuidv4();
-	const token = useEffect(() => {
-		if (!user.isAauthenticated) {
-			dispatch(isUserLoggedIn());
-		}
-	}, []);
-	// console.log(user?.user?.role?.roleAccess, user?.user?.role?.access);
-	// console.log('User is authenticated', user);
+	// const token = useEffect(() => {
+	// 	if (!user.isAauthenticated) {
+	// 		dispatch(isUserLoggedIn());
+	// 	}
+	// }, []);
+
 	return (
 		<BrowserRouter>
 			<Routes>
@@ -42,7 +43,7 @@ const Router = () => {
 				<Route path='/forgot-password' element={<ForgotPassword />} key={uid} />,
 				<Route path='/login' element={<Login />} key={uid} />,
 				<Route path='/verify' element={<Verification />} key={uid} />,
-				{user?.token ? (
+				{token ? (
 					[
 						<Route path='/projects' element={<ProjectHome />} key={uid} />,
 						<Route path='/reset-password' element={<ResetPassword />} key={uid} />,
@@ -52,19 +53,6 @@ const Router = () => {
 						<Route path='/to-do' element={<ToDo key={uid} />} />,
 						<Route path='/resources' element={<Resources key={uid} />} />,
 						<Route path='/settings' element={<Settings key={uid} />} />,
-						// <Route path='/customer_info' element={<CustomerInfo key={uid} />} />,
-						<Route path='/overview/:project/:projectid' element={<OverView key={uid} />} />,
-					]
-				) : (user?.token && user?.user?.role?.access !== 'project-admin') ||
-				  (user?.token && user?.user?.role?.roleAccess !== 'project-admin') ? (
-					[
-						// <Route path='/projects' element={<ProjectHome />} key={uid} />,
-						<Route path='/people' element={<People key={uid} />} />,
-						<Route path='/reset-password' element={<ResetPassword />} key={uid} />,
-						<Route path='/users/password/reset/:token' element={<ResetPassword />} key={uid} />,
-						<Route path='/resources' element={<Resources />} key={uid} />,
-						<Route path='/to-do' element={<ToDo key={uid} />} />,
-						<Route path='/resources' element={<Resources key={uid} />} />,
 						// <Route path='/customer_info' element={<CustomerInfo key={uid} />} />,
 						<Route path='/overview/:project/:projectid' element={<OverView key={uid} />} />,
 					]
