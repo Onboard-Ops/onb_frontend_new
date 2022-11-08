@@ -287,8 +287,8 @@ const Frontpage = () => {
 							>
 								Sign up
 							</Button>
-							<GoogleButton className='g-btn' type='dark' onClick={handleGoogleSignIn} />
 						</ModalFooter>
+						<GoogleButton className='g-btn' type='dark' onClick={handleGoogleSignIn} />
 						<Divider />
 						{/* <ModalFooter>
               <Button colorScheme="blue" w="100%" variant="outline">
