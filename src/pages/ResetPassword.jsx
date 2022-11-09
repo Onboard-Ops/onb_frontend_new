@@ -116,7 +116,7 @@ const ResetPassword = ({ match }) => {
 							</InputGroup>
 						</FormControl>
 
-						<Button isLoading={loading} colorScheme='teal' size='md' w='100%' d='block' type='submit'>
+						<Button isLoading={loading} colorScheme='linkedin' size='md' w='100%' d='block' type='submit'>
 							{textChange}
 						</Button>
 					</VStack>

@@ -43,9 +43,9 @@ const Router = () => {
 				{/* <Route path='/signup' element={<Signup />} key={uid} />, */}
 				<Route path='/forgot-password' element={<ForgotPassword />} key={uid} />,
 				<Route path='/login' element={<Login />} key={uid} />,
-				<Route path='/verify' element={<Verification />} key={uid} />,
 				{token ? (
 					[
+						<Route path='/verify' element={<Verification />} key={uid} />,
 						<Route path='/projects' element={<ProjectHome />} key={uid} />,
 						<Route path='/reset-password' element={<ResetPassword />} key={uid} />,
 						<Route path='/users/password/reset/:token' element={<ResetPassword />} key={uid} />,

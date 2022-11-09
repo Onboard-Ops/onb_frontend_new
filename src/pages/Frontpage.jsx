@@ -197,7 +197,7 @@ const Frontpage = () => {
 							</FormControl>
 						</ModalBody>
 						<ModalFooter>
-							<Button colorScheme='teal' onClick={() => setIsNext(!isNext)}>
+							<Button colorScheme='linkedin' onClick={() => setIsNext(!isNext)}>
 								Next
 							</Button>
 						</ModalFooter>
@@ -215,7 +215,7 @@ const Frontpage = () => {
 						</ModalBody>
 						<ModalBody pb={6} mt={16}>
 							<Button
-								colorScheme='teal'
+								colorScheme='linkedin'
 								variant='outline'
 								onClick={() => {
 									if (!selected) {

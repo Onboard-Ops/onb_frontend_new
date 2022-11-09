@@ -57,10 +57,10 @@ export const LoginAction = (user, navigate) => async (dispatch) => {
 		message.error(err?.response?.data?.msg);
 	}
 };
-export const EmailVerificationAction = (otp, userData, navigate) => async (dispatch) => {
+export const EmailVerificationAction = (otp, userId, navigate) => async (dispatch) => {
 	try {
 		dispatch({ type: VERIFICATION_REQUEST });
-		let response = await axios.post(`${API_URL}/email-validation/${userData._id}`, { otp });
+		let response = await axios.post(`${API_URL}/email-validation/${userId}`, { otp });
 
 		if (response?.data?.status) {
 			// const project = JSON.parse(localStorage.getItem('currentProjectData'));
